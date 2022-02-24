@@ -1,14 +1,13 @@
-package tn.sirine.spring.entities;
+package tn.esprit.spring.entities;
 
 import java.sql.Timestamp;
-import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -25,17 +24,17 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Message {
+public class Rating {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long idMsg;
-	private String body;
-	private Timestamp msgDate;
+	private Long idRate;
+	private int rate;
+	private Timestamp rateDate;
 	
 @ManyToOne
-private User userm;
+private Post postr;
 
-@OneToMany
-private Set<Message> sousmessages;
+@OneToOne
+private User userr;
 
 }

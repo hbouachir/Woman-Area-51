@@ -1,13 +1,14 @@
-package tn.sirine.spring.entities;
+package tn.esprit.spring.entities;
 
 import java.sql.Timestamp;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -25,16 +26,21 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Like {
+public class Comment {
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id;
-	private int countLike;
-	private Timestamp likeDate;
-	
+	    private Long idCom;
+	    private Timestamp createdate;
+	    private String body;
+	    
 	@ManyToOne
-	private Comment comment;
+	private Post postc;
+	@ManyToOne
+	private User userc;
 	
-	@OneToOne
-	private User userl;
+	@OneToMany
+	private Set<Like> likes;
+	    
+	   
 }

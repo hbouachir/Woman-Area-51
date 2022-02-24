@@ -1,17 +1,18 @@
-package tn.sirine.spring.entities;
+package tn.esprit.spring.entities;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import org.springframework.lang.Nullable;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.AccessLevel;
@@ -29,13 +30,40 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Role {
+public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	long idRole;
-	String roleName;
-	String description;
+	long userId;
+	String firstName;
+	String lastName;
+	String email;
+	String userName;
+	String password;
+    @JsonFormat(pattern="yyyy-MM-dd")
+	Date dateOfBirth;
+	@Nullable
+	String ongName;
+	@Nullable
+	String field;
+	@Nullable
+	String address;
+	long phoneNumber;
+	@Nullable
+	String cvURL;
 	
-	@OneToMany(cascade=CascadeType.ALL, mappedBy="role")
-	Set<User> users;
+	@Nullable
+	String imageURL;
+	boolean status;
+	
+	@ManyToOne
+	private Role role;
+	
+@OneToMany
+private Set<Post> posts;
+@OneToMany
+private Set<Message> messages;
+
+@ManyToMany
+private Set<User> user1;
+
 }

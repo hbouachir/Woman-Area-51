@@ -1,14 +1,18 @@
-package tn.sirine.spring.entities;
+package tn.esprit.spring.entities;
 
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+
+import org.springframework.lang.Nullable;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -18,7 +22,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
-
 @Entity
 @Getter
 @Setter
@@ -26,21 +29,13 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Comment {
-
+public class Role {
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	    private Long idCom;
-	    private Timestamp createdate;
-	    private String body;
-	    
-	@ManyToOne
-	private Post postc;
-	@ManyToOne
-	private User userc;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	long idRole;
+	String roleName;
+	String description;
 	
-	@OneToMany
-	private Set<Like> likes;
-	    
-	   
+	@OneToMany(cascade=CascadeType.ALL, mappedBy="role")
+	Set<User> users;
 }

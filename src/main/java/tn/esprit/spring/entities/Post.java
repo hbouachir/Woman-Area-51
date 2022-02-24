@@ -1,4 +1,4 @@
-package tn.sirine.spring.entities;
+package tn.esprit.spring.entities;
 
 import java.sql.Timestamp;
 import java.util.Set;

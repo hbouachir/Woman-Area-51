@@ -1,4 +1,4 @@
-package tn.sirine.spring.entities;
+package tn.esprit.spring.entities;
 
 import java.sql.Timestamp;
 
@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
+
 @Entity
 @Getter
 @Setter
@@ -24,17 +25,16 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Rating {
+public class Like {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long idRate;
-	private int rate;
-	private Timestamp rateDate;
+	private Long id;
+	private int countLike;
+	private Timestamp likeDate;
 	
-@ManyToOne
-private Post postr;
-
-@OneToOne
-private User userr;
-
+	@ManyToOne
+	private Comment comment;
+	
+	@OneToOne
+	private User userl;
 }
