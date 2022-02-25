@@ -73,8 +73,9 @@ public class User {
 //	
 	@ManyToOne
 	Role role;
-	@ManyToMany(cascade=CascadeType.ALL,mappedBy="jobOffers")
-    public Set<User> users ;
+
+	@ManyToMany(cascade=CascadeType.ALL)
+    public Set<JobOffer> jobOffers ;
 	
 
 }
