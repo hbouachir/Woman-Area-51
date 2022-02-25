@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -72,6 +73,8 @@ public class User {
 //	
 	@ManyToOne
 	Role role;
+	@ManyToMany(cascade=CascadeType.ALL,mappedBy="jobOffers")
+    public Set<User> users ;
 	
 
 }
