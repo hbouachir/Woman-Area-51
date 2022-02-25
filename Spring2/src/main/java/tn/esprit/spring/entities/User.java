@@ -4,18 +4,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.JoinColumn;
+import javax.persistence.*;
 
 
 import org.springframework.lang.Nullable;
@@ -76,6 +65,9 @@ public class User {
 
 	@ManyToMany(cascade=CascadeType.ALL)
     public Set<JobOffer> jobOffers ;
+
+	@OneToMany(mappedBy = "student")
+	Set<Class> classes;
 	
 
 }
