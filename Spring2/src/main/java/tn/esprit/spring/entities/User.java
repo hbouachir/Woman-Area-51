@@ -1,26 +1,24 @@
 package tn.esprit.spring.entities;
 
 import java.util.Date;
-import java.util.HashSet;
+
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+
 
 
 import org.springframework.lang.Nullable;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -65,17 +63,17 @@ public class User {
 	boolean status;
 	
 	
-//	@ManyToMany(fetch = FetchType.EAGER)
-//	@JoinTable(name = "user_roles", 
-//	joinColumns = @JoinColumn(name = "userId"), 
-//	inverseJoinColumns = @JoinColumn(name = "roleId"))
-//	Set<Role> roles = new HashSet<>();
-//	
-	@ManyToOne
-	Role role;
-
-	@ManyToMany(cascade=CascadeType.ALL)
-    public Set<JobOffer> jobOffers ;
 	
+	@OneToMany(cascade = CascadeType.ALL)//, mappedBy="user"
+	private Set<donation> donations;
+	
+	@ManyToMany(cascade = CascadeType.ALL)
+	private Set<event> eventsParticipated;
 
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="admin")
+	private Set<event> eventMonitered;
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	private Set<fund> Funds;
+	
 }
