@@ -28,15 +28,11 @@ public class UserController {
 	
 	@PostMapping("addUser")
 	public User addUser(@RequestBody User u){
-		return us.addUser(u);
-		
-		
+	return us.addUser(u);
 	}
-	
 	@DeleteMapping("deleteUser")
 	public void deleteUser(@RequestParam("userId") long userId){
-		us.DeleteUser(userId);
-		
+		us.DeleteUser(userId);	
 	}
 	
 	@PutMapping("updateUser")

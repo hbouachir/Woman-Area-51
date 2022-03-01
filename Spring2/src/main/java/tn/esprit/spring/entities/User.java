@@ -2,6 +2,7 @@ package tn.esprit.spring.entities;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -13,6 +14,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.JoinColumn;
@@ -58,9 +61,6 @@ public class User {
 	String address;
 	long phoneNumber;
 	@Nullable
-	String cvURL;
-	
-	@Nullable
 	String imageURL;
 	boolean status;
 	
@@ -73,8 +73,11 @@ public class User {
 //	
 	@ManyToOne
 	Role role;
-	@ManyToMany(cascade=CascadeType.ALL,mappedBy="jobOffers")
-    public Set<User> users ;
-	
+	@ManyToMany(cascade=CascadeType.ALL)
+    public Set<JobOffer> jobOffers ;
+	@OneToMany(mappedBy="user")
+	private List<Interview> interviews;
+	@OneToOne
+	private Cv cv ;
 
 }

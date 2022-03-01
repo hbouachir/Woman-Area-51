@@ -25,6 +25,10 @@ public class InterviewController {
 	public Interview addInterview(@RequestBody Interview i){
 		return in.addInterview(i);
 	}
+	@PostMapping("/add-Interviews/{idOffer}/{userId}")
+	public void addlisInterviewsToCandidate (@RequestBody List<Interview> iv , @PathVariable Long idOffer,@PathVariable Long userId){
+		in.addlisInterviews(iv, userId, idOffer);
+	}
 	@DeleteMapping("/deleteInterview/{idInterview}")
 	public void deleteInterview(@PathVariable long idInterview){
 		in.deleteInterview(idInterview);
@@ -40,5 +44,13 @@ public class InterviewController {
 	@GetMapping("/ShowAllInterview")
 	public List<Interview> showAllInterview(){	
 		return in.showAllInterview();			
+	}
+	@GetMapping("/interviewsParUser/{userId}")
+	public List<Interview> interviewsParUser(@PathVariable ("userId")Long userId){
+		return  in.listInterviewsParUser(userId);
+	}
+	@GetMapping("/interview/{idOffer}/{userId}")
+	public List<Interview> listInterviewsParOfferUser(@PathVariable Long idOffer,@PathVariable Long userId){
+		return in.listInterviewsParOfferAndUser(idOffer, userId) ;
 	}
 }

@@ -11,6 +11,7 @@ public interface IJobOfferService {
     JobOffer showOneOffer (Long idOffer);
     JobOffer updateJobOffer(JobOffer j);
     void deleteOffer (Long idOffer);
+    void AffectOffertoUser (Long idOffer,Long userId);
     
 	
 }

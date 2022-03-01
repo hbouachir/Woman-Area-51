@@ -38,4 +38,9 @@ public class JobOfferController {
 	public List<JobOffer> showAllOffer(){	
 		return js.showAllOffer();			
 	}
+	@PutMapping ("/affectUsertoOffer/{idOffer}/{userId}")
+	public void affectOffertoUser(@PathVariable Long idOffer,@PathVariable Long userId){
+		js.AffectOffertoUser(idOffer, userId);
+	}
+	
 }

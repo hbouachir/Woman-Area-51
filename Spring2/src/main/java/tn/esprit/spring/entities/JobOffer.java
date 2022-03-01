@@ -1,6 +1,7 @@
 package tn.esprit.spring.entities;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -9,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -46,6 +48,7 @@ public class JobOffer {
     @JsonIgnore
     @ManyToMany(cascade=CascadeType.ALL,mappedBy="jobOffers")
     public Set<User> users ;   
-   
+    @OneToMany(mappedBy="jobOffer")
+	private List<Interview> interviews;
    
 }

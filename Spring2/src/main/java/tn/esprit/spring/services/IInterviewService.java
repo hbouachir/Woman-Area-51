@@ -7,11 +7,11 @@ import tn.esprit.spring.entities.Interview;
 public interface IInterviewService {
 
 	 Interview addInterview(Interview i);
-	 //void addlisInterviews (List<Interview> iv ,Long userId, Long idOffer); 
+	 void addlisInterviews (List<Interview> iv ,Long userId, Long idOffer); 
 	 Interview showInterview(Long idInterview);
 	 List<Interview> showAllInterview();
-	 // List<Interview> listInterviewsParUser (Long userId);
-	 //List<Interview> listInterviewsParOfferAndUser ( Long idOffer,Long userId );
+	 List<Interview> listInterviewsParUser (Long userId);
+	 List<Interview> listInterviewsParOfferAndUser ( Long idOffer,Long userId );
 	 Interview UpdateInterview (Interview i);
 	 void deleteInterview (Long idInterview);
 
