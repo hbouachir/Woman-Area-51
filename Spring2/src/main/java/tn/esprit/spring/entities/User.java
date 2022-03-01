@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.JoinColumn;
@@ -76,6 +77,13 @@ public class User {
 
 	@ManyToMany(cascade=CascadeType.ALL)
     public Set<JobOffer> jobOffers ;
+	
+	@OneToMany(cascade=CascadeType.ALL, mappedBy="user")
+	Set<Complaint> complaints;
+	
+	@OneToMany(cascade=CascadeType.ALL, mappedBy="user")
+	Set<ExpertInterview> expertinterviews;
+	
 	
 
 }
