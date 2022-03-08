@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import tn.esprit.spring.entities.User;
 import tn.esprit.spring.entities.donation;
 import tn.esprit.spring.entities.fund;
 import tn.esprit.spring.services.IDonationService;
 import tn.esprit.spring.services.IFundService;
+import tn.esprit.spring.services.IUserService;
 
 @RestController
 public class donationController {
@@ -24,6 +26,8 @@ public class donationController {
 	IDonationService IDS;
 	@Autowired
 	IFundService IFS;
+	@Autowired
+	IUserService IUS;
 	
 	@PostMapping("/Donate/{idFund}")
 	@ResponseBody
@@ -51,19 +55,23 @@ public class donationController {
 	}
 	
 	
-/*	@GetMapping("/find-donations-by-user/{id-user}")
+	@GetMapping("/find-donations-by-user/{id-user}")
+	@ResponseBody
 	List<donation> FindUserDonations(@PathVariable("id-user") Long userId) {
-		return IDS.FindDonationsByUser(userId);
+		User user=IUS.ShowUser(userId);
+		return IDS.FindDonationsByUser(user);
 	}
-*/	
+	
 	
 	@GetMapping("/find-donations-by-fund/{id-fund}")
+	@ResponseBody
 	List<donation> FindFundDonations(@PathVariable("id-fund") Long fundId) {
 		return IDS.FindDonationsByFund(fundId);
 	}
 	
 	
 	@GetMapping("/find-all-donations")
+	@ResponseBody
 	List<donation> FindAllDonations() {
 		return IDS.ListDonations();
 	}

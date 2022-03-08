@@ -1,5 +1,6 @@
 package tn.esprit.spring.entities;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import java.util.Set;
@@ -10,7 +11,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 
@@ -18,7 +18,8 @@ import javax.persistence.OneToMany;
 import org.springframework.lang.Nullable;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -37,7 +38,12 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @ToString
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class User {
+@JsonIgnoreProperties({"hibernateLazyInitializer","referenceList"})
+public class User  implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	long userId;
@@ -64,16 +70,20 @@ public class User {
 	
 	
 	
-	@OneToMany(cascade = CascadeType.ALL)//, mappedBy="user"
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="user")
+	@JsonIgnore
 	private Set<donation> donations;
 	
-	@ManyToMany(cascade = CascadeType.ALL)
-	private Set<event> eventsParticipated;
+	@OneToMany(cascade = CascadeType.ALL,mappedBy = "participant")
+	@JsonIgnore
+    Set<feedback> participant_feedbacks;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="admin")
-	private Set<event> eventMonitered;
+	@JsonIgnore
+	private Set<event> eventsMonitered;
 	
 	@OneToMany(cascade = CascadeType.ALL)
+	@JsonIgnore
 	private Set<fund> Funds;
 	
 }

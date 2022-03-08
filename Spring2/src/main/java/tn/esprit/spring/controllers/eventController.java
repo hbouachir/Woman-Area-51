@@ -1,5 +1,6 @@
 package tn.esprit.spring.controllers;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,13 +37,6 @@ public class eventController {
 				
 	}
 	
-	@PutMapping("/event/participate/{event-id}/{user-id}")
-	event ParticipateInEvent(@PathVariable("event-id") Long eventID, @PathVariable("user-id")Long userId) {
-			
-		return IES.AffectUserToEvent(eventID, userId);
-				
-	}
-	
 	
 	@DeleteMapping("/remove-event/{eventId}")
 	@ResponseBody
@@ -62,5 +56,20 @@ public class eventController {
 	List<event> FindAllEvents() {
 		return IES.ListEvents();
 	}
+	
+	@GetMapping("/find-events-by-tags/{tags}")
+	List<event> FindEventsByTags(@PathVariable("tags") String tags) {
+		
+		return IES.FindByTags(tags);
+		
+	}
+	
+	@GetMapping("/event-of-the-month")
+	event EventOfCurrentMonth() {
+		 LocalDateTime now = LocalDateTime.now();
+		 return IES.EventOfTheMonth(now);
+	}
+	
+	
 	
 }

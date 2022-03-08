@@ -2,6 +2,7 @@ package tn.esprit.spring.services;
 
 import java.util.List;
 
+import tn.esprit.spring.entities.User;
 import tn.esprit.spring.entities.donation;
 
 public interface IDonationService {
@@ -18,7 +19,7 @@ public interface IDonationService {
 	
 	List<donation> FindDonationsByFund(Long id);
 	
-//	List<donation>FindDonationsByUser(Long id);
+	List<donation>FindDonationsByUser(User u);
 
 	
 

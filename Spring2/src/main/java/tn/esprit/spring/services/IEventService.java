@@ -1,5 +1,7 @@
 package tn.esprit.spring.services;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 import tn.esprit.spring.entities.event;
@@ -16,6 +18,8 @@ public interface IEventService {
 	
 	List<event> ListEvents();
 	
-	event AffectUserToEvent(Long EventId, Long userID);
+	public List<event>FindByTags(String tags);
+	
+	public event EventOfTheMonth(LocalDateTime now);
 
 }

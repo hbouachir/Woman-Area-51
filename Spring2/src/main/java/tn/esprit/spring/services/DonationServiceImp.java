@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import tn.esprit.spring.entities.User;
 import tn.esprit.spring.entities.donation;
 import tn.esprit.spring.repositories.DonationRepository;
 
@@ -40,18 +41,16 @@ public class DonationServiceImp implements IDonationService {
 	}
 	
 	
-	
-	
-/*	public List<donation> FindDonationsByUser(Long id) {
+	public List<donation> FindDonationsByUser(User u) {
 		List<donation> list=new ArrayList<donation>() ;
 		DRepository.findAll().forEach(
 				d->{
-					if (d.getUser().getUserId()==id)
+					if (d.getUser()==u)
 						list.add(d);	
 				});
 				
 		return list;
-	}*/
+	}
 	
 	
 	public List<donation> FindDonationsByFund(Long id){

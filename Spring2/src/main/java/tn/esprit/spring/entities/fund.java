@@ -1,9 +1,13 @@
 package tn.esprit.spring.entities;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,6 +17,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,9 +30,13 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-
-public class fund {
+@JsonIgnoreProperties({"fCategory","referenceList"})
+public class fund implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	private Long fundId;
@@ -36,12 +46,16 @@ public class fund {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date lastDonation;
 	private String benficiaries;
+	@ElementCollection
+	List<String> tags = new ArrayList<>();
 	
 	
 	@ManyToOne
+	@JsonIgnore
 	private fundCategory fCategory;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="Fund")
+	@JsonIgnore
 	private Set<donation> donations;
 	
 	

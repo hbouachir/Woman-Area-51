@@ -1,20 +1,17 @@
 package tn.esprit.spring.entities;
 
+
+
 import java.io.Serializable;
-import java.util.Date;
 
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,34 +23,33 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties({"hibernateLazyInitializer","referenceList"})
-public class donation implements Serializable {
-
+public class feedback implements Serializable{
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
-	private Long donationId;
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date donationDate;
-	private float amount;
-	@Enumerated(EnumType.STRING)
-	private Method payMethod;
+	private Long feedbackId;
+	private Float rating;
+	private Integer object;
+	private Integer organizers;
+	private Integer location;
+	private Integer addedValue;
+	private Integer recommend;
+	private Integer service;
+	private Integer futureEvents;
+	private String comment;
+	
 	
 	@ManyToOne
+    @JoinColumn(name = "user_id")
 	@JsonIgnore
-	User user;
-	
-	@ManyToOne
-	@JsonIgnore
-	fund Fund;
-	
-	
-	
-	
-	
-	
+    User participant;
 
+    @ManyToOne
+    @JoinColumn(name = "event_id")
+    @JsonIgnore
+    event event_feedback;
 }
