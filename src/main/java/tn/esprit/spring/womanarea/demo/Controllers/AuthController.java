@@ -31,17 +31,17 @@ import tn.esprit.spring.womanarea.demo.Services.OnRegistrationCompleteEvent;
 import tn.esprit.spring.womanarea.demo.Services.UserService;
 import tn.esprit.spring.womanarea.demo.Services.TwilioOTPService;
 
-import tn.esprit.spring.womanarea.demo.resource.TwilioOTPHandler;
 import tn.esprit.spring.womanarea.demo.security.jwt.JwtUtils;
 import tn.esprit.spring.womanarea.demo.security.services.UserDetailsImpl;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -56,6 +56,9 @@ public class AuthController {
 	@Autowired
 	TwilioOTPService twilioOTPService;
 
+	Cookie cookie=new Cookie("access_token","");
+	LocalDateTime loginTime=null;
+	LocalDateTime logoutTime=null;
 
 
 /*	@Autowired
@@ -74,6 +77,37 @@ public class AuthController {
 	
 	@Autowired
 	ApplicationEventPublisher eventPublisher;
+
+	@PostMapping("/logout")
+	public void logout( HttpServletResponse response,Authentication authentication) {
+		UserDetailsImpl U1 = (UserDetailsImpl) authentication.getPrincipal();
+		User U=userRepository.findByUsername(U1.getUsername()).orElse(null);
+
+		response.setContentType(null);
+		cookie.setMaxAge(0);
+
+
+		response.addCookie(cookie);
+		logoutTime=LocalDateTime.now();
+
+
+		int diff= (int) ChronoUnit.SECONDS.between(loginTime,logoutTime);
+		if (diff<3600){
+		int a=U.getLoginTime()+diff;
+		System.out.println(diff);
+		System.out.println(a);
+
+		U.setLoginTime(a);}
+		else {U.setLoginTime(3600);}
+		loginTime=null;
+		logoutTime=null;
+		userRepository.save(U);
+
+
+
+
+
+	}
 
 	@PostMapping("/signin")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest, HttpServletResponse response) {
@@ -112,10 +146,17 @@ public class AuthController {
 				userDetails.getUsername(),
 				userDetails.getEmail(),
 				roles);
+
 		tokens.put("access_token", access_token.getAccessToken());
+		cookie=new Cookie("access_token", access_token.getAccessToken());
+		cookie.setMaxAge(60*60);
+		//cookie.setSecure(true);
+		//cookie.setHttpOnly(true);
+		response.addCookie(cookie);
 
 
 		response.setHeader("access_token", access_token.getAccessToken());
+		loginTime=LocalDateTime.now();
 
 		return ResponseEntity.ok(access_token);
 	}

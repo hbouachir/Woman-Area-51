@@ -53,7 +53,7 @@ public class User implements Serializable {
 
 	@Column(name = "tel")
 	private String tel;
-
+	private int loginTime=0;
 	private int pointFidelite = 0;
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -99,12 +99,27 @@ public class User implements Serializable {
 	}
 
 
-
-
-
+	public User(String firstName, String lastName, String username, String password, String passwordConfirm, String email, String address, Date dateN, String tel, int loginTime, int pointFidelite, Set<Role> roles, Sexe sexe, Boolean etatAcc, boolean enabled, LocalDate signupDay) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.username = username;
+		this.password = password;
+		this.passwordConfirm = passwordConfirm;
+		this.email = email;
+		this.address = address;
+		this.dateN = dateN;
+		this.tel = tel;
+		this.loginTime = loginTime;
+		this.pointFidelite = pointFidelite;
+		this.roles = roles;
+		this.sexe = sexe;
+		EtatAcc = etatAcc;
+		this.enabled = enabled;
+		this.signupDay = signupDay;
+	}
 
 	public User(String username, String email, String password, String firstName, String lastName, String address,
-			Date dateN, String tel) {
+				Date dateN, String tel) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -249,10 +264,13 @@ public class User implements Serializable {
 	}
 
 
-	
+	public int getLoginTime() {
+		return loginTime;
+	}
 
-
-
+	public void setLoginTime(int loginTime) {
+		this.loginTime = loginTime;
+	}
 
 	public static Long getSerialversionuid() {
 		return serialVersionUID;
