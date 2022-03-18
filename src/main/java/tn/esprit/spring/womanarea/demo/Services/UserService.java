@@ -3,41 +3,72 @@ package tn.esprit.spring.womanarea.demo.Services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import tn.esprit.spring.womanarea.demo.Entities.Role;
 import tn.esprit.spring.womanarea.demo.Entities.User;
 import tn.esprit.spring.womanarea.demo.Entities.VerificationToken;
+import tn.esprit.spring.womanarea.demo.Repositories.RoleRepository;
 import tn.esprit.spring.womanarea.demo.Repositories.UserRepository;
 import tn.esprit.spring.womanarea.demo.Repositories.VerificationTokenRepository;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
 
 @Service
-public class UserService {
+public class UserService implements IUserService {
 	@Autowired
 	UserRepository userRepository;
+	@Autowired
+	RoleRepository roleRepository;
 	
 	@Autowired
     private VerificationTokenRepository tokenRepository;
 	
 	/*Chercher un utilisateur*/
+
 	public User findOne(long id){
 	return userRepository.findById(id).get();
 	}
+	@Override
 	public User save(User u) {
 		return userRepository.save(u);
 	}
+
+	@Override
 	public List<User> findAll() {
 		return userRepository.findAll();
 	}
 	
 	/*Update d'un user*/
+	@Override
 	public  User updateUser(User user)	{
 		return userRepository.save(user);
 		
 	}
+
+	@Transactional
+	@Override
+	public void addUserAffectRole(long idRole, User u) {
+		Role r=roleRepository.findById(idRole).orElse(null);
+		if (r!=null && !u.getRoles().contains(r)){
+			u.addRole(r);
+			userRepository.save(u);
+
+		}
+
+	}
+
+
+
+	/*Delete user */
+	@Override
+	public  void deleteUser(long id)	{
+		 userRepository.deleteById(id);
+
+	}
 	
-	/*get all Users*/
+	/*get all Users by Role*/
 	public List<User> getAllUsers(){
 		 List<Long> listUsersId=userRepository.ListeUsers();
 	
@@ -67,23 +98,21 @@ public class UserService {
         VerificationToken myToken = new VerificationToken(token, user);
         tokenRepository.save(myToken);
     }
-	/*Livreur methodes oussama*/
-	
+
   
 	public int getNombresUsersSelonSexe(String sexe)
 	{
 		return userRepository.NombreUsersSelonSexe(sexe);
 	}
 	
-	public List<User> getUserSelonChoix(String choix, String cle)
+	public List<User> getUserSelonUsername( String username)
 	{
-		return userRepository.getUserSelonChoix(cle);
+		return userRepository.getUserSelonUsername(username);
 	}
-	public List<User> getUserSelonEmail(String choix, String cle)
+	public List<User> getUserSelonEmail(String email)
 	{
-		return userRepository.getUserSelonEmail(cle);
+		return userRepository.getUserSelonEmail(email);
 	}
-	/***ayed***/
 	public int getmbreUsersbyPointfideletInf100(){
 		return userRepository.nombreUsersbyPointfideletInf100();
 	};
@@ -100,5 +129,4 @@ public class UserService {
 	public float moyennenbpointfiedelete(){
 		return userRepository.moyenneNpointFidelet();
 	}
-	/***ayed**/
 }

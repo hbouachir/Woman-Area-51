@@ -3,6 +3,7 @@ package tn.esprit.spring.womanarea.demo.Controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -78,8 +79,31 @@ public class AuthController {
 	@Autowired
 	ApplicationEventPublisher eventPublisher;
 
+	@DeleteMapping("/user/{id}")
+	public ResponseEntity<?> logout(@PathVariable("id") long id) {
+		User u=userService.findOne(id);
+		if (u!=null)
+		{
+		return
+				ResponseEntity
+						.ok()
+						.body(new MessageResponse("user deleted"));}
+		else return ResponseEntity.badRequest().body(new MessageResponse("user doesn't exist"));
+	}
+	@GetMapping("/user/{id}")
+	public User findUser(@PathVariable("id") long id) {
+		User u=userService.findOne(id);
+		return u;
+	}
+	@GetMapping("/users")
+	public List<User> findUser() {
+		return userService.findAll();
+	}
+
+
+
 	@PostMapping("/logout")
-	public void logout( HttpServletResponse response,Authentication authentication) {
+	public ResponseEntity<?> logout( HttpServletResponse response,Authentication authentication) {
 		UserDetailsImpl U1 = (UserDetailsImpl) authentication.getPrincipal();
 		User U=userRepository.findByUsername(U1.getUsername()).orElse(null);
 
@@ -103,7 +127,10 @@ public class AuthController {
 		logoutTime=null;
 		userRepository.save(U);
 
-
+		return
+		ResponseEntity
+				.ok()
+				.body(new MessageResponse("See you soon "+U.getFirstName()));
 
 
 
@@ -149,6 +176,7 @@ public class AuthController {
 
 		tokens.put("access_token", access_token.getAccessToken());
 		cookie=new Cookie("access_token", access_token.getAccessToken());
+
 		cookie.setMaxAge(60*60);
 		//cookie.setSecure(true);
 		//cookie.setHttpOnly(true);
@@ -296,6 +324,9 @@ public class AuthController {
 
 		twilioOTPService.validateOTP(activateOtpRequest.getUserInputOtp(),activateOtpRequest.getUsername(),activateOtpRequest.getNewPassword());	}
 
+	@PostMapping("addUserAffectRole")
+	public void addUserAffectRole(@RequestParam("idRole") long idRole, @RequestBody User u) {
+		userService.addUserAffectRole(idRole, u);}
 
 
 

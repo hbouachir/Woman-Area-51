@@ -7,10 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "user")
@@ -75,8 +72,13 @@ public class User implements Serializable {
 
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private LocalDate signupDay = LocalDate.now();
-	
-	
+
+	@OneToMany(cascade=CascadeType.ALL)
+	List<Subscription> subscriptions;
+
+
+	@OneToMany(mappedBy = "user")
+	List<Enrollement> enrollements;
 	
 
 
@@ -316,7 +318,9 @@ public class User implements Serializable {
 		this.signupDay = signupDay;
 	}
 
-	
+	public void  addRole(Role role){
+		this.roles.add(role);
+	}
 
 	
 	
