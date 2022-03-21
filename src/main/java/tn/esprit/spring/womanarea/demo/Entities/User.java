@@ -23,9 +23,12 @@ public class User implements Serializable {
 	@Column(name = "USER_ID")
 	private Long id;
 
+
+
 	@Column(name = "FIRST_NAME")
 	private String firstName;
 
+	private String stripe_id=null;
 	@Column(name = "LAST_NAME")
 	private String lastName;
 
@@ -133,8 +136,28 @@ public class User implements Serializable {
 		this.tel = tel;
 	}
 
+	public User(String firstName, String stripe_id, String lastName, String username, String password, String passwordConfirm, String email, String address, Date dateN, String tel, int loginTime, int pointFidelite, Set<Role> roles, Sexe sexe, Boolean etatAcc, boolean enabled, LocalDate signupDay) {
+		this.firstName = firstName;
+		this.stripe_id = stripe_id;
+		this.lastName = lastName;
+		this.username = username;
+		this.password = password;
+		this.passwordConfirm = passwordConfirm;
+		this.email = email;
+		this.address = address;
+		this.dateN = dateN;
+		this.tel = tel;
+		this.loginTime = loginTime;
+		this.pointFidelite = pointFidelite;
+		this.roles = roles;
+		this.sexe = sexe;
+		EtatAcc = etatAcc;
+		this.enabled = enabled;
+		this.signupDay = signupDay;
+	}
+
 	public User(String username, String email, String password, String firstName, String lastName, String address,
-			Date dateN, String tel, Sexe sexe) {
+				Date dateN, String tel, Sexe sexe) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -263,8 +286,17 @@ public class User implements Serializable {
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 
+
+
 	}
 
+	public String getStripe_id() {
+		return stripe_id;
+	}
+
+	public void setStripe_id(String stripe_id) {
+		this.stripe_id = stripe_id;
+	}
 
 	public int getLoginTime() {
 		return loginTime;
