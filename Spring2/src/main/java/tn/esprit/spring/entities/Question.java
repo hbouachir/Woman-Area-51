@@ -1,7 +1,10 @@
 package tn.esprit.spring.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -11,18 +14,17 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
-public class Quiz {
+public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long quizId;
+    Long idQuestion;
 
-    int requiredToSuccess;
+    String question;
 
-    @OneToMany(mappedBy="quiz")
-    private Set<Question> questions;
-
-    @OneToOne(mappedBy = "quiz")
+    @ManyToOne
     @JsonIgnore
-    Course course;
+    private Quiz quiz;
+
+    @OneToMany(mappedBy="question")
+    private Set<Answer> answers;
 }

@@ -1,5 +1,6 @@
 package tn.esprit.spring.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -15,7 +16,7 @@ import java.util.Set;
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long courseId;
+    Long courseId;
 
     String nom;
     @Enumerated(EnumType.STRING)
@@ -28,6 +29,16 @@ public class Course {
     Date end_date;
 
     @OneToMany(mappedBy = "course")
+    @JsonIgnore
     Set<Class> classes;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "course")
+    Set<File> files;
+
+    @OneToOne
+    Quiz quiz;
+
+    @ManyToOne
+    User instructor;
 
 }

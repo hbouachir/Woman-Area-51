@@ -30,8 +30,9 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class User {
 	@Id
+	@Column(name = "userId")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	long userId;
+	Long userId;
 	String firstName;
 	String lastName;
 	String email;
@@ -68,6 +69,9 @@ public class User {
 
 	@OneToMany(mappedBy = "student")
 	Set<Class> classes;
+
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="instructor")
+	private Set<Course> courses;
 	
 
 }
