@@ -109,11 +109,6 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>tn.esprit.spring</groupId>
-			<artifactId>Project</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-		<dependency>
 			<groupId>org.apache.myfaces.core</groupId>
 			<artifactId>myfaces-api</artifactId>
 			<version>2.2.12</version>
