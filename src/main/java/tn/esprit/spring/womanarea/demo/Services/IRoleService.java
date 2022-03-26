@@ -10,5 +10,6 @@ public interface IRoleService {
 	Role UpdateRole(Role u);
 	void DeleteRole(long id);
 	List<Role> ShowAllRole();
+	void initRoles();
 	
 }
