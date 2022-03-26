@@ -55,7 +55,8 @@ public class EnrollementService implements IEnrollementService{
 
 
    // every day
-   @Scheduled(cron = "0 7 * * *" )
+   //@Scheduled(cron = "0 7 * * *" )
+    @Scheduled(cron = "0 0 0 * * *") //Every day at midnight
     public void RenewableSubscription() throws Exception {
         List<User> users=  userRepository.findAll();
         for (User u : users){
