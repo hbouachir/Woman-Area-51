@@ -8,8 +8,8 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
-import tn.esprit.spring.womanarea51.Payload.request.Twilio.PasswordResetRequest;
-import tn.esprit.spring.womanarea51.Services.TwilioOTPService;
+import tn.esprit.spring.womanarea51.payload.request.Twilio.PasswordResetRequest;
+import tn.esprit.spring.womanarea51.services.TwilioOTPService;
 
 @Component
 public class TwilioOTPHandler {

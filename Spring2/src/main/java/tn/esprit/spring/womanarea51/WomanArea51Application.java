@@ -6,7 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import org.springframework.scheduling.annotation.EnableScheduling;
-import tn.esprit.spring.womanarea51.Configurations.TwilioConfig;
+import tn.esprit.spring.womanarea51.configurations.TwilioConfig;
 
 import javax.annotation.PostConstruct;
 

@@ -3,12 +3,12 @@ package tn.esprit.spring.womanarea51;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import tn.esprit.spring.womanarea51.Entities.ERole;
-import tn.esprit.spring.womanarea51.Entities.Role;
-import tn.esprit.spring.womanarea51.Repositories.RoleRepository;
-import tn.esprit.spring.womanarea51.Repositories.UserRepository;
-import tn.esprit.spring.womanarea51.Services.IRoleService;
-import tn.esprit.spring.womanarea51.Entities.User;
+import tn.esprit.spring.womanarea51.entities.ERole;
+import tn.esprit.spring.womanarea51.entities.Role;
+import tn.esprit.spring.womanarea51.repositories.RoleRepository;
+import tn.esprit.spring.womanarea51.repositories.UserRepository;
+import tn.esprit.spring.womanarea51.services.IRoleService;
+import tn.esprit.spring.womanarea51.entities.User;
 
 import javax.annotation.PostConstruct;
 import java.util.HashSet;
