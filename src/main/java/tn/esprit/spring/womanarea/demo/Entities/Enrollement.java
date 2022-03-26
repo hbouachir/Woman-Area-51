@@ -35,6 +35,8 @@ public class Enrollement {
 
 
 
+
+    boolean renewable;
    @JsonFormat(pattern="dd-MM-yyyy")
     LocalDate created;
 

@@ -12,6 +12,8 @@ import tn.esprit.spring.womanarea.demo.Entities.Role;
 import tn.esprit.spring.womanarea.demo.Entities.Subscription;
 import tn.esprit.spring.womanarea.demo.Entities.User;
 import tn.esprit.spring.womanarea.demo.Payload.response.MessageResponse;
+
+import tn.esprit.spring.womanarea.demo.Repositories.EnrollementRepository;
 import tn.esprit.spring.womanarea.demo.Repositories.SubscriptionRepository;
 import tn.esprit.spring.womanarea.demo.Repositories.UserRepository;
 import tn.esprit.spring.womanarea.demo.Services.IEnrollementService;
@@ -28,6 +30,9 @@ import java.util.List;
 public class EnrollementController {
 
     @Autowired
+
+    EnrollementRepository enrollementRepository;
+    @Autowired
     IEnrollementService enrollementService;
     @Autowired
     SubscriptionRepository subscriptionRepository;
@@ -37,28 +42,47 @@ public class EnrollementController {
     StripeService stripeService;
 
     @PostMapping("addEnrollement")
-    public ResponseEntity<?> addUser(Authentication authentication, @RequestParam int months, @RequestParam long idSubscription) throws Exception {
+
+    public ResponseEntity<?> addUser(Authentication authentication, @RequestParam int months, @RequestParam long idSubscription,@RequestParam boolean renewable) throws Exception {
         Subscription S=subscriptionRepository.findById(idSubscription).orElse(null);
         UserDetailsImpl U1 = (UserDetailsImpl) authentication.getPrincipal();
         User U = userRepository.findByUsername(U1.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + U1.getUsername()));
         if(S==null) return  ResponseEntity.ok("verifier l'abonnement,cet abonnement n'existe pas");
         if (enrollementService.seachUserValidEnrollement(U.getId())!=null){return  ResponseEntity.ok("vous avez un abonnement encore valid");}
+
+
+       if (U.getStripe_id()==null){
+           stripeService.createCustomer(U.getUsername(),U.getEmail());
+           U.setStripe_id(stripeService.createCustomer(U.getUsername(),U.getEmail()).getId());
+            userRepository.save(U);
+           String customerId =U.getStripe_id();
+           stripeService.createCard(customerId);
+
+
+       }
         String customerId =U.getStripe_id();
+
         Charge c= stripeService.chargeCustomerCard(customerId,S.getAmount()*months);
+
+        Enrollement e=new Enrollement();
         if (c.getPaid()) {
             U.setPointFidelite(U.getPointFidelite()+S.getAmount());
-            Enrollement e=new Enrollement();
+            userRepository.save(U);
+
             e.setUser(U);
+            e.setRenewable(renewable);
             e.setSubscription(S);
             e.setCreated(LocalDate.now());
             e.setExpire(e.getCreated().plusMonths(months));
-            enrollementService.addEnrollement(e);
+            enrollementRepository.save(e);
+           // enrollementService.addEnrollement(e);
 
 
 
 
-            return ResponseEntity.ok("redirect:"+new RedirectView(c.getReceiptUrl()).getUrl());}
+
+            return ResponseEntity.ok("consult your bill at :"+new RedirectView(c.getReceiptUrl()).getUrl());}
         else
             return ResponseEntity.ok("transaction refused");
 
