@@ -1,8 +1,7 @@
 package tn.esprit.spring.controllers;
 
-import java.time.LocalDateTime;
+import java.text.ParseException;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,16 +11,20 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
+import tn.esprit.spring.entities.User;
 import tn.esprit.spring.entities.event;
 import tn.esprit.spring.services.IEventService;
+import tn.esprit.spring.services.IfeedbackService;
 
 @RestController
 public class eventController {
 
 	@Autowired
-	
 	IEventService IES;
+	
+	@Autowired
+	IfeedbackService IFS;
+	
 	
 	@PostMapping("/Add-event")
 	void AddEvent(@RequestBody event e){
@@ -42,7 +45,7 @@ public class eventController {
 	@ResponseBody
 	void RemoveEvent(@PathVariable("eventId") Long eventId) {
 		event e=IES.FindEvent(eventId);
-		IES.EditEvent(e);
+		IES.DeleteEvent(e);
 	}
 	
 	
@@ -64,10 +67,17 @@ public class eventController {
 		
 	}
 	
+	@GetMapping("/{event-id}/partipants")
+	List<User> EventParticipants(@PathVariable("event-id")Long eventId){
+		event e=IES.FindEvent(eventId);
+		return IES.ParticipantsList(e);
+	}
+	
 	@GetMapping("/event-of-the-month")
-	event EventOfCurrentMonth() {
-		 LocalDateTime now = LocalDateTime.now();
-		 return IES.EventOfTheMonth(now);
+	List<event> EventOfCurrentMonth() throws ParseException {
+		
+		
+		return IFS.BestOfThisMonth(IFS.FilterEventBycurrentDate());
 	}
 	
 	

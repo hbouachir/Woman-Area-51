@@ -1,4 +1,32 @@
-2022-03-08 11:02:00.286  INFO 18644 --- [RMI TCP Connection(5)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
-2022-03-08 11:02:00.440  INFO 18644 --- [RMI TCP Connection(5)-127.0.0.1] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
-2022-03-08 11:02:00.442  INFO 18644 --- [RMI TCP Connection(5)-127.0.0.1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
-2022-03-08 11:02:00.449  INFO 18644 --- [RMI TCP Connection(5)-127.0.0.1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2022-03-26 01:52:34.225  WARN 32232 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2022-03-26 01:52:34.269  INFO 32232 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2022-03-26 01:52:34.302  INFO 32232 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8089 (http) with context path '/womanarea'
+2022-03-26 01:52:34.358  INFO 32232 --- [restartedMain] tn.esprit.spring.WomanAreaApplication    : Started WomanAreaApplication in 0.772 seconds (JVM running for 6333.138)
+2022-03-26 01:52:34.359  INFO 32232 --- [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2022-03-26 01:53:10.000  INFO 32232 --- [Thread-85] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2022-03-26 01:53:10.001  INFO 32232 --- [Thread-85] com.zaxxer.hikari.HikariDataSource       : HikariPool-21 - Shutdown initiated...
+2022-03-26 01:53:10.004  INFO 32232 --- [Thread-85] com.zaxxer.hikari.HikariDataSource       : HikariPool-21 - Shutdown completed.
+2022-03-26 01:53:12.137  INFO 32232 --- [restartedMain] tn.esprit.spring.WomanAreaApplication    : Starting WomanAreaApplication using Java 1.8.0_241 on A-Nada-02 with PID 32232 (C:\Users\nadaa\OneDrive\Desktop\Woman-Area-51\Spring2\target\classes started by nadaa in C:\Users\nadaa\OneDrive\Desktop\Woman-Area-51\Spring2)
+2022-03-26 01:53:12.137  INFO 32232 --- [restartedMain] tn.esprit.spring.WomanAreaApplication    : No active profile set, falling back to default profiles: default
+2022-03-26 01:53:12.369  INFO 32232 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2022-03-26 01:53:12.387  INFO 32232 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 17 ms. Found 6 JPA repository interfaces.
+2022-03-26 01:53:12.444  INFO 32232 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8089 (http)
+2022-03-26 01:53:12.445  INFO 32232 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-03-26 01:53:12.445  INFO 32232 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.56]
+2022-03-26 01:53:12.455  INFO 32232 --- [restartedMain] o.a.c.c.C.[.[localhost].[/womanarea]     : Initializing Spring embedded WebApplicationContext
+2022-03-26 01:53:12.455  INFO 32232 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 316 ms
+2022-03-26 01:53:12.478  INFO 32232 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-03-26 01:53:12.481  INFO 32232 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-22 - Starting...
+2022-03-26 01:53:12.485  INFO 32232 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-22 - Start completed.
+2022-03-26 01:53:12.486  INFO 32232 --- [restartedMain] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+2022-03-26 01:53:12.559  INFO 32232 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-03-26 01:53:12.559  INFO 32232 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2022-03-26 01:53:12.718  WARN 32232 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2022-03-26 01:53:12.753  INFO 32232 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2022-03-26 01:53:12.785  INFO 32232 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8089 (http) with context path '/womanarea'
+2022-03-26 01:53:12.843  INFO 32232 --- [restartedMain] tn.esprit.spring.WomanAreaApplication    : Started WomanAreaApplication in 0.727 seconds (JVM running for 6371.622)
+2022-03-26 01:53:12.844  INFO 32232 --- [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2022-03-26 02:04:04.880  INFO 32232 --- [RMI TCP Connection(119)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2022-03-26 02:04:05.021  INFO 32232 --- [RMI TCP Connection(119)-127.0.0.1] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2022-03-26 02:04:05.022  INFO 32232 --- [RMI TCP Connection(119)-127.0.0.1] com.zaxxer.hikari.HikariDataSource       : HikariPool-22 - Shutdown initiated...
+2022-03-26 02:04:05.025  INFO 32232 --- [RMI TCP Connection(119)-127.0.0.1] com.zaxxer.hikari.HikariDataSource       : HikariPool-22 - Shutdown completed.

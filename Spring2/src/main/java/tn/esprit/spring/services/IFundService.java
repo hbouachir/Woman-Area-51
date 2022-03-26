@@ -16,5 +16,9 @@ public interface IFundService {
 	
 	List<fund> ListFunds();
 	
+	public float estimatedAmountPerYear(int year);
+	
+	public float estimatedAmountforThisYear();
+	
 
 }

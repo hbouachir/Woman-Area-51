@@ -55,6 +55,15 @@ public class fundController {
 		return IFS.ListFunds();
 	}
 	
+	@GetMapping("/find-fund-amount-collected-by-year/{year}")
+	float amountCollectedPerYear(@PathVariable("year")int year) {
+		return IFS.estimatedAmountPerYear(year);
+	}
+	
+	@GetMapping("/find-fund-amount-estimated-this-year")
+	float amountEstimatedThisYear() {
+		return IFS.estimatedAmountforThisYear();
+	}
 	
 	
 

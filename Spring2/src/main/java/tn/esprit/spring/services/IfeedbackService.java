@@ -1,7 +1,9 @@
 package tn.esprit.spring.services;
 
+import java.text.ParseException;
 import java.util.List;
 
+import tn.esprit.spring.entities.event;
 import tn.esprit.spring.entities.feedback;
 
 public interface IfeedbackService {
@@ -24,9 +26,15 @@ public interface IfeedbackService {
 	
 	public double AVGEventRating(List<feedback> list);
 	
-	public float calculRating(feedback f);
+	public feedback calculRating(feedback f);
 	
 	public double MinEventRating(List<feedback> list);
 	
 	public double MaxEventRating(List<feedback> list);
+	
+	public List<event> FilterEventBycurrentDate() throws ParseException;
+	
+	public List<event> BestOfThisMonth(List<event> filtered);
+	
+	public double MaxRating() throws ParseException;
 }

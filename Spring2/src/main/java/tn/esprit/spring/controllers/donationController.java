@@ -29,11 +29,12 @@ public class donationController {
 	@Autowired
 	IUserService IUS;
 	
-	@PostMapping("/Donate/{idFund}")
+	@PostMapping("/Donate/{idFund}/{id-user}")
 	@ResponseBody
-	void Donate(@RequestBody donation d, @PathVariable ("idFund") Long idFund) {
+	void Donate(@RequestBody donation d, @PathVariable ("idFund") Long idFund, @PathVariable ("id-user") Long idUser) {
 		fund f=IFS.FindFund(idFund);
 		d.setFund(f);
+		d.setUser(IUS.ShowUser(idUser));
 		IDS.AddDonation(d);
 		f.setRaised(f.getRaised()+d.getAmount());
 		IFS.EditFund(f);

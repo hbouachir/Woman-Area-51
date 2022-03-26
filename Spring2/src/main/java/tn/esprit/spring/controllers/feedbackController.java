@@ -1,8 +1,12 @@
 package tn.esprit.spring.controllers;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +35,9 @@ public class feedbackController {
 	@Autowired
 	IEventService IES;
 	
+	@Autowired
+    private JavaMailSender emailSender;
+	
 	@PostMapping("/Participate/{id-user}/{id-event}")
 	@ResponseBody
 	void Partcipate(@PathVariable ("id-user") Long userId,@PathVariable ("id-event") Long eventId) {
@@ -41,15 +48,49 @@ public class feedbackController {
 		f.setParticipant(user);
 		f.setEvent_feedback(e);
 		IFBS.Participate(f);
-		
+		DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy hh:mm:ss");  
+		SimpleMailMessage message = new SimpleMailMessage(); 
+        message.setTo(user.getEmail()); 
+        message.setSubject("Participation confirmation"); 
+        message.setText("Hello "+ f.getParticipant().getFirstName() +" "+ f.getParticipant().getLastName()+","+"\n \n"
+        		+"Your participation in the following event has been confirmed: \n"
+        		+"Event :"+e.getDescription()
+        		+"\nLocation: "+e.getEventLocation()
+        		+"\nDate and time: "+dateFormat.format(e.getEventDate())
+        		+".\n"
+        		+ "Thank you for your participation. We look forward to hearing your feedback on the event after attending.\n\n"
+        		+ "Regards,\n"
+        		+ "The womenArea51 Team");
+       
+        emailSender.send(message);
 		
 		System.out.println(f.toString());
 		
 	}
 	
-	@PutMapping("/Feedback")
-	feedback InputFeedback(@RequestBody feedback f) {
-		f.setRating(IFBS.calculRating(f));
+	@PutMapping("/{id-user}/{id-event}/Feedback")
+	feedback InputFeedback(@RequestBody feedback f,@PathVariable ("id-user") Long userId,@PathVariable ("id-event") Long eventId) {
+		f=IFBS.calculRating(f);
+		User user=IUS.ShowUser(userId);
+		event e=IES.FindEvent(eventId);
+		f.setParticipant(user);
+		f.setEvent_feedback(e);
+		System.out.println(f.getRating());
+		DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy hh:mm:ss");  
+		SimpleMailMessage message = new SimpleMailMessage(); 
+        message.setTo(f.getParticipant().getEmail()); 
+        message.setSubject("Participation confirmation"); 
+        message.setText("Hello "+ f.getParticipant().getFirstName() +" "+ f.getParticipant().getLastName()+","+"\n \n"
+        		+"Your feedback for the following event has been confirmed: \n"
+        		+"Event :"+f.getEvent_feedback().getDescription()
+        		+"\nLocation: "+f.getEvent_feedback().getEventLocation()
+        		+"\nDate and time: "+dateFormat.format(f.getEvent_feedback().getEventDate())
+        		+".\n"
+        		+ "Thank you for your feedback. We look forward to your participation in future events.\n\n"
+        		+ "Regards,\n"
+        		+ "The womenArea51 Team");
+        emailSender.send(message);
+		
 	return IFBS.EditFeedback(f);
 				
 	}

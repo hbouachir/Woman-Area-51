@@ -1,6 +1,9 @@
 package tn.esprit.spring.services;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +53,32 @@ public class FundServiceImp implements IFundService {
 		FRepository.findAll().forEach(f->list.add(f));
 		return list;
 	}
-
+	
+	
+	public float estimatedAmountPerYear(int year) {
+		float n=0;
+		List<fund> funds= new LinkedList<>();
+		ListFunds().forEach(f->funds.add(f));
+		Iterator<fund> iterator = funds.listIterator();
+		Calendar cal = Calendar.getInstance();
+		while (iterator.hasNext()) {
+			cal.setTime(iterator.next().getLastDonation());
+			if (cal.get(Calendar.YEAR)==year)
+				n+=iterator.next().getRaised();
+		}
+		return n;
+	}
+	
+	
+	public float estimatedAmountforThisYear() {
+		float n=0;
+		Calendar cal = Calendar.getInstance();
+		int year=cal.get(Calendar.YEAR);
+		int months=cal.get(Calendar.MONTH);
+		System.out.println(year);
+		n=estimatedAmountPerYear(year);
+		return n/months*12;
+	}
+	
 
 }
