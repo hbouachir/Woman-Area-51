@@ -1,8 +1,8 @@
 package tn.esprit.spring.womanarea51.services;
 
-import java.util.List;
-
 import tn.esprit.spring.womanarea51.entities.Role;
+
+import java.util.List;
 
 public interface IRoleService {
 	Role addRole(Role u);
@@ -10,5 +10,6 @@ public interface IRoleService {
 	Role UpdateRole(Role u);
 	void DeleteRole(long id);
 	List<Role> ShowAllRole();
+	void initRoles();
 	
 }

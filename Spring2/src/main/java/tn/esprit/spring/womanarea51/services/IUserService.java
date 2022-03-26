@@ -1,15 +1,17 @@
 package tn.esprit.spring.womanarea51.services;
 
-import java.util.List;
-
 import tn.esprit.spring.womanarea51.entities.User;
 
+import java.util.List;
+
 public interface IUserService {
-	User addUser(User u);
-	User ShowUser(long id);
-	User UpdateUser(User u);
-	void DeleteUser(long id);
-	List<User> ShowAllUser();
+	User save(User u);
+
+	User findOne(long id);
+	User updateUser(User u);
+	void deleteUser(long id);
+
+	List<User> findAll();
 	void addUserAffectRole(long idRole,User u);
 	
 	
