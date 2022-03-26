@@ -15,6 +15,9 @@ public class FTPService {
 
     static FTPClient ftp = new FTPClient();
     static String TMP_UPLOAD_FOLDER = "/tmp/";
+    static String SERVER_DOMAIN = "ftpupload.net";
+    static String SERVER_USERNAME = "username";
+    static String SERVER_PASSWORD = "password";
 
     public static String fileUpload(MultipartFile file, Long courseId) throws IOException {
         if (file.isEmpty()) {
@@ -27,13 +30,13 @@ public class FTPService {
             System.out.println("File successfully uploaded to local storage : " + file.getOriginalFilename());
             ftp.addProtocolCommandListener(new PrintCommandListener(new PrintWriter(System.out)));
             int reply;
-            ftp.connect("ftpupload.net");
+            ftp.connect(SERVER_DOMAIN);
             reply = ftp.getReplyCode();
             if (!FTPReply.isPositiveCompletion(reply)) {
                 ftp.disconnect();
                 System.out.println("Exception in connecting to FTP Server");
             }
-            ftp.login("username", "password");
+            ftp.login(SERVER_USERNAME, SERVER_PASSWORD);
             ftp.setFileType(FTP.BINARY_FILE_TYPE);
             ftp.enterLocalPassiveMode();
             try {
@@ -57,7 +60,7 @@ public class FTPService {
     public static String removeFile(String fileName,Long courseId) throws IOException {
         try {
 
-            ftp.connect("ftpupload.net");
+            ftp.connect(SERVER_DOMAIN);
 
             int replyCode = ftp.getReplyCode();
             if (!FTPReply.isPositiveCompletion(replyCode)) {
@@ -65,7 +68,7 @@ public class FTPService {
                 return "Connect failed";
             }
 
-            boolean success = ftp.login("username", "password");
+            boolean success = ftp.login(SERVER_USERNAME, SERVER_PASSWORD);
 
             if (!success) {
                 System.out.println("Could not login to the server");
