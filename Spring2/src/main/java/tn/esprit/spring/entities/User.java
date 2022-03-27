@@ -65,6 +65,7 @@ public class User {
 	boolean status;
 	
 	
+	
 //	@ManyToMany(fetch = FetchType.EAGER)
 //	@JoinTable(name = "user_roles", 
 //	joinColumns = @JoinColumn(name = "userId"), 
@@ -73,11 +74,8 @@ public class User {
 //	
 	@ManyToOne
 	Role role;
-	@ManyToMany(cascade=CascadeType.ALL)
-    public Set<JobOffer> jobOffers ;
 	@OneToMany(mappedBy="user")
 	private List<Interview> interviews;
-	@OneToOne
-	private Cv cv ;
+	
 
 }

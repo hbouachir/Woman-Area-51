@@ -1,3 +1,4 @@
+
 package tn.esprit.spring.entities;
 
 import java.util.Date;
@@ -6,6 +7,8 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -37,17 +40,25 @@ public class JobOffer {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	private long idOffer ;
+	private String OfferTitle ;
 	private String domaine ;
-	private String companyLogo ;
-	private String description ;
+	private String companyName ;
 	private String offerPlace ;
+	private String salaire ;
     @Temporal (TemporalType.DATE)
     @DateTimeFormat(pattern = "MM-dd-yyyy") 
     private Date offerDeadline;
+    @Enumerated(EnumType.STRING)
+    private TypeContract typeContract ;
+    @Temporal (TemporalType.DATE)
+    @DateTimeFormat(pattern = "MM-dd-yyyy") 
+	private Date startDate ;
+	@Temporal (TemporalType.DATE)
+	@DateTimeFormat(pattern = "MM-dd-yyyy") 
+	private Date endDate ;
     // associations
+    
     @JsonIgnore
-    @ManyToMany(cascade=CascadeType.ALL,mappedBy="jobOffers")
-    public Set<User> users ;   
     @OneToMany(mappedBy="jobOffer")
 	private List<Interview> interviews;
    

@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -33,24 +34,23 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @Builder
-
 public class Interview {
-	   //private static final long serialVersionUID = 4L ;
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Id
-	private long idInterview ;
-	  private String interviewTitle ;
-      private String Interviewer ;
+	
+	   @EmbeddedId
+	   private InterviewKey idInterview ;
+	   private String interviewTitle ;
+       private String Interviewer ;
 	   @Enumerated(EnumType.STRING)
 	   private Valid valid ;
 	   @JsonFormat(pattern="yyyy-MM-dd")
-	   private Date dateInterview; 
+	   private Date dateInterview;
+	   private String urlMeet ;
 	   @JsonIgnore
-	   //@JoinColumn(name = "userId", referencedColumnName = "userId", insertable=false, updatable=false)
+	   @JoinColumn(name = "userId", referencedColumnName = "userId", insertable=false, updatable=false)
 	   @ManyToOne
 	   User user ;
 	   @JsonIgnore
-	   //@JoinColumn(name = "idOffer", referencedColumnName = "idOffer", insertable=false, updatable=false)
+	   @JoinColumn(name = "idOffer", referencedColumnName = "idOffer", insertable=false, updatable=false)
 	   @ManyToOne
 	   JobOffer jobOffer ;
 }
