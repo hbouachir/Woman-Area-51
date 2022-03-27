@@ -43,7 +43,7 @@ public class feedbackController {
 	void Partcipate(@PathVariable ("id-user") Long userId,@PathVariable ("id-event") Long eventId) {
 		
 		feedback f=new feedback();
-		User user=IUS.ShowUser(userId);
+		User user=IUS.findOne(userId);
 		event e=IES.FindEvent(eventId);
 		f.setParticipant(user);
 		f.setEvent_feedback(e);
@@ -71,7 +71,7 @@ public class feedbackController {
 	@PutMapping("/{id-user}/{id-event}/Feedback")
 	feedback InputFeedback(@RequestBody feedback f,@PathVariable ("id-user") Long userId,@PathVariable ("id-event") Long eventId) {
 		f=IFBS.calculRating(f);
-		User user=IUS.ShowUser(userId);
+		User user=IUS.findOne(userId);
 		event e=IES.FindEvent(eventId);
 		f.setParticipant(user);
 		f.setEvent_feedback(e);

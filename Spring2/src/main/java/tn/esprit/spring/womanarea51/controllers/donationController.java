@@ -34,7 +34,7 @@ public class donationController {
 	void Donate(@RequestBody donation d, @PathVariable ("idFund") Long idFund, @PathVariable ("id-user") Long idUser) {
 		fund f=IFS.FindFund(idFund);
 		d.setFund(f);
-		d.setUser(IUS.ShowUser(idUser));
+		d.setUser(IUS.findOne(idUser));
 		IDS.AddDonation(d);
 		f.setRaised(f.getRaised()+d.getAmount());
 		IFS.EditFund(f);
@@ -59,7 +59,7 @@ public class donationController {
 	@GetMapping("/find-donations-by-user/{id-user}")
 	@ResponseBody
 	List<donation> FindUserDonations(@PathVariable("id-user") Long userId) {
-		User user=IUS.ShowUser(userId);
+		User user=IUS.findOne(userId);
 		return IDS.FindDonationsByUser(user);
 	}
 	

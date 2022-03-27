@@ -1,6 +1,7 @@
 package tn.esprit.spring.womanarea51.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 import javax.persistence.*;
