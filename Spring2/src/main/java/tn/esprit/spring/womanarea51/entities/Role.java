@@ -1,40 +1,39 @@
 package tn.esprit.spring.womanarea51.entities;
 
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.experimental.FieldDefaults;
+import javax.persistence.*;
 
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-@ToString
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@Table(name = "roles")
 public class Role {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	long idRole;
-	String roleName;
-	String description;
-	
-	@OneToMany(cascade=CascadeType.ALL, mappedBy="role")
-	Set<User> users;
-	
+	private Integer id;
 
+	@Enumerated(EnumType.STRING)
+	@Column(length = 20)
+	private ERole name;
+
+	public Role() {
+
+	}
+
+	public Role(ERole name) {
+		this.name = name;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public ERole getName() {
+		return name;
+	}
+
+	public void setName(ERole name) {
+		this.name = name;
+	}
 }

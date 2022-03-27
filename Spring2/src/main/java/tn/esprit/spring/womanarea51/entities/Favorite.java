@@ -53,7 +53,7 @@ public class Favorite {
 	   
 	   
 	   @JsonIgnore
-	   @JoinColumn(name = "userId", referencedColumnName = "userId", insertable=false, updatable=false)
+	   @JoinColumn(name = "userId", referencedColumnName = "USER_ID", insertable=false, updatable=false)
 	   @ManyToOne
 	   User user ;
 	   @JsonIgnore

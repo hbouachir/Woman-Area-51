@@ -95,9 +95,9 @@ public class InterviewServicempl implements InterviewService {
 		i.setValid(Valid.Accepted);
 		Optional<User> user =  ur.findById(i.getIdInterview().getUserId());
 		Optional<JobOffer> offer =  jr.findById(i.getIdInterview().getIdOffer());
-	    k.setUserId(user.get().getUserId());
+	    k.setUserId(user.get().getId());
 	    k.setIdOffer(offer.get().getIdOffer());
-	    c.setUserName(user.get().getUserName());
+	    c.setUserName(user.get().getUsername());
 	    c.setEmail(user.get().getEmail());
 	    c.setCompanyName(offer.get().getCompanyName());
 	    c.setOfferTitle(offer.get().getOfferTitle());

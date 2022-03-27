@@ -13,7 +13,7 @@ import tn.esprit.spring.womanarea51.entities.Contract;
 public interface ContractRepository extends CrudRepository<Contract,Long> {
 
 	
-	@Query("Select c from Contract c where c.user.userId=:userId")
+	@Query("Select c from Contract c where c.user.id=:userId")
 	List<Contract> ContractParUser (@Param("userId") Long userId );
 	
 }

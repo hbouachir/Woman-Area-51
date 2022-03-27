@@ -13,13 +13,13 @@ import tn.esprit.spring.womanarea51.entities.Interview;
 @Repository
 public interface InterviewRepository extends CrudRepository<Interview, Long> {
 
-	@Query("Select u.userName FROM User u join u.interviews i where i.valid = 'Accepted' ")
+	@Query("Select u.username FROM User u join u.interviews i where i.valid = 'Accepted' ")
 	Set<String> ListOfAcceptedUser();
-	@Query("Select u.userName FROM User u join u.interviews i where i.valid = 'Pending' ")
+	@Query("Select u.username FROM User u join u.interviews i where i.valid = 'Pending' ")
 	Set<String> ListOfPendingUser();
-	@Query("Select u.userName , u.email FROM User u join u.interviews i where i.valid = 'Rejected' ")
+	@Query("Select u.username , u.email FROM User u join u.interviews i where i.valid = 'Rejected' ")
 	Set<String> ListOfRejectedUser();
-	@Query("Select i from Interview i where i.user.userId=:userId")
+	@Query("Select i from Interview i where i.user.id=:userId")
 	List<Interview> listInterviewsParUser (@Param("userId") Long userId );
 	
 	

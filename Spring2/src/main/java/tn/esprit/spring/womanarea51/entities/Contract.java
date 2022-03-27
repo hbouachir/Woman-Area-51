@@ -47,7 +47,7 @@ public class Contract {
 	private Date endDate ;
 	
 	   @JsonIgnore
-	   @JoinColumn(name = "userId", referencedColumnName = "userId", insertable=false, updatable=false)
+	   @JoinColumn(name = "userId", referencedColumnName = "USER_ID", insertable=false, updatable=false)
 	   @ManyToOne
 	   User user ;
 	   @JsonIgnore

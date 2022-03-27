@@ -12,6 +12,6 @@ import tn.esprit.spring.womanarea51.entities.Favorite;
 @Repository
 public interface FavoriteRepository extends CrudRepository<Favorite, Long> {
 
-	@Query("Select f from Favorite f where f.user.userId=:userId")
+	@Query("Select f from Favorite f where f.user.id=:userId")
 	List<Favorite> listFavoriteOfferParUser (@Param("userId") Long userId );
 }
