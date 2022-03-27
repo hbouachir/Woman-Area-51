@@ -2,13 +2,12 @@ package tn.esprit.spring.womanarea51.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tn.esprit.spring.womanarea51.entities.ClassKey;
+import tn.esprit.spring.womanarea51.entities.*;
 import tn.esprit.spring.womanarea51.entities.Class;
-import tn.esprit.spring.womanarea51.entities.Course;
-import tn.esprit.spring.womanarea51.entities.Quiz;
-import tn.esprit.spring.womanarea51.repositories.ClassRepository;
-import tn.esprit.spring.womanarea51.repositories.CourseRepository;
-import tn.esprit.spring.womanarea51.repositories.QuizRepository;
+import tn.esprit.spring.womanarea51.repositories.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 public class QuizServiceImpl implements QuizService{
@@ -18,16 +17,46 @@ public class QuizServiceImpl implements QuizService{
     CourseRepository cr;
     @Autowired
     ClassRepository clr;
+    @Autowired
+    QuestionRepository qqr;
+    @Autowired
+    AnswerRepository ar;
 
 
     @Override
     public Quiz addQuiz(Quiz quiz, Long courseId) {
         Course course = cr.findById(courseId).orElse(null);
-        quiz.setCourse(course);
-        quiz = qr.save(quiz);
-        course.setQuiz(quiz);
-        cr.save(course);
-        return quiz;
+        if (course != null) {
+            if (course.getQuiz() != null) {
+                Quiz old_quiz = course.getQuiz();
+                for (Question q : old_quiz.getQuestions()) {
+                    for (Answer a : q.getAnswers()) {
+                        ar.delete(a);
+                    }
+                    qqr.delete(q);
+                }
+                quiz.setQuizId(old_quiz.getQuizId());
+            }else{
+                quiz = qr.save(quiz);
+                course.setQuiz(quiz);
+                cr.save(course);
+            }
+
+
+
+                for(Question q: quiz.getQuestions()){
+                    q.setQuiz(quiz);
+                    Question qua = qqr.save(q);
+                    for(Answer a: q.getAnswers()){
+                        a.setQuestion(qua);
+                        ar.save(a);
+                    }
+                }
+
+            return quiz;
+        }
+        return null;
+
     }
 
     @Override
@@ -55,5 +84,11 @@ public class QuizServiceImpl implements QuizService{
             clr.save(quiz_class);
         }
         return final_score;
+    }
+
+    @Override
+    public Quiz getQuiz(Long courseId) {
+        Quiz quiz = cr.findById(courseId).orElse(null).getQuiz();
+        return quiz;
     }
 }

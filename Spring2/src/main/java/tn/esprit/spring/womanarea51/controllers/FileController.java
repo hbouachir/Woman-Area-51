@@ -1,6 +1,7 @@
 package tn.esprit.spring.womanarea51.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import tn.esprit.spring.womanarea51.entities.File;
@@ -14,7 +15,7 @@ public class FileController {
     @Autowired
     FileService fs;
 
-    @PostMapping("/addFile/{idCourse}")
+    @PostMapping(path="/addFile/{idCourse}")
     public File addFile(@PathVariable long idCourse, @RequestParam("file") MultipartFile file) {return fs.addFile(file, idCourse);};
 
     @DeleteMapping("/deleteFile/{idFile}")

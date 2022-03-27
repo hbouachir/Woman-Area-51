@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tn.esprit.spring.womanarea51.entities.Course;
 import tn.esprit.spring.womanarea51.entities.CourseCategory;
+import tn.esprit.spring.womanarea51.entities.ERole;
+import tn.esprit.spring.womanarea51.entities.User;
 import tn.esprit.spring.womanarea51.repositories.CourseRepository;
 import tn.esprit.spring.womanarea51.repositories.UserRepository;
 
@@ -17,21 +19,38 @@ public class CourseServiceImpl implements CourseService{
     UserRepository ur;
 
     @Override
-    public Course add_course(Course c) {
+    public Course add_course(Course c, User U) {
+        c.setInstructor(U);
         return cr.save(c);
     }
 
     @Override
-    public Course update_course(Course c) {
-        return cr.save(c);
+    public Course update_course(Course c, User U) {
+        Course old_C = cr.findById(c.getCourseId()).orElse(null);
+        if (U.getUsername().equals(old_C.getInstructor().getUsername()) || U.getRoles().contains(ERole.ROLE_ADMIN)) {
+            c.setQuiz(old_C.getQuiz());
+            c.setFiles(old_C.getFiles());
+            c.setInstructor(old_C.getInstructor());
+            return cr.save(c);
+        }
+            return null;
+        }
+
+    @Override
+    public Course findCourse(Long idCourse) {
+        return cr.findById(idCourse).orElse(null);
     }
 
     @Override
-    public void delete_course(Course c) {
-        cr.delete(c);
+    public void delete_course(Course c, User u) {
+        if (u.getRoles().contains(ERole.ROLE_ADMIN)) cr.delete(c);
+        else {
+            Course old_course = cr.findById(c.getCourseId()).orElse(null);
+            if (old_course.getInstructor().getUsername().equals(u.getUsername())){
+                cr.delete(c);
+            }
+        }
     }
-
-
 
     @Override
     public List<Course> findAll_courses() {
@@ -46,5 +65,10 @@ public class CourseServiceImpl implements CourseService{
     @Override
     public List<CourseCategory> availableCourseCategories() {
         return cr.findAvailableCourseCategories();
+    }
+
+    @Override
+    public List<Course> findInstructorAll_courses(String instructorUsername) {
+        return cr.findInstructorAll_courses(instructorUsername);
     }
 }

@@ -16,4 +16,7 @@ public interface CourseRepository extends CrudRepository<Course, Long> {
 
     @Query("select c.category from Course c group by c.category")
     List<CourseCategory> findAvailableCourseCategories();
+
+    @Query("SELECT c FROM Course c WHERE c.instructor.username = :instructorUsername")
+    List<Course> findInstructorAll_courses(@Param("instructorUsername") String instructorUsername);
 }

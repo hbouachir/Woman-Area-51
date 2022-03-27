@@ -1,10 +1,7 @@
 package tn.esprit.spring.womanarea51.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import tn.esprit.spring.womanarea51.entities.Answer;
 import tn.esprit.spring.womanarea51.entities.Question;
 import tn.esprit.spring.womanarea51.entities.Quiz;
@@ -21,9 +18,12 @@ public class QuizController {
     @Autowired
     AnswerService as;
 
+    @GetMapping("/Course/{courseId}/getQuiz/")
+    public Quiz getQuiz(@PathVariable Long courseId){
+        return qs.getQuiz(courseId);
+    }
 
-
-    @PostMapping("/addQuiz/{courseId}")
+    @PostMapping("/Course/{courseId}/editQuiz")
     public Quiz updateCourse(@PathVariable Long courseId, @RequestBody Quiz q){
         return qs.addQuiz(q, courseId);
     }

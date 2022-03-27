@@ -1,6 +1,7 @@
 package tn.esprit.spring.womanarea51.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonView;
 
 
 import javax.persistence.*;
@@ -20,18 +21,22 @@ public class User implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "USER_ID")
+	@JsonView(CourseView.Less.class)
 	private Long id;
 
 
 
 	@Column(name = "FIRST_NAME")
+	@JsonView(CourseView.Less.class)
 	private String firstName;
 
 	private String stripe_id=null;
 	@Column(name = "LAST_NAME")
+	@JsonView(CourseView.Less.class)
 	private String lastName;
 
 	@Column(name = "username")
+	@JsonView(CourseView.Less.class)
 	private String username;
 
 	@Column(name = "password")
