@@ -318,6 +318,7 @@ UserService userService;
 	@PostMapping("/sendOTP")
 	public void sendOTP(@RequestBody PasswordResetRequest passwordResetRequest){
 
+
 		twilioOTPService.sendOTPForPasswordReset(passwordResetRequest);	}
 
 
@@ -326,9 +327,23 @@ UserService userService;
 
 		twilioOTPService.validateOTP(activateOtpRequest.getUserInputOtp(),activateOtpRequest.getUsername(),activateOtpRequest.getNewPassword());	}
 
+
+	@PreAuthorize("hasRole('ROLE_SUPER_USER')")
 	@PostMapping("addUserAffectRole")
-	public void addUserAffectRole(@RequestParam("idRole") long idRole, @RequestBody User u) {
-		userService.addUserAffectRole(idRole, u);}
+	public void addUserAffectRole(@RequestParam  long idRole, @RequestParam long idUser) {
+		userService.addUserAffectRole(idRole, idUser);}
+
+	@PreAuthorize("hasRole('ROLE_SUPER_USER')")
+	@DeleteMapping("deleteUser")
+	public void deleteRole(@RequestParam long userId){
+		userService.deleteUser(userId);
+
+
+
+	}
+
+
+
 
 
 
