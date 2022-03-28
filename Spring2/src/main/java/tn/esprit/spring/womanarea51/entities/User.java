@@ -56,7 +56,9 @@ public class User implements Serializable {
 	private String tel;
 	private int loginTime=0;
 	private int pointFidelite = 0;
+	
 	private int pointWord = 0;
+	
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<>();

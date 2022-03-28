@@ -45,6 +45,7 @@ public class Post {
 	    private List<String> tags = new ArrayList<>();
 	    private String image;
 	    private Float score=(float) 0;
+	    private int countCom;
 	   // private int countrate;
 	    
 		@ElementCollection(targetClass = RatePub.class)
