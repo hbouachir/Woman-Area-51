@@ -58,4 +58,10 @@ UserRepository ur;
 		List<Mensaje> m = msg.findAllMensajesBetweenTwoUsers(name1, name2);
 		m.forEach(entity -> msg.delete(entity));
 	}
+
+	@Override
+	public void deleteById(Long idMsg) {
+		msg.deleteById(idMsg);
+		
+	}
 }

@@ -51,4 +51,10 @@ public String deleteChat(Authentication authentication,@PathParam("idUser")Long 
 	msg="conversation supprimer avec succée";
 	return msg;
 }
+@DeleteMapping("/deletemsg")
+public String deleteMsg(@PathParam("idMsg")Long idMsg){
+	String msg="";
+	messageService.deleteById(idMsg);
+	return msg="message id: "+idMsg+" ....supprimer";
+}
 }
