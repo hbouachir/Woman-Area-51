@@ -36,6 +36,19 @@ public class Monitor {
 
         //THIS PART OF CODE SHOULD BE REMOVED IN DEPLOYMENT
         if (true) {
+            if (!userRepository.existsByUsername("superuser")) {
+                Set<Role> roles = new HashSet<>();
+                Role superRole = roleRepository.findByName(ERole.ROLE_SUPER_USER).orElse(null);
+                roles.add(superRole);
+                //create admin account
+                User user = new User("superuser",
+                        "superuser@mail.com",
+                        encoder.encode("changeme"
+                        ), "super", "user", "admin", null, "11111111", null);
+                user.setRoles(roles);
+                user.setEnabled(true);
+                userRepository.save(user);
+            }
             if (!userRepository.existsByUsername("admin")) {
                 Set<Role> roles = new HashSet<>();
                 Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN).orElse(null);
