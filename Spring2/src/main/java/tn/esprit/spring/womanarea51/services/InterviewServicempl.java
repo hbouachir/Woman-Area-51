@@ -162,7 +162,7 @@ public class InterviewServicempl implements InterviewService {
 		interviewKey.setIdOffer(idOffer);
 		interviewKey.setUserId(userId);
 		Interview i = new Interview();
-		i.setUrlMeet("meet");
+		i.setUrlMeet("meet.google.com/wap-rkzc-usb");
 	    i.setIdInterview(interviewKey);
 		ir.save(i);
 	}
