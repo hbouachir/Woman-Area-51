@@ -40,7 +40,7 @@ public class OcrController {
 			g.drawImage(in, 0, 0, null);
 			g.dispose();
 			instance.setLanguage(request.getDestinationLanguage());
-			instance.setDatapath("C:/Users/Moez/OneDrive/Bureau/springboot-tesseract-ocr-master/tessdata");
+			instance.setDatapath("./tessdata");
 			String result = instance.doOCR(newImage);
 			return result;
 
