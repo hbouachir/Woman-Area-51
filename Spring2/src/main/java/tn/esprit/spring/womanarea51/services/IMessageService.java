@@ -12,4 +12,5 @@ public interface IMessageService {
 public Mensaje createMessage(Mensaje message); 
 public List<Mensaje> getAllMessages(String name1,String name2);
 public List<Mensaje> getAllMessage();
+public void delete(String name1,String name2);
 }

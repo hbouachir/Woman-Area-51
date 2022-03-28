@@ -3,6 +3,7 @@ package tn.esprit.spring.womanarea51.controllers;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,8 +31,8 @@ IPubService pubService;
 PubRepository pubRepository;
 @Autowired
 UserRepository userRepository;
-
-@PostMapping("addpub")
+@PreAuthorize("hasRole('ADMIN')")
+@PostMapping("/addpub")
 public Pub createNewUser( @RequestBody Pub p, Authentication authentication) { 
 String msg="";
 UserDetailsImpl U1 = (UserDetailsImpl) authentication.getPrincipal();

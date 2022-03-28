@@ -27,7 +27,7 @@ UserRepository ur;
 	public Mensaje createMessage(Mensaje message) {
 		// TODO Auto-generated method stub
 		Optional<User> u= ur.findByUsername(message.getUsername());
-		Optional<User> u1= ur.findByUsername(message.getUsername());
+		Optional<User> u1= ur.findByUsername(message.getUser());
 		message.setUserfrom(u.get());
 		message.setUserto(u1.get());
 		return msg.save(message);
@@ -38,8 +38,8 @@ UserRepository ur;
 		/*User f = userRepository.findById(idUserf).orElse(null);
 
 		User t = userRepository.findById(idUsert).orElse(null);*/
-		//List<Mensaje> m = msg.findAllMensajesBetweenTwoUsers(name1, name2);
-		List<Mensaje> m= (List<Mensaje>) msg.findAll();
+		List<Mensaje> m = msg.findAllMensajesBetweenTwoUsers(name1, name2);
+		//List<Mensaje> m= (List<Mensaje>) msg.findAll();
 		return m;
 	}
 	@Override
@@ -50,5 +50,12 @@ UserRepository ur;
 		//List<Mensaje> m = msg.findAllMensajesBetweenTwoUsers(name1, name2);
 		List<Mensaje> m= (List<Mensaje>) msg.findAll();
 		return m;
+	}
+
+	@Override
+	public void delete(String name1, String name2) {
+		// TODO Auto-generated method stub
+		List<Mensaje> m = msg.findAllMensajesBetweenTwoUsers(name1, name2);
+		m.forEach(entity -> msg.delete(entity));
 	}
 }

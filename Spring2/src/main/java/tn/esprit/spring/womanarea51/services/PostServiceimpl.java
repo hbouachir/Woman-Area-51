@@ -253,8 +253,11 @@ public static String uploadDirectory = System.getProperty("user.dir") + "/upload
 	@Override
 	public void removeUnactiveComment() {
 		List<Post> pubs = postRepository.affichNotNullPublication();
-		
-		pubs.forEach(entity -> postRepository.delete(entity));
+		pubs.forEach(entity ->{
+			entity.setHistory(true);
+			postRepository.save(entity);
+		});
+		//pubs.forEach(entity -> postRepository.delete(entity));
 	}
 
 	@Override
