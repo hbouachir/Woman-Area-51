@@ -65,18 +65,18 @@ public class InterviewServicempl implements InterviewService {
 	}
 
 	@Override
-	public Set<String> ListOfAcceptedUser() {
+	public List<User> ListOfAcceptedUser() {
 		// TODO Auto-generated method stub
 		return ir.ListOfAcceptedUser();
 	}
 
 	@Override
-	public Set<String> ListOfPendingUser() {
+	public List<User> ListOfPendingUser() {
 		// TODO Auto-generated method stub
 		return  ir.ListOfPendingUser();
 	}
 	@Override
-	public Set<String> ListOfRejectedUser() {
+	public List<User> ListOfRejectedUser() {
 		// TODO Auto-generated method stub
 		return ir.ListOfRejectedUser();
 	}
@@ -130,6 +130,24 @@ public class InterviewServicempl implements InterviewService {
         System.out.println("Mail sent successfully..");
 
     }
+	
+	public void sendMailNoAttachement(String toEmail,String body,String subject) throws MessagingException {
+
+        MimeMessage mimeMessage=javaMailSender.createMimeMessage();
+        MimeMessageHelper mimeMessageHelper=new MimeMessageHelper(mimeMessage,true);
+        mimeMessageHelper.setFrom("test.esprit2021@gmail.com");
+        mimeMessageHelper.setTo(toEmail);
+        mimeMessageHelper.setText(body);
+        mimeMessageHelper.setSubject(subject);
+       
+        
+        
+        
+        javaMailSender.send(mimeMessage);
+        System.out.println("Mail sent successfully..");
+
+
+    }
 
 	@Override
 	public List<Contract> ContractParUser(Long userId) {
@@ -175,6 +193,12 @@ public class InterviewServicempl implements InterviewService {
 		i.setValid(Valid.Pending);
 		ir.save(i);
 		
+	}
+
+	@Override
+	public List<Contract> showAllContract() {
+		// TODO Auto-generated method stub
+		return (List<Contract>) cr.findAll();
 	}
 
 	

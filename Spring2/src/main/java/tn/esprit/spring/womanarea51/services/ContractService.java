@@ -7,4 +7,5 @@ import tn.esprit.spring.womanarea51.entities.Contract;
 interface ContractService {
 
 	List<Contract> ContractParUser (Long userId );
+	List<Contract> showAllContract();
 }

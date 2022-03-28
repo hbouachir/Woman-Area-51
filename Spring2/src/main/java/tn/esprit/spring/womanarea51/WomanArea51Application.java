@@ -14,7 +14,7 @@ import javax.annotation.PostConstruct;
 
 @EnableScheduling
 @SpringBootApplication
-@ComponentScan({" tn.esprit.spring.womanarea51.*"})
+//@ComponentScan({" tn.esprit.spring.womanarea51.*"})
 public class WomanArea51Application {
 
 	@Autowired

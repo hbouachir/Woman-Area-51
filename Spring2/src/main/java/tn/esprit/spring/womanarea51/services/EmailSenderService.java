@@ -21,7 +21,7 @@ public class EmailSenderService {
 
 	        MimeMessage mimeMessage=javaMailSender.createMimeMessage();
 	        MimeMessageHelper mimeMessageHelper=new MimeMessageHelper(mimeMessage,true);
-	        mimeMessageHelper.setFrom("moez1997meerigui@gmail.com");
+	        mimeMessageHelper.setFrom("test.esprit2021@gmail.com");
 	        mimeMessageHelper.setTo(toEmail);
 	        mimeMessageHelper.setText(body);
 	        mimeMessageHelper.setSubject(subject);
@@ -37,4 +37,21 @@ public class EmailSenderService {
 
 
 	    }
+	        public void sendMailNoAttachement(String toEmail,String body,String subject) throws MessagingException {
+
+		        MimeMessage mimeMessage=javaMailSender.createMimeMessage();
+		        MimeMessageHelper mimeMessageHelper=new MimeMessageHelper(mimeMessage,true);
+		        mimeMessageHelper.setFrom("test.esprit2021@gmail.com");
+		        mimeMessageHelper.setTo(toEmail);
+		        mimeMessageHelper.setText(body);
+		        mimeMessageHelper.setSubject(subject);
+		       
+		        
+		        
+		        
+		        javaMailSender.send(mimeMessage);
+		        System.out.println("Mail sent successfully..");
+
+
+		    }
 }

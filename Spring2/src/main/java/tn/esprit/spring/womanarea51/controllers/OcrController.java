@@ -7,6 +7,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +22,7 @@ import tn.esprit.spring.womanarea51.services.OcrModel;
 @RestController
 public class OcrController {
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("/api/ocr")
 	public String DoOCR(@RequestParam("DestinationLanguage") String destinationLanguage,
 			@RequestParam("Image") MultipartFile image) throws IOException {

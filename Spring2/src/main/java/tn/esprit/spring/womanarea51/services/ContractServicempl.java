@@ -19,6 +19,12 @@ public class ContractServicempl implements ContractService {
 		// TODO Auto-generated method stub
 		return cr.ContractParUser(userId);
 	}
+
+	@Override
+	public List<Contract> showAllContract() {
+		// TODO Auto-generated method stub
+		return (List<Contract>) cr.findAll();
+	}
 	
 	
 	
