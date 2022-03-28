@@ -5,6 +5,7 @@ import com.stripe.model.Card;
 import com.stripe.model.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +30,7 @@ public class SubscriptionController {
     @Autowired
     SubscriptionService subscriptionService;
 
+    @PreAuthorize("hasRole('ROLE_SUPER_USER') or hasRole('ROLE_ADMIN')")
     @PostMapping("addSubscription")
     public Subscription addSubscription(@RequestBody Subscription s){
         return ss.addSubscription(s);

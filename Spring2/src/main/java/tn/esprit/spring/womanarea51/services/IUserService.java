@@ -12,7 +12,7 @@ public interface IUserService {
 	void deleteUser(long id);
 
 	List<User> findAll();
-	void addUserAffectRole(long idRole,User u);
+	void addUserAffectRole(long idRole,long idUser);
 	
 	
 }
