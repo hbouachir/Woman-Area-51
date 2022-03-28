@@ -26,7 +26,7 @@ public class ContractController {
 	@Autowired
     ContractRepository cr ;
 	
-	    
+	    @PreAuthorize("hasRole('ADMIN')")
 	    @GetMapping("/pdf/{userId}")
 	    public void exportToPDF(HttpServletResponse response,@PathVariable ("userId")Long userId ) throws DocumentException, IOException {
 		response.setContentType("application/pdf");
