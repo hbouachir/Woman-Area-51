@@ -1,18 +1,20 @@
 package tn.esprit.spring.womanarea51.services;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import com.stripe.exception.StripeException;
-import com.stripe.model.Card;
 import com.stripe.model.Charge;
-import com.stripe.model.Customer;
+
 
 import tn.esprit.spring.womanarea51.entities.User;
 import tn.esprit.spring.womanarea51.entities.donation;
@@ -58,17 +60,24 @@ public class DonationServiceImp implements IDonationService {
 
         Charge c= stripeService.chargeCustomerCard(customerId,(int)d.getAmount());
 		
-		SimpleMailMessage message = new SimpleMailMessage(); 
-        message.setTo(d.getUser().getEmail()); 
-        message.setSubject("Donation confirmation"); 
-        message.setText("Hello "+d.getUser().getFirstName()+" "+d.getUser().getLastName()+","+"\n \n"
+        MimeMessage mm= emailSender.createMimeMessage();
+        MimeMessageHelper mimeMessageHelper=new MimeMessageHelper(mm,true);
+        mimeMessageHelper.setFrom(U.getEmail());
+        mimeMessageHelper.setTo(U.getEmail());
+        mimeMessageHelper.setText("Hello "+d.getUser().getFirstName()+" "+d.getUser().getLastName()+","+"\n \n"
         		+"Your donation amount of "+String.valueOf(d.getAmount())
         		+"DT has been confirmed for "+d.getFund().getFundDescription()
         		+".\n"
         		+ "Thank you for your contribution.\n\n"
         		+ "Regards,\n"
-        		+ "The womenArea51 Team");//add Fund link after !!!:D
-        emailSender.send(message);
+        		+ "The womenArea51 Team");
+        mimeMessageHelper.setSubject("Participation confirmation");
+        FileSystemResource res = new FileSystemResource(new File(ClassLoader.getSystemResource("static/images/logo.png").toURI()));
+        mimeMessageHelper.addInline("identifier1234", res);
+        
+        
+        emailSender.send(mm);
+		
 	}
 	
 	

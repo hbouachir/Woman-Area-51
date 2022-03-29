@@ -1,5 +1,6 @@
 package tn.esprit.spring.womanarea51.controllers;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -9,6 +10,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -19,8 +22,11 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMailMessage;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -78,14 +84,14 @@ public class feedbackController {
 	
 	@PostMapping("/participate/{idevent}")
 	@ResponseBody
-	void Partcipate(@PathVariable ("idevent") Long eventId) throws URISyntaxException, IOException, DocumentException {
-		System.out.println("hello sir");
-		//User U=UR.findByUsername(authentication.getName()).orElse(null);
+	void Partcipate( Authentication authentication, @PathVariable ("idevent") Long eventId) throws URISyntaxException, IOException, DocumentException, MessagingException {
+		User U=UR.findByUsername(authentication.getName()).orElse(null);
 		feedback f=new feedback();
 		
 		event e=IES.FindEvent(eventId);
-		User U=IUS.findOne(2L);
+		
 		f.setParticipant(U);
+		
 		
 		if (e.getPlaces()!= null)
 		{
@@ -96,86 +102,65 @@ public class feedbackController {
 		f.setEvent_feedback(e);
 		IFBS.Participate(f);
 		DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy hh:mm:ss");  
-		SimpleMailMessage message = new SimpleMailMessage(); 
-        message.setTo(U.getEmail()); 
-        message.setSubject("Participation confirmation"); 
-        message.setText("Hello "+ f.getParticipant().getFirstName() +" "+ f.getParticipant().getLastName()+","+"\n \n"
-        		+"Your participation in the following event has been confirmed: \n"
-        		+"Event :"+e.getDescription()
-        		+"\nLocation: "+e.getEventLocation()
-        		+"\nDate and time: "+dateFormat.format(e.getEventDate())
-        		+".\n"
-        		+ "Thank you for your participation. We look forward to hearing your feedback on the event after attending.\n\n"
-        		+ "Regards,\n"
-        		+ "The womenArea51 Team");
-       try {
-    	   emailSender.send(message);
-       }catch(Exception ee) {
-    	   System.out.println(ee.getMessage());
-       }
-        
-        //pdf generation for badge
-        System.out.println("hiii");
- //       Path path1 = Paths.get(ClassLoader.getSystemResource("logo.png").toURI());
-        System.out.println("hello");
-/*        Rectangle one = new Rectangle(70,140);
-        Document document = new Document(one);
-        
-        PDDocument document = new PDDocument();
-        PDPage page = new PDPage();
-        document.addPage(page);
-
-        PDPageContentStream contentStream = new PDPageContentStream(document, page);
-        
-        
-        PDImageXObject image = PDImageXObject.createFromFile(path1.toAbsolutePath().toString(), document);
-        contentStream.drawImage(image, 0, 0);
-        contentStream.setFont(PDType1Font.TIMES_ROMAN, 12);
-        contentStream.beginText();
-        contentStream.showText(e.getEventId()+"\n"+U.getUsername());
-        contentStream.endText();
-        contentStream.close();
-        String path = e.getEventId()+"ID-"+U.getId()+".pdf";
-        
-        
-		document.close();
-
-        System.out.println("before path : ");
-        
-        System.out.println(path);
-        document.save(path);
-
-//        Path path = Paths.get(ClassLoader.getSystemResource("/static/images/logo.png").toURI());
-        String path = new ClassPathResource("/static/images/logo.png").getPath();
-        Document document = new Document();
-        PdfWriter.getInstance(document, new FileOutputStream("iTextImageExample.pdf"));
-        document.open();
-        Image img = Image.getInstance(path);
-        document.add(img);
-
-        document.close();
-*/
+		 
+		
+	//pdf generation for badge
+		   
         PDDocument document = new PDDocument();
         PDPage page = new PDPage(PDRectangle.A6);
         document.addPage(page);
         
-        String script="Participant: ".concat(U.getUsername()).concat(" Event :").concat(e.getEventId().toString());
+        String script="  ParticipantId: ".concat(U.getUsername()).concat("                 EventId :").concat(e.getEventId().toString());
         Path path = Paths.get(ClassLoader.getSystemResource("static/images/logo.png").toURI());
         PDPageContentStream contentStream = new PDPageContentStream(document, page);
         PDImageXObject image 
           = PDImageXObject.createFromFile(path.toAbsolutePath().toString(), document);
         
-        contentStream.setFont(PDType1Font.HELVETICA_BOLD, 20);
+        float x = (PageSize.A6.getWidth() - image.getWidth()) / 2;
+        float y = (PageSize.A6.getHeight() - image.getHeight()) / 2;
+        contentStream.setFont(PDType1Font.HELVETICA_BOLD, 15);
         
         contentStream.beginText();
-        contentStream.showText(script); 
+       	contentStream.showText(script);
         contentStream.endText();
-        contentStream.drawImage(image,0,0 );
+       
+        
+        
+        contentStream.drawImage(image,x-2,y-2);
         contentStream.close();
         String pathPDF = e.getEventId()+"ID-"+U.getId()+".pdf";
         document.save(pathPDF);
         document.close();
 		System.out.println("created pdf :D");
+		//Pdf created
+	
+       //Mail with Badge attachement
+    	   MimeMessage mm= emailSender.createMimeMessage();
+           MimeMessageHelper mimeMessageHelper=new MimeMessageHelper(mm,true);
+           mimeMessageHelper.setFrom(U.getEmail());
+           mimeMessageHelper.setTo(U.getEmail());
+           mimeMessageHelper.setText("Hello "+ f.getParticipant().getFirstName() +" "+ f.getParticipant().getLastName()+","+"\n \n"
+           		+"Your participation in the following event has been confirmed: \n"
+           		+"Event :"+e.getDescription()
+           		+"\nLocation: "+e.getEventLocation()
+           		+"\nDate and time: "+dateFormat.format(e.getEventDate())
+           		+".\n"
+           		+ "Thank you for your participation. We look forward to hearing your feedback on the event after attending.\n\n"
+           		+ "Regards,\n"
+           		+ "The womenArea51 Team");
+           mimeMessageHelper.setSubject("Participation confirmation");
+           FileSystemResource fileSystemResource=
+                   new FileSystemResource(new File(pathPDF));
+           mimeMessageHelper.addAttachment(fileSystemResource.getFilename(),
+                   fileSystemResource); 
+           
+           
+           emailSender.send(mm);
+    	   
+      
+        
+       
+       
 		IemailS.scheduleEmail(U.getEmail(), U.getUsername(), e);
 		
 		
@@ -183,7 +168,7 @@ public class feedbackController {
 	
 	
 	@PutMapping("/Feedback/{event}")
-	feedback InputFeedback(@RequestBody feedback f,@PathVariable("event") Long eventId, Authentication authentication) throws DocumentException, IOException, URISyntaxException {
+	feedback InputFeedback(@RequestBody feedback f,@PathVariable("event") Long eventId, Authentication authentication) throws DocumentException, IOException, URISyntaxException, Exception {
 		User U=UR.findByUsername(authentication.getName()).orElse(null);
 		f=IFBS.calculRating(f);
 		System.out.println(f.getRating().toString());
@@ -192,10 +177,13 @@ public class feedbackController {
 		f.setEvent_feedback(e);
 		System.out.println(e.getEventId());
 		DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy hh:mm:ss");  
-		SimpleMailMessage message = new SimpleMailMessage(); 
-        message.setTo(f.getParticipant().getEmail()); 
-        message.setSubject("Participation confirmation"); 
-        message.setText("Hello "+ U.getFirstName() +" "+ U.getLastName()+","+"\n \n"
+		
+
+        MimeMessage mm= emailSender.createMimeMessage();
+        MimeMessageHelper mimeMessageHelper=new MimeMessageHelper(mm,true);
+        mimeMessageHelper.setFrom(U.getEmail());
+        mimeMessageHelper.setTo(U.getEmail());
+        mimeMessageHelper.setText("Hello "+ U.getFirstName() +" "+ U.getLastName()+","+"\n \n"
         		+"Your feedback for the following event has been confirmed: \n"
         		+"Event :"+e.getDescription()
         		+"\nLocation: "+e.getEventLocation()
@@ -204,7 +192,12 @@ public class feedbackController {
         		+ "Thank you for your feedback. We look forward to your participation in future events!\n\n"
         		+ "Regards,\n"
         		+ "The womenArea51 Team");
-        emailSender.send(message);
+        mimeMessageHelper.setSubject("Participation confirmation");
+        FileSystemResource res = new FileSystemResource(new File(ClassLoader.getSystemResource("static/images/logo.png").toURI()));
+        mimeMessageHelper.addInline("identifier1234", res);
+        
+        
+        emailSender.send(mm);
         
  
 

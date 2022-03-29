@@ -42,20 +42,20 @@ public class fundController {
 	UserRepository UR;
 	
 	@PreAuthorize("hasRole('ADMIN')")
-	@PostMapping("/propose-fund")
-	void AddFund(@RequestBody fund f, @RequestBody fundCategory cat,Long catId, Authentication authentication){
+	@PostMapping("/propose-fund/{catid}")
+	void AddFund(@RequestBody fund f,@PathVariable("catid")Long catId,Authentication authentication){
 		//System.out.println(catId);
 		
-		f.setFCategory(cat);
+		f.setFCategory(IFCS.FindFundCat(catId));
 		IFS.AddFund(f);
 		
 		
 	}
 	
 	@PreAuthorize("hasRole('ADMIN')")
-	@PutMapping("/fund/Update")
-	fund EditFund(@RequestBody fund f, Authentication authentication) {
-		
+	@PutMapping("/fund/Update/{catid}")
+	fund EditFund(@RequestBody fund f,@PathVariable("catid")Long catId, Authentication authentication) {
+		f.setFCategory(IFCS.FindFundCat(catId));
 		return IFS.EditFund(f);
 				
 	}
