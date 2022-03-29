@@ -2,6 +2,7 @@ package tn.esprit.spring.womanarea51.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 
 
 import javax.persistence.*;
@@ -21,18 +22,22 @@ public class User implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "USER_ID")
+	@JsonView(CourseView.Less.class)
 	private Long id;
 
 
 
 	@Column(name = "FIRST_NAME")
+	@JsonView(CourseView.Less.class)
 	private String firstName;
 
 	private String stripe_id=null;
 	@Column(name = "LAST_NAME")
+	@JsonView(CourseView.Less.class)
 	private String lastName;
 
 	@Column(name = "username")
+	@JsonView(CourseView.Less.class)
 	private String username;
 
 	@Column(name = "password")
@@ -354,12 +359,25 @@ public class User implements Serializable {
 		this.roles.add(role);
 	}
 
+	//Ramzi
+	@ManyToMany(cascade=CascadeType.ALL)
+    public Set<JobOffer> jobOffers ;
+
+	@OneToMany(mappedBy = "student")
+	Set<Class> classes;
+
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="instructor")
+	private Set<Course> courses;
+
+	public Set<Class> getClasses() {
+		return classes;
+	}
 	@OneToMany(mappedBy="user")
 	private List<Interview> interviews;
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="user")
 	@JsonIgnore
 	private Set<donation> donations;
-	
+
 
 	@OneToMany(cascade = CascadeType.ALL,mappedBy = "participant")
 	@JsonIgnore
@@ -368,11 +386,11 @@ public class User implements Serializable {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="admin")
 	@JsonIgnore
 	private Set<event> eventsMonitered;
-	
+
 	@OneToMany(cascade = CascadeType.ALL)
 	@JsonIgnore
 	private Set<fund> Funds;
-	
+
 
 	public Set<donation> getDonations() {
 		return donations;
@@ -405,7 +423,18 @@ public class User implements Serializable {
 	public void setFunds(Set<fund> funds) {
 		Funds = funds;
 	}
-	
-	
 
+
+
+	public void setClasses(Set<Class> classes) {
+		this.classes = classes;
+	}
+
+	public Set<Course> getCourses() {
+		return courses;
+	}
+
+	public void setCourses(Set<Course> courses) {
+		this.courses = courses;
+	}
 }

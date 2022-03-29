@@ -60,15 +60,15 @@ public class Monitor {
                 userRepository.save(user);
             }
             if (!userRepository.existsByUsername("admin")) {
-                Set<Role> roles = new HashSet<>();
+                Set<Role> rolesa = new HashSet<>();
                 Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN).orElse(null);
-                roles.add(adminRole);
+                rolesa.add(adminRole);
                 //create admin account
                 User user = new User("admin",
                         "admin@mail.com",
                         encoder.encode("changeme"
                         ), "admin", "ladmin", "admin", null, "11111111", null);
-                user.setRoles(roles);
+                user.setRoles(rolesa);
                 user.setEnabled(true);
                 userRepository.save(user);
             }
@@ -82,6 +82,19 @@ public class Monitor {
                         encoder.encode("changeme"
                         ), "user", "luser", "user", null, "22222222", null);
                 user.setRoles(roles);
+                user.setEnabled(true);
+                userRepository.save(user);
+            }
+            if (!userRepository.existsByUsername("instructor")) {
+                Set<Role> rolesi = new HashSet<>();
+                Role adminRole = roleRepository.findByName(ERole.ROLE_INSTRUCTOR).orElse(null);
+                rolesi.add(adminRole);
+                //create admin account
+                User user = new User("instructor",
+                        "instructor@mail.com",
+                        encoder.encode("changeme"
+                        ), "instructor", "linstructor", "instructor", null, "11111154", null);
+                user.setRoles(rolesi);
                 user.setEnabled(true);
                 userRepository.save(user);
             }

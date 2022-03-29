@@ -27,22 +27,22 @@ import lombok.Setter;
 @Entity
 @Builder
 public class Interview {
-	
-	   @EmbeddedId
-	   private InterviewKey idInterview ;
-	   private String interviewTitle ;
-       private String Interviewer ;
-	   @Enumerated(EnumType.STRING)
-	   private Valid valid ;
-	   @JsonFormat(pattern="yyyy-MM-dd")
-	   private Date dateInterview;
-	   private String urlMeet ;
-	   @JsonIgnore
-	   @JoinColumn(name = "userId", referencedColumnName = "USER_ID", insertable=false, updatable=false)
-	   @ManyToOne
-	   User user ;
-	   @JsonIgnore
-	   @JoinColumn(name = "idOffer", referencedColumnName = "idOffer", insertable=false, updatable=false)
-	   @ManyToOne
-	   JobOffer jobOffer ;
+
+	@EmbeddedId
+	private InterviewKey idInterview ;
+	private String interviewTitle ;
+	private String Interviewer ;
+	@Enumerated(EnumType.STRING)
+	private Valid valid ;
+	@JsonFormat(pattern="yyyy-MM-dd")
+	private Date dateInterview;
+	private String urlMeet ;
+	@JsonIgnore
+	@JoinColumn(name = "userId", referencedColumnName = "USER_ID", insertable=false, updatable=false)
+	@ManyToOne
+	User user ;
+	@JsonIgnore
+	@JoinColumn(name = "idOffer", referencedColumnName = "idOffer", insertable=false, updatable=false)
+	@ManyToOne
+	JobOffer jobOffer ;
 }
