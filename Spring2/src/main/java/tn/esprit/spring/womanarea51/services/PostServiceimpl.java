@@ -254,7 +254,7 @@ public static String uploadDirectory = System.getProperty("user.dir") + "/upload
 	public void removeUnactiveComment() {
 		List<Post> pubs = postRepository.affichNotNullPublication();
 		pubs.forEach(entity ->{
-			entity.setHistory(true);
+			entity.setHistorypost(true);
 			postRepository.save(entity);
 		});
 		//pubs.forEach(entity -> postRepository.delete(entity));
@@ -295,6 +295,21 @@ public static String uploadDirectory = System.getProperty("user.dir") + "/upload
 		
 		return postRepository.findByCountCom();
 	}
+
+	@Override
+	public List<Post> searchKeyWord(String word) {
+		
+		return postRepository.findAllKey(word);
+	}
+
+	@Override
+	public List<Post> getAllPostsAvecCom() {
+		// TODO Auto-generated method stub
+		postRepository.affichPublication();
+		return 	postRepository.affichPublication();
+	}
+
+	
 	
 	}
 	

@@ -26,12 +26,17 @@ public interface PostRepository extends CrudRepository<Post, Long> {
 	 List<Post> retrieveByTag(@Param("tag") String tag);
 	 @Query(value="select * from Post where id not in (select postc_id from comment  where postc_id is NOT NULL)", nativeQuery = true)
 	    public List<Post> affichNotNullPublication();
-	 
+	 @Query(value="select * from Post where id  in (select postc_id from comment  where postc_id is NOT NULL)", nativeQuery = true)
+	    public List<Post> affichPublication();
 	 List<Post> findAllByOrderByScoreDesc();
 	 
 	 @Query(value = "SELECT * FROM Post p where p.score=(SELECT MAX(e2.score) FROM Post e2)", nativeQuery = true)
 		public Post findByScore();
 	 @Query(value = "SELECT * FROM Post p where p.count_com=(SELECT MAX(e2.count_com) FROM Post e2)", nativeQuery = true)
 		public Post findByCountCom();
+	 @Query(value = "select p from Post p where CONCAT(p.body,b.title,t.tags) like :keyword", nativeQuery = true)
+	 public  List<Post> findAllKey( @Param("keyword")String keyword);
+	  
+	 
 	  
 }

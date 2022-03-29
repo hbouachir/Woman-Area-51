@@ -13,6 +13,7 @@ import tn.esprit.spring.womanarea51.entities.RatePub;
 public interface IPostService {
 
 	public List<Post> getAllPosts() ;
+	public List<Post> getAllPostsAvecCom() ;
 	Post getById (Long id)throws NoSuchElementException;
 	public Optional<Post> getPost(Long id);
 	public void addPost(Post post, Long idUser) ;
@@ -35,4 +36,6 @@ public interface IPostService {
 	public Post maxComPost();
 	// public String uploadFile(MultipartFile uploadFile);
 	public Post addPostImageTest( MultipartFile file, Long idPost);
+public List<Post> searchKeyWord(String word);
+
 }

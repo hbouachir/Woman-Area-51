@@ -162,4 +162,18 @@ public void deletePost(@PathVariable Long id) {
 	 postService.deletePost(id);
 	 	 
 }
+@GetMapping("/listepostsaveccom")
+@ResponseBody
+List<Post> listedePostsAvecCom(){
+	return postService.getAllPostsAvecCom();
+}
+@GetMapping("/listepostskey")
+
+public List<Post> getPostBykey(@RequestParam("key") String key) {
+	
+	List<Post>  g=postService.searchKeyWord(key);
+
+
+			return g;
+}	
 }

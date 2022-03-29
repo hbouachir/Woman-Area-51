@@ -46,7 +46,7 @@ public class Post {
 	    private String image;
 	    private Float score=(float) 0;
 	    private int countCom;
-	    private boolean history = false;
+	    private boolean historypost = false;
 	   // private int countrate;
 	    
 		@ElementCollection(targetClass = RatePub.class)

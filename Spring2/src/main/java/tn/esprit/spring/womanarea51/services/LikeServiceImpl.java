@@ -43,6 +43,46 @@ public class LikeServiceImpl implements ILikeService {
 	        }
 		return false;
 	}
+	@Override
+	public boolean addLikeSouCom(Long comId, Long IdUser) {
+		 Comment com = this.commentaireRepository.findById(comId).orElse(null);
+	        User user = this.userRepository.findById(IdUser).orElse(null);
+	        int count=com.getCountlike();
+	 
+	        Like likeByUserAndCom = this.likeRepository.findByUserlikeAndComment(user, com);
+
+	        if (likeByUserAndCom == null) {
+	        	Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
+	        	
+	            Like like = new Like();
+	            like.setLikeDate(currentTimestamp);
+	            like.setUserlike(user);
+	            like.setComment(com);
+	            like.setCountLike(1);
+	            count++;
+             com.setCountlikeR(count);
+	            return this.likeRepository.save(like) != null;
+	        }
+		return false;
+	}
+	@Override
+	public boolean deleteLikeSouCom(Long comId, Long IdUser) {
+		 Comment com = this.commentaireRepository.findById(comId).orElse(null);
+	        User user = this.userRepository.findById(IdUser).orElse(null);
+	        int count=com.getCountlike();
+	 
+	        Like likeByUserAndCom = this.likeRepository.findByUserlikeAndComment(user, com);
+
+	        if (likeByUserAndCom != null) {
+	        	Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
+	       
+	        	count--;
+             com.setCountlikeR(count);
+             likeRepository.delete(likeByUserAndCom);
+	            return true;
+	        }
+		return false;
+	}
 
 	@Override
 	public int getAllLikesForCom(Long comId) {
