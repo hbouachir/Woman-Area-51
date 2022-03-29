@@ -2,6 +2,8 @@ package tn.esprit.spring.womanarea51.services;
 
 import java.util.List;
 
+import com.stripe.exception.StripeException;
+
 import tn.esprit.spring.womanarea51.entities.User;
 import tn.esprit.spring.womanarea51.entities.donation;
 
@@ -15,7 +17,7 @@ public interface IDonationService {
 
 	donation EditDonation(donation d);
 
-	void AddDonation(donation d);
+	void AddDonation(donation d) throws StripeException, Exception ;
 	
 	List<donation> FindDonationsByFund(Long id);
 	

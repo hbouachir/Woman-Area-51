@@ -3,6 +3,8 @@ package tn.esprit.spring.womanarea51.controllers;
 import java.text.ParseException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,7 +15,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import tn.esprit.spring.womanarea51.entities.User;
 import tn.esprit.spring.womanarea51.entities.event;
+import tn.esprit.spring.womanarea51.repositories.UserRepository;
 import tn.esprit.spring.womanarea51.services.IEventService;
+import tn.esprit.spring.womanarea51.services.IUserService;
 import tn.esprit.spring.womanarea51.services.IfeedbackService;
 
 @RestController
@@ -25,25 +29,34 @@ public class eventController {
 	@Autowired
     IfeedbackService IFS;
 	
+	@Autowired
+	UserRepository UR;
 	
+	@Autowired
+	IUserService US;
+	
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("/Add-event")
-	void AddEvent(@RequestBody event e){
-
+	void AddEvent(@RequestBody event e, Authentication authentication){
+		
+		User U=UR.findByUsername(authentication.getName()).orElse(null);
+		e.setAdmin(U);
 		IES.AddEvent(e);
 		
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/event/Update")
-	event EditEvent(@RequestBody event e) {
+	event EditEvent(@RequestBody event e, Authentication authentication) {
 		
 		return IES.EditEvent(e);
 				
 	}
 	
-	
+	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/remove-event/{eventId}")
 	@ResponseBody
-	void RemoveEvent(@PathVariable("eventId") Long eventId) {
+	void RemoveEvent(@PathVariable("eventId") Long eventId, Authentication authentication) {
 		event e=IES.FindEvent(eventId);
 		IES.DeleteEvent(e);
 	}

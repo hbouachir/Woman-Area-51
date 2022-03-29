@@ -30,7 +30,7 @@ public class fundCategory  {
 	private String categoryImg;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy="fCategory",fetch = FetchType.LAZY)
+	@OneToMany(mappedBy="fCategory")
 	private Set<fund> Funds;
 	
 

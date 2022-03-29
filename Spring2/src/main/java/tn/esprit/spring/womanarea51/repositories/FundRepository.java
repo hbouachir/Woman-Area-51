@@ -10,7 +10,7 @@ import tn.esprit.spring.womanarea51.entities.fund;
 
 public interface FundRepository  extends JpaRepository<fund,Long>{
 	
-	@Query("SELECT f FROM fund f JOIN f.tags t WHERE t = LOWER(:tag)")
+	@Query("SELECT f FROM fund f JOIN f.tags t WHERE t =:tag")
 	List<fund> retrieveByTag(@Param("tag") String tag);
 
 }

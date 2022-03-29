@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import tn.esprit.spring.womanarea51.entities.fund;
 import tn.esprit.spring.womanarea51.entities.fundCategory;
 
 import tn.esprit.spring.womanarea51.repositories.FundCategoryRepository;
@@ -50,6 +51,10 @@ public class FundCategoryServiceImp implements IFundCategoryService {
 		FCatRepository.findAll().forEach(c->list.add(c));
 		return list;
 	}
+	
+	
+		
+	
 
 
 }

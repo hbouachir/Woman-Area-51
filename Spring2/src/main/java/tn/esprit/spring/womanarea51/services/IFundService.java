@@ -3,6 +3,7 @@ package tn.esprit.spring.womanarea51.services;
 import java.util.List;
 
 import tn.esprit.spring.womanarea51.entities.fund;
+import tn.esprit.spring.womanarea51.entities.fundCategory;
 
 public interface IFundService {
 	
@@ -20,5 +21,8 @@ public interface IFundService {
 	
 	public float estimatedAmountforThisYear();
 	
+	public List<fund> FindByCatgeory(fundCategory cat);
+	
+	public List<fund>FindByTags(String tags);
 
 }

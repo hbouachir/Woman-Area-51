@@ -9,9 +9,18 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import com.stripe.exception.StripeException;
+import com.stripe.model.Card;
+import com.stripe.model.Charge;
+import com.stripe.model.Customer;
+
 import tn.esprit.spring.womanarea51.entities.User;
 import tn.esprit.spring.womanarea51.entities.donation;
+import tn.esprit.spring.womanarea51.entities.fund;
 import tn.esprit.spring.womanarea51.repositories.DonationRepository;
+import tn.esprit.spring.womanarea51.repositories.FundRepository;
+import tn.esprit.spring.womanarea51.repositories.UserRepository;
+import tn.esprit.spring.womanarea51.stripe.StripeService;
 
 @Service
 public class DonationServiceImp implements IDonationService {
@@ -22,9 +31,33 @@ public class DonationServiceImp implements IDonationService {
 	@Autowired
     private JavaMailSender emailSender;
 	
+	@Autowired
+	StripeService stripeService;
+	
+	@Autowired 
+	FundRepository FRepository;
+	
+	@Autowired
+	UserRepository URepository;
+	
 	 
-	public void AddDonation(donation d) {
+	public void AddDonation(donation d) throws StripeException, Exception {
 		DRepository.save(d);
+		User U=URepository.findById(d.getUser().getId()).get();
+		if (U.getStripe_id()==null){
+           stripeService.createCustomer(U.getUsername(),U.getEmail());
+           U.setStripe_id(stripeService.createCustomer(U.getUsername(),U.getEmail()).getId());
+            URepository.save(U);
+           String customerId =U.getStripe_id();
+           stripeService.createCard(customerId);
+
+
+       }
+        String customerId =U.getStripe_id();
+        System.out.println(customerId);
+
+        Charge c= stripeService.chargeCustomerCard(customerId,(int)d.getAmount());
+		
 		SimpleMailMessage message = new SimpleMailMessage(); 
         message.setTo(d.getUser().getEmail()); 
         message.setSubject("Donation confirmation"); 
@@ -70,9 +103,10 @@ public class DonationServiceImp implements IDonationService {
 	
 	public List<donation> FindDonationsByFund(Long id){
 		List<donation> list=new ArrayList<donation>() ;
+		fund f=FRepository.findById(id).get();
 		DRepository.findAll().forEach(
 				d->{
-					if (d.getFund().getFundId()==id)
+					if (d.getFund()==f)
 						list.add(d);	
 				});
 				
