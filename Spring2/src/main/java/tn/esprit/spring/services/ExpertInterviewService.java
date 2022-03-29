@@ -1,11 +1,14 @@
 package tn.esprit.spring.services;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import tn.esprit.spring.entities.ExpertInterview;
+import tn.esprit.spring.entities.User;
 import tn.esprit.spring.repositories.ExpertInterviewRepository;
 @Service
 public class ExpertInterviewService implements IExpertInterviewService {
@@ -35,5 +38,66 @@ public class ExpertInterviewService implements IExpertInterviewService {
 	public ExpertInterview showExpertInterview(Long idExpertInterview) {
 		// TODO Auto-generated method stub
 		return exp.findById(idExpertInterview).orElse(null);
+	}
+	@Override
+	public List<User> searchExperts(List<User> users) {
+		List<User> experts = new ArrayList<User>();
+		for (int i=0;i<users.size();i++){
+			if(users.get(i).getRole().getDescription().contains("expert"))
+				experts.add(users.get(i));
+			
+		}
+		return experts;
+	}
+	
+	/*@Override
+	public User BestExpert(List<User> experts, String field) {
+		User expert = new User();
+		for (int i=0;i<experts.size();i++){
+			if(experts.get(i).getRole().getExpertField().contains(field)&&this.countInterviews(experts.get(i))<=3)
+			{
+				Set<ExpertInterview> expint=experts.get(i).getExpertinterviews();
+				for (ExpertInterview element : expint) {
+					int total=+element.getRating();	
+						
+						
+				}
+				}
+			}
+		}		
+		return expert;
+	}*/
+	
+	@Override
+	public User ExpertToAffect(List<User> experts, String field) {
+		User expert = new User();
+		for (int i=0;i<experts.size();i++){
+			if(experts.get(i).getRole().getExpertField().contains(field)&&this.countInterviews(experts.get(i))<=2){
+				return expert=experts.get(i);
+			}
+		}		
+		return expert;
+	}
+	
+	@Override
+	public int countInterviews(User expert) {
+		List<ExpertInterview> intss=new ArrayList<ExpertInterview>();
+		intss=( List<ExpertInterview>) exp.findAll();
+		int n=0;
+		for (int i=0;i<intss.size();i++){
+			
+			 if (intss.get(i).getExpert().getUserId()==expert.getUserId())
+				n++;
+			 
+		}
+		
+		//ints.addAll(0, expert.getExpertinterviews());
+		return n;
+	}
+	@Override
+	public int countAllInterviews(){
+		int n=0;
+		
+		return n;
 	}
 }

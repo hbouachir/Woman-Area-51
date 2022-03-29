@@ -53,7 +53,7 @@ public class RoleController {
 	}
 	
 	
-	@GetMapping
+	@GetMapping("/showAllRole")
 	public List<Role> showAllRole(){
 		
 		return rs.ShowAllRole();		

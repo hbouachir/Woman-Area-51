@@ -57,7 +57,7 @@ public class UserController {
 	}
 	
 	
-	@GetMapping
+	@GetMapping("/showAllUsers")
 	public List<User> showAllUser(){
 		
 		return us.ShowAllUser();		

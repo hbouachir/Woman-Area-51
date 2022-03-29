@@ -12,14 +12,26 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import tn.esprit.spring.entities.Complaint;
+import tn.esprit.spring.entities.ComplaintType;
 import tn.esprit.spring.services.IComplaintService;
 @RestController
 public class ComplaintController {
 	@Autowired
 	IComplaintService comp ;
 	@PostMapping("/addComplaint")
-	public Complaint addComplaint(@RequestBody Complaint c){
-		return comp.addComplaint(c);
+	public String addComplaint(@RequestBody Complaint c){
+		String resp = null;
+		if(c.getDescription().contains("fight")||c.getDescription().contains("harrassment")
+				||c.getDescription().contains("pain")){
+			//c.setComplaintType(ComplaintType.Help);
+			return "You might wanna add a file attachment";
+			
+		}
+			else if(c.getDescription().contains("money"))
+					c.setComplaintType(ComplaintType.financialComplaint);
+		
+		//c.setComplaintType(ComplaintType.Help);
+		return resp;
 	}
 	@DeleteMapping("/deleteComplaint/{idComplaint}")
 	public void deleteComplaint(@PathVariable long idComplaint){
@@ -37,4 +49,11 @@ public class ComplaintController {
 	public List<Complaint> showAllComplaint(){	
 		return comp.showAllComplaint();			
 	}
+	
+	
+	
+	
+	
+	
+	
 }

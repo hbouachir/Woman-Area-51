@@ -37,6 +37,7 @@ public class Role {
 	long idRole;
 	String roleName;
 	String description;
+	String expertField;
 	
 	@OneToMany(cascade=CascadeType.ALL, mappedBy="role")
 	Set<User> users;

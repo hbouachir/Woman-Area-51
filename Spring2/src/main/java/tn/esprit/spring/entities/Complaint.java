@@ -35,6 +35,7 @@ public class Complaint {
 private long idComplaint;
 @Enumerated(EnumType.STRING)
 private ComplaintType complaintType;
+private String Description;
 
 @ManyToOne
 User user;

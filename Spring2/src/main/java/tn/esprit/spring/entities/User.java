@@ -22,6 +22,7 @@ import javax.persistence.JoinColumn;
 import org.springframework.lang.Nullable;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -73,15 +74,19 @@ public class User {
 //	Set<Role> roles = new HashSet<>();
 //	
 	@ManyToOne
+	@JsonIgnore
 	Role role;
 
 	@ManyToMany(cascade=CascadeType.ALL)
+	@JsonIgnore
     public Set<JobOffer> jobOffers ;
 	
 	@OneToMany(cascade=CascadeType.ALL, mappedBy="user")
+	@JsonIgnore
 	Set<Complaint> complaints;
 	
 	@OneToMany(cascade=CascadeType.ALL, mappedBy="user")
+	@JsonIgnore
 	Set<ExpertInterview> expertinterviews;
 	
 	
