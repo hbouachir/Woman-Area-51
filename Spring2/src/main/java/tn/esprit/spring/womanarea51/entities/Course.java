@@ -38,7 +38,7 @@ public class Course {
     @JsonView(CourseView.Less.class)
     Date end_date;
 
-    @OneToMany(mappedBy = "course")
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "course")
     @JsonIgnore
     Set<Class> classes;
 
@@ -46,7 +46,7 @@ public class Course {
     @JsonView(CourseView.More.class)
     Set<File> files;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JsonView(CourseView.More.class)
     Quiz quiz;
 

@@ -27,6 +27,7 @@ public class CourseServiceImpl implements CourseService{
     @Override
     public Course update_course(Course c, User U) {
         Course old_C = cr.findById(c.getCourseId()).orElse(null);
+        if (old_C == null) return null;
         if (U.getUsername().equals(old_C.getInstructor().getUsername()) || U.getRoles().contains(ERole.ROLE_ADMIN)) {
             c.setQuiz(old_C.getQuiz());
             c.setFiles(old_C.getFiles());
@@ -42,14 +43,17 @@ public class CourseServiceImpl implements CourseService{
     }
 
     @Override
-    public void delete_course(Course c, User u) {
-        if (u.getRoles().contains(ERole.ROLE_ADMIN)) cr.delete(c);
-        else {
-            Course old_course = cr.findById(c.getCourseId()).orElse(null);
-            if (old_course.getInstructor().getUsername().equals(u.getUsername())){
-                cr.delete(c);
+    public void delete_course(Long idCourse, User u) {
+        Course old_course = cr.findById(idCourse).orElse(null);
+        if (old_course != null) {
+            if (u.getRoles().contains(ERole.ROLE_ADMIN)) cr.delete(old_course);
+            else {
+                if (old_course.getInstructor().getUsername().equals(u.getUsername())){
+                    cr.delete(old_course);
+                }
             }
         }
+
     }
 
     @Override

@@ -24,8 +24,11 @@ public class QuizServiceImpl implements QuizService{
 
 
     @Override
-    public Quiz addQuiz(Quiz quiz, Long courseId) {
+    public Quiz addQuiz(Quiz quiz, Long courseId, User U) {
         Course course = cr.findById(courseId).orElse(null);
+        System.out.println(course.getInstructor().equals(U));
+        System.out.println(U.getRoles().contains(ERole.ROLE_ADMIN));
+       // if (course != null && (!course.getInstructor().equals(U) || !U.getRoles().contains(ERole.ROLE_ADMIN))) return null;
         if (course != null) {
             if (course.getQuiz() != null) {
                 Quiz old_quiz = course.getQuiz();

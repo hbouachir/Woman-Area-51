@@ -366,8 +366,21 @@ public class User implements Serializable {
 	Set<Class> classes;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="instructor")
-	private Set<Course> courses;	
-	
-	
+	private Set<Course> courses;
 
+	public Set<Class> getClasses() {
+		return classes;
+	}
+
+	public void setClasses(Set<Class> classes) {
+		this.classes = classes;
+	}
+
+	public Set<Course> getCourses() {
+		return courses;
+	}
+
+	public void setCourses(Set<Course> courses) {
+		this.courses = courses;
+	}
 }

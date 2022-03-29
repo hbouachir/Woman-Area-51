@@ -16,7 +16,7 @@ import tn.esprit.spring.womanarea51.services.CourseService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/Course")
+@RequestMapping("/api")
 public class CourseController {
 
 
@@ -25,7 +25,7 @@ public class CourseController {
     @Autowired
     UserRepository userRepository;
 
-    @PostMapping("/addCourse")
+    @PostMapping("/Course/addCourse")
     @PreAuthorize("hasRole('INSTRUCTOR') or hasRole('ADMIN')")
     @JsonView(CourseView.Less.class)
     public Course addCourse(@RequestBody Course c, Authentication authentication){
@@ -33,44 +33,45 @@ public class CourseController {
         return cs.add_course(c, U);
     }
 
-    @PostMapping("/updateCourse")
+    @PostMapping("/Course/updateCourse")
     @PreAuthorize("hasRole('INSTRUCTOR') or hasRole('ADMIN')")
+    @JsonView(CourseView.More.class)
     public Course updateCourse(@RequestBody Course c, Authentication authentication){
         User U = userRepository.findByUsername(authentication.getName()).orElse(null);
         return cs.update_course(c,U);
     }
 
-    @DeleteMapping("/deleteCourse")
+    @DeleteMapping("/Course/{idCourse}/deleteCourse")
     @PreAuthorize("hasRole('INSTRUCTOR') or hasRole('ADMIN')")
-    public void deleteCourse(@RequestBody Course c, Authentication authentication){
+    public void deleteCourse(@PathVariable Long idCourse, Authentication authentication){
         User U = userRepository.findByUsername(authentication.getName()).orElse(null);
-        cs.delete_course(c,U);
+        cs.delete_course(idCourse,U);
     }
 
-    @GetMapping("/getAllCourses")
+    @GetMapping("/Course/getAllCourses")
     @JsonView(CourseView.Less.class)
     public List<Course> getAllCourses(){
         return cs.findAll_courses();
     }
 
-    @GetMapping("/getCourse/{idCourse}")
+    @GetMapping("/Course/getCourse/{idCourse}")
     @JsonView(CourseView.More.class)
     public Course getCourse(@PathVariable Long idCourse){
         return cs.findCourse(idCourse);
     }
 
-    @GetMapping("/getAllCourses/{username}")
+    @GetMapping("/Course/getAllCourses/{username}")
     @JsonView(CourseView.Less.class)
     public List<Course> getAllInstructorCourses(@PathVariable String username){
         return cs.findInstructorAll_courses(username);
     }
 
-    @GetMapping("/getCoursesByNCat")
+    @GetMapping("/Course/getCoursesByNCat")
     @JsonView(CourseView.Less.class)
     public List<Course> getCoursesByNCat(@RequestBody List<CourseCategory> categories){
         return cs.findByCat_courses(categories);
     }
-    @GetMapping("/getAvailableCoursesCat")
+    @GetMapping("/Course/getAvailableCoursesCat")
     public List<CourseCategory> getAvailableCoursesCat(){
         return cs.availableCourseCategories();
     }

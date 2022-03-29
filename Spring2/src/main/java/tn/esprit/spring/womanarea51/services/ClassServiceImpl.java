@@ -20,7 +20,7 @@ public class ClassServiceImpl implements ClassService{
 
     @Override
     public Class joinCourse(Long idCourse, Long idUser) {
-        ClassKey ck = new ClassKey(idCourse, idUser);
+        ClassKey ck = new ClassKey(idUser, idCourse);
         Date date = new Date();
         Class c = clr.findById(ck).orElse(new Class());
         System.out.println(c);
@@ -39,7 +39,7 @@ public class ClassServiceImpl implements ClassService{
 
     @Override
     public Class leaveCourse(Long idCourse, Long idUser) {
-        Class c = clr.findById(new ClassKey(idCourse,idUser)).orElse(null);
+        Class c = clr.findById(new ClassKey(idUser,idCourse)).orElse(null);
         if (c.getId() != null && c.getStatus().equals("Joined")) {
             clr.delete(c);
             return null;
@@ -49,7 +49,7 @@ public class ClassServiceImpl implements ClassService{
 
     @Override
     public Class setRating(Long idCourse, Long idUser, int rating) {
-        Class c = clr.findById(new ClassKey(idCourse,idUser)).orElse(null);
+        Class c = clr.findById(new ClassKey(idUser,idCourse)).orElse(null);
         if (c.getId() != null){
             c.setRating(rating);
             if (c.getCourse().getStart_date().before(new Date()) && c.getRating() >= 0 && c.getRating() <= 10) {

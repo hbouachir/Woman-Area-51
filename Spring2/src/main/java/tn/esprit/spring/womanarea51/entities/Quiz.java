@@ -16,11 +16,13 @@ import java.util.Set;
 public class Quiz {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView(CourseView.More.class)
     Long quizId;
-
+    @JsonView(CourseView.More.class)
     int requiredToSuccess;
 
-    @OneToMany(mappedBy="quiz")
+    @OneToMany(mappedBy="quiz", cascade = CascadeType.ALL)
+    @JsonView(CourseView.More.class)
     private Set<Question> questions;
 
     @OneToOne(mappedBy = "quiz")

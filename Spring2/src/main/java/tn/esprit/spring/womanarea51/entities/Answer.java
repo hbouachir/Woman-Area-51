@@ -2,6 +2,7 @@ package tn.esprit.spring.womanarea51.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,15 +19,17 @@ import java.util.Objects;
 public class Answer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView(CourseView.More.class)
     Long idAnswer;
-
+    @JsonView(CourseView.More.class)
     String answer;
 
     @ManyToOne
     @JsonIgnore
     private Question question;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    //@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonView(CourseView.Extra.class)
     Boolean correct;
 
     @Override

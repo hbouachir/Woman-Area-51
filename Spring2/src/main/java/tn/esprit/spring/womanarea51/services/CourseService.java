@@ -10,7 +10,7 @@ public interface CourseService {
     Course add_course(Course c, User u);
     Course update_course(Course c, User u);
     Course findCourse(Long idCourse);
-    void delete_course(Course c, User u);
+    void delete_course(Long idCourse, User u);
     List<Course> findAll_courses();
     List<Course> findByCat_courses(List<CourseCategory> category);
     List<CourseCategory> availableCourseCategories();
