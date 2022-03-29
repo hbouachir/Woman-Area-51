@@ -1,6 +1,7 @@
 package tn.esprit.spring.womanarea51.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 import javax.persistence.*;
@@ -355,7 +356,55 @@ public class User implements Serializable {
 
 	@OneToMany(mappedBy="user")
 	private List<Interview> interviews;
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="user")
+	@JsonIgnore
+	private Set<donation> donations;
 	
+
+	@OneToMany(cascade = CascadeType.ALL,mappedBy = "participant")
+	@JsonIgnore
+    Set<feedback> participant_feedbacks;
+
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="admin")
+	@JsonIgnore
+	private Set<event> eventsMonitered;
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JsonIgnore
+	private Set<fund> Funds;
+	
+
+	public Set<donation> getDonations() {
+		return donations;
+	}
+
+	public void setDonations(Set<donation> donations) {
+		this.donations = donations;
+	}
+
+	public Set<feedback> getParticipant_feedbacks() {
+		return participant_feedbacks;
+	}
+
+	public void setParticipant_feedbacks(Set<feedback> participant_feedbacks) {
+		this.participant_feedbacks = participant_feedbacks;
+	}
+
+	public Set<event> getEventsMonitered() {
+		return eventsMonitered;
+	}
+
+	public void setEventsMonitered(Set<event> eventsMonitered) {
+		this.eventsMonitered = eventsMonitered;
+	}
+
+	public Set<fund> getFunds() {
+		return Funds;
+	}
+
+	public void setFunds(Set<fund> funds) {
+		Funds = funds;
+	}
 	
 	
 

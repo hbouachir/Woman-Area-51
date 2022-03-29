@@ -1,6 +1,5 @@
 package tn.esprit.spring.womanarea51;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import tn.esprit.spring.womanarea51.entities.ERole;
@@ -9,7 +8,12 @@ import tn.esprit.spring.womanarea51.repositories.RoleRepository;
 import tn.esprit.spring.womanarea51.repositories.UserRepository;
 import tn.esprit.spring.womanarea51.services.IRoleService;
 import tn.esprit.spring.womanarea51.entities.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 
+import javax.annotation.PostConstruct;
+import javax.sql.DataSource;
 import javax.annotation.PostConstruct;
 import java.util.HashSet;
 import java.util.Set;
@@ -28,10 +32,16 @@ public class Monitor {
     @Autowired
     PasswordEncoder encoder;
 
+    @Autowired
+    private DataSource dataSource;
+
 
     @PostConstruct
     public void init(){
         iroleservice.initRoles();
+
+        ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator(false, false, "UTF-8", new ClassPathResource("quartz_tables.sql"));
+        resourceDatabasePopulator.execute(dataSource);
 
 
         //THIS PART OF CODE SHOULD BE REMOVED IN DEPLOYMENT
@@ -68,7 +78,7 @@ public class Monitor {
                 roles.add(adminRole);
                 //create admin account
                 User user = new User("user",
-                        "user@mail.com",
+                        "nadaazzabi1@gmail.com",
                         encoder.encode("changeme"
                         ), "user", "luser", "user", null, "22222222", null);
                 user.setRoles(roles);
