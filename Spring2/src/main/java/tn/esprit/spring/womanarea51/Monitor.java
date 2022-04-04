@@ -85,6 +85,32 @@ public class Monitor {
                 user.setEnabled(true);
                 userRepository.save(user);
             }
+            if (!userRepository.existsByUsername("chaima")) {
+                Set<Role> roles = new HashSet<>();
+                Role adminRole = roleRepository.findByName(ERole.ROLE_USER).orElse(null);
+                roles.add(adminRole);
+                //create admin account
+                User user = new User("chaima",
+                        "chaima@mail.com",
+                        encoder.encode("changeme"
+                        ), "chaima", "lchaima", "chaima", null, "45454545", null);
+                user.setRoles(roles);
+                user.setEnabled(true);
+                userRepository.save(user);
+            }
+            if (!userRepository.existsByUsername("sirine")) {
+                Set<Role> roles = new HashSet<>();
+                Role adminRole = roleRepository.findByName(ERole.ROLE_USER).orElse(null);
+                roles.add(adminRole);
+                //create admin account
+                User user = new User("sirine",
+                        "sirine@mail.com",
+                        encoder.encode("changeme"
+                        ), "sirine", "lsirine", "sirine", null, "54545454", null);
+                user.setRoles(roles);
+                user.setEnabled(true);
+                userRepository.save(user);
+            }
             if (!userRepository.existsByUsername("instructor")) {
                 Set<Role> rolesi = new HashSet<>();
                 Role adminRole = roleRepository.findByName(ERole.ROLE_INSTRUCTOR).orElse(null);
