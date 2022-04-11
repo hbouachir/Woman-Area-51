@@ -55,7 +55,7 @@ public class eventController {
 	
 	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/remove-event/{eventId}")
-	@ResponseBody
+	
 	void RemoveEvent(@PathVariable("eventId") Long eventId, Authentication authentication) {
 		event e=IES.FindEvent(eventId);
 		IES.DeleteEvent(e);

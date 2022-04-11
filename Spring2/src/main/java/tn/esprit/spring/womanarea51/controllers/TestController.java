@@ -40,7 +40,7 @@ public class TestController {
 	}
 	
 	@RequestMapping(value = "/profile", method = RequestMethod.GET)
-    @ResponseBody
+    
     public UserDetailsImpl currentUserName(Authentication authentication) {
 		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();		
        // return userDetails.getAddress();

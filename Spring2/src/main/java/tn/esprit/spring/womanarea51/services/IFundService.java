@@ -24,5 +24,7 @@ public interface IFundService {
 	public List<fund> FindByCatgeory(fundCategory cat);
 	
 	public List<fund>FindByTags(String tags);
+	
+	
 
 }

@@ -23,6 +23,7 @@ import tn.esprit.spring.womanarea51.entities.fund;
 import tn.esprit.spring.womanarea51.repositories.UserRepository;
 import tn.esprit.spring.womanarea51.security.services.UserDetailsImpl;
 import tn.esprit.spring.womanarea51.services.IDonationService;
+import tn.esprit.spring.womanarea51.services.IEmailingService;
 import tn.esprit.spring.womanarea51.services.IFundService;
 import tn.esprit.spring.womanarea51.services.IUserService;
 
@@ -37,13 +38,15 @@ public class donationController {
 	IUserService IUS;
 	@Autowired
 	UserRepository UR;
+	@Autowired
+	IEmailingService IEmailS;
 	
 	
-	
+	//donate with credit card
 	@PostMapping("/Donate/{fundId}")
 	
 	void Donate( Authentication authentication, @RequestBody donation d, @PathVariable("fundId")Long fundId ) throws StripeException, Exception {
-		System.out.println("testing donation function");
+//		System.out.println("testing donation function");
 //		UserDetailsImpl U1 = (UserDetailsImpl) authentication.getPrincipal();
 	//	User U = UR.findByUsername(U1.getUsername())
 	//	        .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + U1.getUsername()));
@@ -62,6 +65,18 @@ public class donationController {
 	}
 	
 	
+	//donate with cheque or cash
+	@PreAuthorize("hasRole('ADMIN')")
+	@PutMapping("/Donation/confirm/{id}")
+	donation Confirmdonation(Authentication authentication,@PathVariable("id") Long id) throws Exception {
+		donation d=IDS.FindDonation(id);
+		fund f=IFS.FindFund(d.getFund().getFundId());
+		f.setRaised(f.getRaised()+d.getAmount());
+		IFS.EditFund(f);
+		IEmailS.confirmdonation(d.getUser(), d);
+		return IDS.EditDonation(d);
+		
+	}
 	
 	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/Donation/Update")
@@ -73,7 +88,7 @@ public class donationController {
 	
 	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/remove-donation/{donationId}")
-	@ResponseBody
+	
 	void RemoveDonation(Authentication authentication, @PathVariable("donationId") Long donationId) {
 		donation d=IDS.FindDonation(donationId);
 		IDS.DeleteDonation(d);
@@ -81,7 +96,7 @@ public class donationController {
 	
 	
 	@GetMapping("/find-donations-by-user/{id-user}")
-	@ResponseBody
+	
 	List<donation> FindUserDonations(@PathVariable("id-user") Long userId) {
 		User user=IUS.findOne(userId);
 		return IDS.FindDonationsByUser(user);
@@ -89,14 +104,14 @@ public class donationController {
 	
 	
 	@GetMapping("/find-donations-by-fund/{id-fund}")
-	@ResponseBody
+	
 	List<donation> FindFundDonations(@PathVariable("id-fund") Long fundId) {
 		return IDS.FindDonationsByFund(fundId);
 	}
 	
 	
 	@GetMapping("/find-all-donations")
-	@ResponseBody
+	
 	List<donation> FindAllDonations() {
 		return IDS.ListDonations();
 	}

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import tn.esprit.spring.womanarea51.entities.User;
@@ -61,7 +60,6 @@ public class fundController {
 	}
 	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/remove-fund/{fundId}")
-	@ResponseBody
 	void RemoveFund(@PathVariable("fundId") Long fundId, Authentication authentication) {
 		fund f=IFS.FindFund(fundId);
 		IFS.DeleteFund(f);

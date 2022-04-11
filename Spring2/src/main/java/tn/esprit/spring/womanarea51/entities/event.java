@@ -1,6 +1,7 @@
 package tn.esprit.spring.womanarea51.entities;
 
 import java.io.Serializable;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -42,12 +43,18 @@ public class event implements Serializable{
 	@Id
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	private Long eventId;
+	private String eventName;
 	private String description;
 	@Temporal(TemporalType.DATE)
 	private Date eventDate;
+	private String eventTime;
 	private String eventLocation;
 	@Enumerated(EnumType.STRING)
 	private Motive eventMotive;
+	@Enumerated(EnumType.STRING)
+	private eventType type;
+	@Enumerated(EnumType.STRING)
+	private eventStatus status;
 	@Nullable
 	private Integer places;
 	@ElementCollection

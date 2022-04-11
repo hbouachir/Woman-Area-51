@@ -2,6 +2,7 @@ package tn.esprit.spring.womanarea51.entities;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -30,7 +31,7 @@ public class fundCategory  {
 	private String categoryImg;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy="fCategory")
+	@OneToMany(cascade = CascadeType.REMOVE, mappedBy="fCategory")
 	private Set<fund> Funds;
 	
 
