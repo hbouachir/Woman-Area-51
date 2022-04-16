@@ -21,7 +21,7 @@ import tn.esprit.spring.womanarea51.security.services.UserDetailsImpl;
 import java.time.LocalDate;
 import java.util.List;
 
-
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 
 public class EnrollementController {

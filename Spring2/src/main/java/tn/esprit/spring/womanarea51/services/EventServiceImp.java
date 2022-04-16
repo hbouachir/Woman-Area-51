@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tn.esprit.spring.womanarea51.entities.User;
 import tn.esprit.spring.womanarea51.entities.event;
+import tn.esprit.spring.womanarea51.entities.eventStatus;
+import tn.esprit.spring.womanarea51.entities.eventType;
 import tn.esprit.spring.womanarea51.repositories.EventRepository;
 import tn.esprit.spring.womanarea51.repositories.UserRepository;
 import tn.esprit.spring.womanarea51.repositories.feedbackRepository;
@@ -77,6 +79,28 @@ public class EventServiceImp implements IEventService {
 		e.getFeedbacks().forEach(f->participants.add(f.getParticipant()));
 	
 		return participants;
+		
+	}
+	
+	public List<event> SearchByStatus(eventStatus s){
+		List<event> list=new ArrayList<event>();
+		ERepository.findAll().forEach(e->{
+			if (e.getStatus()==s)
+				list.add(e);
+		});
+		
+		return list;
+		
+	}
+	
+	public List<event> SearchByType(eventType t){
+		List<event> list=new ArrayList<event>();
+		ERepository.findAll().forEach(e->{
+			if (e.getType()==t)
+				list.add(e);
+		});
+		
+		return list;
 		
 	}
 }

@@ -1,6 +1,8 @@
 package tn.esprit.spring.womanarea51.services;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DateFormat;
@@ -22,6 +24,20 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import com.itextpdf.text.PageSize;
+import com.google.zxing.WriterException;
+import com.itextpdf.io.font.FontConstants;
+import com.itextpdf.io.image.ImageData;
+import com.itextpdf.io.image.ImageDataFactory;
+import com.itextpdf.kernel.color.Color;
+import com.itextpdf.kernel.font.PdfFont;
+import com.itextpdf.kernel.font.PdfFontFactory;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.border.Border;
+import com.itextpdf.layout.element.Image;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Text;
 
 import tn.esprit.spring.womanarea51.entities.User;
 import tn.esprit.spring.womanarea51.entities.donation;
@@ -43,6 +59,9 @@ public class EmailingServiceImp implements IEmailingService {
 	@Autowired
 	private JavaMailSender emailSender;
 
+	@Autowired
+	IQRCodeGenerator IQRS;
+
 	public void CreditCardDonation(User U, donation d) throws MessagingException, Exception {
 		MimeMessage mm = emailSender.createMimeMessage();
 		MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mm, true);
@@ -54,7 +73,7 @@ public class EmailingServiceImp implements IEmailingService {
 				+ "Thank you for your contribution.\n\n" + "Regards,\n" + "The womenArea51 Team");
 		mimeMessageHelper.setSubject("Donation confirmation");
 		FileSystemResource res = new FileSystemResource(
-				new File(ClassLoader.getSystemResource("static/images/logo.png").toURI()));
+				new File(ClassLoader.getSystemResource("static/images/logoWomenArea51.png").toURI()));
 		mimeMessageHelper.addInline("WomaenArea51", res);
 
 		emailSender.send(mm);
@@ -73,7 +92,7 @@ public class EmailingServiceImp implements IEmailingService {
 				+ "Thank you for your contribution.\n\n" + "Regards,\n" + "The womenArea51 Team");
 		mimeMessageHelper.setSubject("Donation confirmation");
 		FileSystemResource res = new FileSystemResource(
-				new File(ClassLoader.getSystemResource("static/images/logo.png").toURI()));
+				new File(ClassLoader.getSystemResource("static/images/logoWomenArea51.png").toURI()));
 		mimeMessageHelper.addInline("WomenArea51", res);
 
 		emailSender.send(mm);
@@ -96,41 +115,56 @@ public class EmailingServiceImp implements IEmailingService {
 		mimeMessageHelper.setSubject("Participation confirmation");
 		FileSystemResource fileSystemResource = new FileSystemResource(new File(pathPDF));
 		mimeMessageHelper.addAttachment(fileSystemResource.getFilename(), fileSystemResource);
-
 		emailSender.send(mm);
 
 	}
 
 	// pdf generation for badge
-	public String GenerateBadge(User U, event e) throws Exception {
+	public String GenerateBadge(User U, event e) throws WriterException, IOException, Exception {
 
-		PDDocument document = new PDDocument();
-		PDPage page = new PDPage(PDRectangle.A6);
-		document.addPage(page);
-
-		String script = "  ParticipantId: ".concat(U.getUsername()).concat("                 EventId :")
-				.concat(e.getEventId().toString());
-		Path path = Paths.get(ClassLoader.getSystemResource("static/images/logo.png").toURI());
-		PDPageContentStream contentStream = new PDPageContentStream(document, page);
-		PDImageXObject image = PDImageXObject.createFromFile(path.toAbsolutePath().toString(), document);
-
-		float x = (PageSize.A6.getWidth() - image.getWidth()) / 2;
-		float y = (PageSize.A6.getHeight() - image.getHeight()) / 2;
-		contentStream.setFont(PDType1Font.HELVETICA_BOLD, 15);
-
-		contentStream.beginText();
-		contentStream.showText(script);
-		contentStream.endText();
-
-		contentStream.drawImage(image, x - 2, y - 2);
-		contentStream.close();
 		String pathPDF = e.getEventId() + "ID-" + U.getId() + ".pdf";
-		document.save(pathPDF);
-		document.close();
-		System.out.println("created pdf :D");
-		// Pdf created
+		String QRpath = e.getEventId() + "ID-" + U.getId() + "QR";
+		String script1 ="   Participant: ".concat(U.getUsername())+"\n\n";
+		String script2="   EventId: "+e.getEventId().toString();
+		Text text1 = new Text(script1); 
+		Text text2 = new Text(script2); 
+		PdfFont font = PdfFontFactory.createFont(FontConstants.HELVETICA_BOLD);     
+	
+	      Paragraph p = new Paragraph();
+	      p.setFont(font);
+	      p.setBold();
+	      p.setFontSize(25);
+	      p.add(text1);
+	      p.add(text2);
+	      
+		String qrimg = IQRS.generateQRCodeImage(e.getEventId().toString() + e.getEventName(), 250, 250, QRpath);
+		
+		PdfDocument pdfDoc = new PdfDocument(new PdfWriter(pathPDF));
+		Document document = new Document(pdfDoc);
+		
+		FileSystemResource res = new FileSystemResource(
+				new File(ClassLoader.getSystemResource("static/images/logoWomenArea51.png").toURI()));
+		ImageData data = ImageDataFactory.create(res.getPath());
+		
+		Image image = new Image(data);
+		image.setFixedPosition(112f,450f);
+		document.add(image);
 
-		return pathPDF;
+		data = ImageDataFactory.create(qrimg);
+		image = new Image(data);
+		// set Absolute Position
+		image.setFixedPosition(175f, 200f);
+		// set Scaling
+		image.setAutoScaleHeight(false);
+		image.setAutoScaleWidth(false);
+		// set Rotation
+		
+		document.add(image);
+		document.showTextAligned(p, 40, 40, null);
+
+		document.close();
+		
+		return (pathPDF);
 
 	}
 
@@ -150,7 +184,7 @@ public class EmailingServiceImp implements IEmailingService {
 				+ "Regards,\n" + "The womenArea51 Team");
 		mimeMessageHelper.setSubject("Feedback confirmation");
 		FileSystemResource res = new FileSystemResource(
-				new File(ClassLoader.getSystemResource("static/images/logo.png").toURI()));
+				new File(ClassLoader.getSystemResource("static/images/logoWomenArea51.png").toURI()));
 		mimeMessageHelper.addInline("WomaenArea51", res);
 
 		emailSender.send(mm);
@@ -174,7 +208,7 @@ public class EmailingServiceImp implements IEmailingService {
 				+ "Regards,\n" + "The womenArea51 Team");
 		mimeMessageHelper.setSubject("Participation cancelled");
 		FileSystemResource res = new FileSystemResource(
-				new File(ClassLoader.getSystemResource("static/images/logo.png").toURI()));
+				new File(ClassLoader.getSystemResource("static/images/logoWomenArea51.png").toURI()));
 		mimeMessageHelper.addInline("WomaenArea51", res);
 
 		// ! add complaints section url!!!

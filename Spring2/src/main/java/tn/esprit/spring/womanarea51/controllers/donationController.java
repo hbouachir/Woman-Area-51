@@ -5,14 +5,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.stripe.exception.StripeException;
@@ -21,12 +20,12 @@ import tn.esprit.spring.womanarea51.entities.User;
 import tn.esprit.spring.womanarea51.entities.donation;
 import tn.esprit.spring.womanarea51.entities.fund;
 import tn.esprit.spring.womanarea51.repositories.UserRepository;
-import tn.esprit.spring.womanarea51.security.services.UserDetailsImpl;
 import tn.esprit.spring.womanarea51.services.IDonationService;
 import tn.esprit.spring.womanarea51.services.IEmailingService;
 import tn.esprit.spring.womanarea51.services.IFundService;
 import tn.esprit.spring.womanarea51.services.IUserService;
 
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
 public class donationController {
 	

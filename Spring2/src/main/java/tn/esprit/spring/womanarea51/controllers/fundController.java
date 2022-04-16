@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +23,7 @@ import tn.esprit.spring.womanarea51.services.IFundCategoryService;
 import tn.esprit.spring.womanarea51.services.IFundService;
 import tn.esprit.spring.womanarea51.services.IUserService;
 
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
 public class fundController {
 	
@@ -40,9 +42,11 @@ public class fundController {
 	@Autowired
 	UserRepository UR;
 	
-	@PreAuthorize("hasRole('ADMIN')")
+//	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("/propose-fund/{catid}")
-	void AddFund(@RequestBody fund f,@PathVariable("catid")Long catId,Authentication authentication){
+	void AddFund(@RequestBody fund f,@PathVariable("catid")Long catId, Authentication authentication){
+		User U=UR.findByUsername(authentication.getName()).orElse(null);
+		System.out.println("**********************************"+U.getId());
 		//System.out.println(catId);
 		
 		f.setFCategory(IFCS.FindFundCat(catId));
@@ -51,14 +55,14 @@ public class fundController {
 		
 	}
 	
-	@PreAuthorize("hasRole('ADMIN')")
+//	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/fund/Update/{catid}")
 	fund EditFund(@RequestBody fund f,@PathVariable("catid")Long catId, Authentication authentication) {
 		f.setFCategory(IFCS.FindFundCat(catId));
 		return IFS.EditFund(f);
 				
 	}
-	@PreAuthorize("hasRole('ADMIN')")
+//	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/remove-fund/{fundId}")
 	void RemoveFund(@PathVariable("fundId") Long fundId, Authentication authentication) {
 		fund f=IFS.FindFund(fundId);
@@ -84,13 +88,13 @@ public class fundController {
 		return IFS.ListFunds();
 	}
 	
-	@PreAuthorize("hasRole('ADMIN')")
+//	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/find-fund-amount-collected-by-year/{year}")
 	float amountCollectedPerYear(@PathVariable("year")int year, Authentication authentication) {
 		return IFS.estimatedAmountPerYear(year);
 	}
 	
-	@PreAuthorize("hasRole('ADMIN')")
+//	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/find-fund-amount-estimated-this-year")
 	float amountEstimatedThisYear(Authentication authentication) {
 		return IFS.estimatedAmountforThisYear();

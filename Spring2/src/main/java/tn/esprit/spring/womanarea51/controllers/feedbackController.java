@@ -5,15 +5,14 @@ import java.util.List;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import tn.esprit.spring.womanarea51.entities.User;
 import tn.esprit.spring.womanarea51.entities.event;
@@ -22,9 +21,11 @@ import tn.esprit.spring.womanarea51.repositories.UserRepository;
 import tn.esprit.spring.womanarea51.services.IEmailScheduling;
 import tn.esprit.spring.womanarea51.services.IEmailingService;
 import tn.esprit.spring.womanarea51.services.IEventService;
+import tn.esprit.spring.womanarea51.services.IQRCodeGenerator;
 import tn.esprit.spring.womanarea51.services.IUserService;
 import tn.esprit.spring.womanarea51.services.IfeedbackService;
 
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
 public class feedbackController {
 	
@@ -47,10 +48,13 @@ public class feedbackController {
 	IEmailingService IEmailingS;
 	
 	
+	
+	
 	@PostMapping("/participate/{idevent}")
 	
 	void Partcipate( Authentication authentication, @PathVariable ("idevent") Long eventId) throws Exception{
 		User U=UR.findByUsername(authentication.getName()).orElse(null);
+		System.out.println(U.getId()+"*******************************");
 		feedback f=new feedback();
 		
 		event e=IES.FindEvent(eventId);
@@ -67,6 +71,7 @@ public class feedbackController {
 		f.setEvent_feedback(e);
 		IFBS.Participate(f);
 		String Badge=IEmailingS.GenerateBadge(U, e);
+		
 		IEmailingS.ParticipationConfirmation(U, e, Badge);
 		IemailS.scheduleEmail(U.getEmail(), U.getUsername(), e);
 		

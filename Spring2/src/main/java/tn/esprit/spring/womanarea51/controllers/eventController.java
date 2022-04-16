@@ -5,21 +5,24 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import tn.esprit.spring.womanarea51.entities.User;
 import tn.esprit.spring.womanarea51.entities.event;
+import tn.esprit.spring.womanarea51.entities.eventStatus;
+import tn.esprit.spring.womanarea51.entities.eventType;
 import tn.esprit.spring.womanarea51.repositories.UserRepository;
 import tn.esprit.spring.womanarea51.services.IEventService;
 import tn.esprit.spring.womanarea51.services.IUserService;
 import tn.esprit.spring.womanarea51.services.IfeedbackService;
 
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
 public class eventController {
 
@@ -92,6 +95,19 @@ public class eventController {
 		
 		return IFS.BestOfThisMonth(IFS.FilterEventBycurrentDate());
 	}
+	
+	@GetMapping("/event-by-status")
+	public List<event> SearchByStatus(@RequestBody eventStatus s){
+		return IES.SearchByStatus(s);
+		
+	}
+	
+	@GetMapping("/event-by-type")
+	public List<event> SearchByStatus(@RequestBody eventType t){
+		return IES.SearchByType(t);
+		
+	}
+	
 	
 	
 	
