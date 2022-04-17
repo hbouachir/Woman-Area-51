@@ -114,7 +114,16 @@ public class DonationServiceImp implements IDonationService {
 		return list;
 	}
 
-
+	
+	public List<donation>ListConfirmedStatus(Boolean s){
+		List<donation> list=new ArrayList<donation>() ;
+		DRepository.findAll().forEach(d->{
+			
+			if (d.getConfirmed()==s)
+			list.add(d);
+		});
+		return list;
+	}
 
 
 

@@ -3,6 +3,7 @@ package tn.esprit.spring.womanarea51.services;
 import java.text.ParseException;
 import java.util.List;
 
+import tn.esprit.spring.womanarea51.entities.User;
 import tn.esprit.spring.womanarea51.entities.event;
 import tn.esprit.spring.womanarea51.entities.feedback;
 
@@ -37,4 +38,6 @@ public interface IfeedbackService {
 	public List<event> BestOfThisMonth(List<event> filtered);
 	
 	public double MaxRating() throws ParseException;
+	
+	public List<event>Upcomingevents(User u);
 }

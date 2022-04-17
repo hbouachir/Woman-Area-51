@@ -25,6 +25,9 @@ public interface IFundService {
 	
 	public List<fund>FindByTags(String tags);
 	
+	public List<String>ListFundTags();
+	
+	public fundCategory GetFundCategory(fund f) ;
 	
 
 }

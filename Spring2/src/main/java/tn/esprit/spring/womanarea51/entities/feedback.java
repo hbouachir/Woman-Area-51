@@ -3,11 +3,7 @@ package tn.esprit.spring.womanarea51.entities;
 
 
 import java.io.Serializable;
-import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.Date;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,9 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -49,7 +43,7 @@ public class feedback implements Serializable{
 	private String comment;
 	@Temporal(TemporalType.DATE)
 	private Date date;
-	private String timestamp;
+	
 	
 	
 	@ManyToOne

@@ -38,8 +38,7 @@ public class feedbackServiceImp implements IfeedbackService {
 	}
 
 	public feedback EditFeedback(feedback e) {
-		feedback updated = new feedback();
-		updated = FeedRepository.save(e);
+		feedback updated = FeedRepository.save(e);
 		return updated;
 
 	}
@@ -211,6 +210,16 @@ public class feedbackServiceImp implements IfeedbackService {
 
 		return bestEvents;
 	
+	}
+	public List<event>Upcomingevents(User u){
+		List<event> list=new ArrayList<event>();
+		Date d=new Date();
+		FeedRepository.findAll().forEach(f -> {
+			if ((f.getEvent_feedback().getEventDate().compareTo(d))>=0)
+				list.add(f.getEvent_feedback());
+		});
+		
+		return list;
 	}
 	
 	

@@ -1,5 +1,6 @@
 package tn.esprit.spring.womanarea51.controllers;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ import tn.esprit.spring.womanarea51.services.IEmailingService;
 import tn.esprit.spring.womanarea51.services.IFundService;
 import tn.esprit.spring.womanarea51.services.IUserService;
 
-@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class donationController {
 	
@@ -47,18 +48,21 @@ public class donationController {
 	void Donate( Authentication authentication, @RequestBody donation d, @PathVariable("fundId")Long fundId ) throws StripeException, Exception {
 //		System.out.println("testing donation function");
 //		UserDetailsImpl U1 = (UserDetailsImpl) authentication.getPrincipal();
-	//	User U = UR.findByUsername(U1.getUsername())
-	//	        .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + U1.getUsername()));
+//		User U = UR.findByUsername(U1.getUsername())
+//		        .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + U1.getUsername()));
 
 		User U=UR.findByUsername(authentication.getName()).orElse(null);
 		fund f=IFS.FindFund(fundId);
 		System.out.println(f.toString());
 		d.setFund(f);
 		d.setUser(U);
+		d.setConfirmed(true);
 		
 		IDS.AddDonation(d);
 		
 		f.setRaised(f.getRaised()+d.getAmount());
+		Date date=new Date();
+		f.setLastDonation(date);
 		IFS.EditFund(f);
 		
 	}
@@ -71,6 +75,7 @@ public class donationController {
 		donation d=IDS.FindDonation(id);
 		fund f=IFS.FindFund(d.getFund().getFundId());
 		f.setRaised(f.getRaised()+d.getAmount());
+		d.setConfirmed(true);
 		IFS.EditFund(f);
 		IEmailS.confirmdonation(d.getUser(), d);
 		return IDS.EditDonation(d);
@@ -116,4 +121,10 @@ public class donationController {
 	}
 	
 
+	@PreAuthorize("hasRole('ADMIN')")
+	@GetMapping("/donation/{status}")
+	List<donation>ListByStatus(@PathVariable("status")Boolean s){
+		return IDS.ListConfirmedStatus(s);
+		
+	}
 }

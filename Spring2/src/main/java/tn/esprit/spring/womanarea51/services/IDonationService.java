@@ -23,6 +23,7 @@ public interface IDonationService {
 	
 	List<donation>FindDonationsByUser(User u);
 
+	public List<donation>ListConfirmedStatus(Boolean s);
 	
 
 }

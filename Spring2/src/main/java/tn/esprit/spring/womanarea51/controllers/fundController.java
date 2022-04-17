@@ -1,7 +1,6 @@
 package tn.esprit.spring.womanarea51.controllers;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
 import tn.esprit.spring.womanarea51.entities.User;
 import tn.esprit.spring.womanarea51.entities.fund;
 import tn.esprit.spring.womanarea51.entities.fundCategory;
@@ -23,7 +21,7 @@ import tn.esprit.spring.womanarea51.services.IFundCategoryService;
 import tn.esprit.spring.womanarea51.services.IFundService;
 import tn.esprit.spring.womanarea51.services.IUserService;
 
-@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
+@CrossOrigin(origins = "*")
 @RestController
 public class fundController {
 	
@@ -45,24 +43,22 @@ public class fundController {
 //	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("/propose-fund/{catid}")
 	void AddFund(@RequestBody fund f,@PathVariable("catid")Long catId, Authentication authentication){
-		User U=UR.findByUsername(authentication.getName()).orElse(null);
-		System.out.println("**********************************"+U.getId());
-		//System.out.println(catId);
 		
+		f.setRaised(0);
 		f.setFCategory(IFCS.FindFundCat(catId));
 		IFS.AddFund(f);
 		
 		
 	}
 	
-//	@PreAuthorize("hasRole('ADMIN')")
+	//@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/fund/Update/{catid}")
 	fund EditFund(@RequestBody fund f,@PathVariable("catid")Long catId, Authentication authentication) {
 		f.setFCategory(IFCS.FindFundCat(catId));
 		return IFS.EditFund(f);
 				
 	}
-//	@PreAuthorize("hasRole('ADMIN')")
+	//@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/remove-fund/{fundId}")
 	void RemoveFund(@PathVariable("fundId") Long fundId, Authentication authentication) {
 		fund f=IFS.FindFund(fundId);
@@ -88,13 +84,13 @@ public class fundController {
 		return IFS.ListFunds();
 	}
 	
-//	@PreAuthorize("hasRole('ADMIN')")
+	//@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/find-fund-amount-collected-by-year/{year}")
 	float amountCollectedPerYear(@PathVariable("year")int year, Authentication authentication) {
 		return IFS.estimatedAmountPerYear(year);
 	}
 	
-//	@PreAuthorize("hasRole('ADMIN')")
+	//@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/find-fund-amount-estimated-this-year")
 	float amountEstimatedThisYear(Authentication authentication) {
 		return IFS.estimatedAmountforThisYear();
@@ -105,6 +101,15 @@ public class fundController {
 		return IFS.FindByTags(tags);
 	}
 	
+	@GetMapping("/Fund-tags-list")
+	public List<String>ListFundTags(){
+		return IFS.ListFundTags();
+	}
 	
+	@GetMapping("/get-fundCategory/{id}")
+	public fundCategory GetFundCategory(@PathVariable("id")long id) {
+		fund f=IFS.FindFund(id);
+		return IFS.GetFundCategory(f);
+	}
 
 }

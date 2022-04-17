@@ -1,10 +1,11 @@
 package tn.esprit.spring.womanarea51.controllers;
 
 
+
+import java.util.Date;
 import java.util.List;
-
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,11 +22,10 @@ import tn.esprit.spring.womanarea51.repositories.UserRepository;
 import tn.esprit.spring.womanarea51.services.IEmailScheduling;
 import tn.esprit.spring.womanarea51.services.IEmailingService;
 import tn.esprit.spring.womanarea51.services.IEventService;
-import tn.esprit.spring.womanarea51.services.IQRCodeGenerator;
 import tn.esprit.spring.womanarea51.services.IUserService;
 import tn.esprit.spring.womanarea51.services.IfeedbackService;
 
-@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class feedbackController {
 	
@@ -54,7 +54,7 @@ public class feedbackController {
 	
 	void Partcipate( Authentication authentication, @PathVariable ("idevent") Long eventId) throws Exception{
 		User U=UR.findByUsername(authentication.getName()).orElse(null);
-		System.out.println(U.getId()+"*******************************");
+		System.out.println(U.getId()+"********************");
 		feedback f=new feedback();
 		
 		event e=IES.FindEvent(eventId);
@@ -83,10 +83,13 @@ public class feedbackController {
 	feedback InputFeedback(@RequestBody feedback f,@PathVariable("event") Long eventId, Authentication authentication) throws Exception  {
 		User U=UR.findByUsername(authentication.getName()).orElse(null);
 		f=IFBS.calculRating(f);
+		Date date=new Date();
+		System.out.println(date);
 		System.out.println(f.getRating().toString());
 		event e=IES.FindEvent(eventId);
 		f.setParticipant(U);
 		f.setEvent_feedback(e);
+		f.setDate(date);
 		System.out.println(e.getEventId());
 
 		IEmailingS.feedbackConfirmation(f, U);
@@ -122,12 +125,13 @@ public class feedbackController {
 		IFBS.DeleteFeedback(f);
 	}
 	
-	
+	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/find-feedbacks")
 	List<feedback> FindFeedbacks() {
 		return IFBS.ListFeedbacks();
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/find-feedbacks-byEvent/{event-id}")
 	List<feedback> FindFeedbacksByEvent(@PathVariable("event-id") Long id) {
 		return IFBS.FindFeedbacksByEvent(id);
@@ -138,6 +142,7 @@ public class feedbackController {
 		return IFBS.FindFeedbacksByParticipant(id);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/find-feedbacks/{event-id}/{user-id}")
 	feedback FindFeedbacksByEventAndUSer(@PathVariable("event-id") Long eventId, @PathVariable("user-id") Long userId) {
 		return IFBS.FindFeedbackByUserAndEvent(userId,eventId).get(0);
@@ -161,6 +166,19 @@ public class feedbackController {
 		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
 		return IFBS.MaxEventRating(list);
 	}
+	
+	@GetMapping("My-upcoming-events")
+	public List<event>Upcomingevents(Authentication authentication){
+		User U=UR.findByUsername(authentication.getName()).orElse(null);
+		return IFBS.Upcomingevents(U);
+	}
+	@PreAuthorize("hasRole('ADMIN')")
+	@GetMapping("Upcoming-events-per-user/{user}")
+	public List<event>UpcomingeventsPerUer(Authentication authentication,@PathVariable("user")Long id){
+		User U=IUS.findOne(id);
+		return IFBS.Upcomingevents(U);
+	}
+	
 	
 	
 

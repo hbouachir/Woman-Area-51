@@ -125,7 +125,7 @@ public class EmailingServiceImp implements IEmailingService {
 		String pathPDF = e.getEventId() + "ID-" + U.getId() + ".pdf";
 		String QRpath = e.getEventId() + "ID-" + U.getId() + "QR";
 		String script1 ="   Participant: ".concat(U.getUsername())+"\n\n";
-		String script2="   EventId: "+e.getEventId().toString();
+		String script2="   Event: "+e.getEventName();
 		Text text1 = new Text(script1); 
 		Text text2 = new Text(script2); 
 		PdfFont font = PdfFontFactory.createFont(FontConstants.HELVETICA_BOLD);     
@@ -137,7 +137,7 @@ public class EmailingServiceImp implements IEmailingService {
 	      p.add(text1);
 	      p.add(text2);
 	      
-		String qrimg = IQRS.generateQRCodeImage(e.getEventId().toString() + e.getEventName(), 250, 250, QRpath);
+		String qrimg = IQRS.generateQRCodeImage("Id: "+e.getEventId().toString()+" Event: " + e.getEventName(), 250, 250, QRpath);
 		
 		PdfDocument pdfDoc = new PdfDocument(new PdfWriter(pathPDF));
 		Document document = new Document(pdfDoc);
