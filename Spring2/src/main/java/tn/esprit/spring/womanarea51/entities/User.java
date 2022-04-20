@@ -3,13 +3,20 @@ package tn.esprit.spring.womanarea51.entities;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.*;
-
 @Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "user")
 public class User implements Serializable {
 
@@ -84,25 +91,8 @@ public class User implements Serializable {
 	List<Enrollement> enrollements;
 	
 
-
-
-
-	public boolean isEnabled() {
-		return enabled;
-	}
-
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
-
-	public Boolean getEtatAcc() {
-		return EtatAcc;
-	}
-
-	public void setEtatAcc(Boolean etatAcc) {
-		EtatAcc = etatAcc;
-	}
-
+	@OneToOne(mappedBy = "u")
+	userFile file;
 
 	public User(String firstName, String lastName, String username, String password, String passwordConfirm, String email, String address, Date dateN, String tel, int loginTime, int pointFidelite, Set<Role> roles, Sexe sexe, Boolean etatAcc, boolean enabled, LocalDate signupDay) {
 		this.firstName = firstName;
@@ -192,168 +182,7 @@ public class User implements Serializable {
 		this.email = email;
 		this.password = password;
 	}
-
-	public String getTel() {
-		return tel;
-	}
-
-	public void setTel(String tel) {
-		this.tel = tel;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getPasswordConfirm() {
-		return passwordConfirm;
-	}
-
-	public void setPasswordConfirm(String passwordConfirm) {
-		this.passwordConfirm = passwordConfirm;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
-	public Date getDateN() {
-		return dateN;
-	}
-
-	public void setDateN(Date dateN) {
-		this.dateN = dateN;
-	}
-
-	public Set<Role> getRoles() {
-		return roles;
-	}
-
-	public void setRoles(Set<Role> roles) {
-		this.roles = roles;
-	}
 	
-
-
-
-
-	public Long getId() {
-		return id;
-	}
-
-
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-
-
-
-	}
-
-	public String getStripe_id() {
-		return stripe_id;
-	}
-
-	public void setStripe_id(String stripe_id) {
-		this.stripe_id = stripe_id;
-	}
-
-	public int getLoginTime() {
-		return loginTime;
-	}
-
-	public void setLoginTime(int loginTime) {
-		this.loginTime = loginTime;
-	}
-
-	public static Long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
-	public User() {
-		super();
-
-	}
-
-	public User(Long iduser) {
-		super();
-		this.id = iduser;
-
-	}
-
-	public Sexe getSexe() {
-		return sexe;
-	}
-
-	public void setSexe(Sexe sexe) {
-		this.sexe = sexe;
-	}
-
-
-	public int getPointFidelite() {
-		return pointFidelite;
-	}
-
-	public void setPointFidelite(int pointFidelite) {
-		this.pointFidelite = pointFidelite;
-	}
-
-
-
-
-
-	public LocalDate getSignupDay() {
-		return signupDay;
-	}
-
-	public void setSignupDay(LocalDate signupDay) {
-		this.signupDay = signupDay;
-	}
-
-	public void  addRole(Role role){
-		this.roles.add(role);
-	}
-
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="user")
 	@JsonIgnore
 	private Set<donation> donations;
@@ -371,39 +200,4 @@ public class User implements Serializable {
 	@JsonIgnore
 	private Set<fund> Funds;
 	
-
-	public Set<donation> getDonations() {
-		return donations;
-	}
-
-	public void setDonations(Set<donation> donations) {
-		this.donations = donations;
-	}
-
-	public Set<feedback> getParticipant_feedbacks() {
-		return participant_feedbacks;
-	}
-
-	public void setParticipant_feedbacks(Set<feedback> participant_feedbacks) {
-		this.participant_feedbacks = participant_feedbacks;
-	}
-
-	public Set<event> getEventsMonitered() {
-		return eventsMonitered;
-	}
-
-	public void setEventsMonitered(Set<event> eventsMonitered) {
-		this.eventsMonitered = eventsMonitered;
-	}
-
-	public Set<fund> getFunds() {
-		return Funds;
-	}
-
-	public void setFunds(Set<fund> funds) {
-		Funds = funds;
-	}
-	
-	
-
 }
