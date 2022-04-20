@@ -23,7 +23,6 @@ public class WomanArea51Application {
 		Twilio.init(twilioConfig.getAccountSid(),twilioConfig.getAuthToken());
 	}
 
-
 	public static void main(String[] args) {
 		SpringApplication.run(WomanArea51Application.class, args);
 	}

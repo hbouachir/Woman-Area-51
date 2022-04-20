@@ -23,27 +23,29 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-
-public class event implements Serializable{
-
+@ToString
+public class event implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	@Id
-	@GeneratedValue (strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long eventId;
 	private String eventName;
 	private String description;
 	@Temporal(TemporalType.DATE)
-	private Date eventDate;
+	private Date eventDateStart;
+	@Temporal(TemporalType.DATE)
+	private Date eventDateEnd;
 	private String eventTime;
 	private String eventLocation;
 	@Enumerated(EnumType.STRING)
@@ -56,13 +58,26 @@ public class event implements Serializable{
 	private Integer places;
 	@ElementCollection
 	List<String> tags = new ArrayList<>();
+	@ElementCollection
+	List<User> Staff = new ArrayList<>();
 	
-	@OneToMany(cascade = CascadeType.ALL,mappedBy = "event_feedback")
+	@ElementCollection	
+	List<User> Speakers = new ArrayList<>();
+	
+
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "event_feedback")
 	@JsonIgnore
-    Set<feedback> feedbacks;
-	
+	Set<feedback> feedbacks;
+
 	@ManyToOne
 	@JsonIgnore
 	private User admin;
+
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "e")
+	Set<eventFile> files;
+	
+	
+	
+	
 
 }

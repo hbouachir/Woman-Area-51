@@ -69,6 +69,19 @@ public class donationController {
 	
 	
 	//donate with cheque or cash
+	@PostMapping("/DonateSymbolic/{fundId}")
+	
+	public void SymbolicDonate(Authentication authentication, @RequestBody donation d, @PathVariable("fundId")Long fundId) throws Exception {
+		User U=UR.findByUsername(authentication.getName()).orElse(null);
+		fund f=IFS.FindFund(fundId);
+		System.out.println(f.toString());
+		d.setFund(f);
+		d.setUser(U);
+		d.setConfirmed(false);
+		IDS.EditDonation(d);	
+	
+	}
+	
 	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/Donation/confirm/{id}")
 	donation Confirmdonation(Authentication authentication,@PathVariable("id") Long id) throws Exception {
@@ -76,6 +89,8 @@ public class donationController {
 		fund f=IFS.FindFund(d.getFund().getFundId());
 		f.setRaised(f.getRaised()+d.getAmount());
 		d.setConfirmed(true);
+		Date date=new Date();
+		f.setLastDonation(date);
 		IFS.EditFund(f);
 		IEmailS.confirmdonation(d.getUser(), d);
 		return IDS.EditDonation(d);

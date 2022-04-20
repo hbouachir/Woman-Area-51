@@ -50,6 +50,7 @@ public class feedbackController {
 	
 	
 	
+	@SuppressWarnings("unlikely-arg-type")
 	@PostMapping("/participate/{idevent}")
 	
 	void Partcipate( Authentication authentication, @PathVariable ("idevent") Long eventId) throws Exception{
@@ -70,9 +71,15 @@ public class feedbackController {
 		}
 		f.setEvent_feedback(e);
 		IFBS.Participate(f);
-		String Badge=IEmailingS.GenerateBadge(U, e);
+		if (e.getType().equals("IN_PERSON")){
+			String Badge = IEmailingS.GenerateBadge(U, e);
+			IEmailingS.ParticipationConfirmation(U, e, Badge);
+			IEmailingS.DeleteBadgeFiles(U, e);
+		} 
+		else
+			IEmailingS.VirtualEvent(U, e);
 		
-		IEmailingS.ParticipationConfirmation(U, e, Badge);
+		
 		IemailS.scheduleEmail(U.getEmail(), U.getUsername(), e);
 		
 		

@@ -31,11 +31,14 @@ public class fundCategory implements Serializable  {
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	private Long categoryId;
 	private String categoryType;
-	private String categoryImg;
+	
 	
 	@JsonIgnore
 	@OneToMany(cascade = CascadeType.REMOVE, mappedBy="fCategory")
 	private Set<fund> Funds;
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "fc")
+	Set<FundCategoryFile> files;
 	
 
 }

@@ -4,6 +4,7 @@ package tn.esprit.spring.womanarea51.services;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,8 +75,7 @@ public class EventServiceImp implements IEventService {
 	
 	public List<User> ParticipantsList (event e){
 		
-		List<User> participants= new ArrayList<User>();
-		
+		List<User> participants= new ArrayList<User>();	
 		e.getFeedbacks().forEach(f->participants.add(f.getParticipant()));
 	
 		return participants;
@@ -103,4 +103,67 @@ public class EventServiceImp implements IEventService {
 		return list;
 		
 	}
+	
+	public List<User>GetStaff(Long id){
+		event e=ERepository.findById(id).get();
+		 
+		 return e.getStaff();
+	 }
+	
+	public List<User>GetSpeakers(Long id){
+		event e=ERepository.findById(id).get();
+		 
+		 return e.getSpeakers();
+	 }
+	
+	public void AddSpeaker(long id, long idu) {
+		User u=URepository.getById(idu);
+		event e=ERepository.findById(id).get();
+		List<User> list=e.getSpeakers();
+		list.add(u);
+		e.setSpeakers(list);
+		ERepository.save(e);
+	}
+	
+	
+	public void AddStaff(long id, long idu) {
+		
+		User u=URepository.getById(idu);
+		event e=ERepository.findById(id).get();
+		List<User> list=e.getStaff();
+		list.add(u);
+		e.setStaff(list);
+		ERepository.save(e);
+	}
+	
+	public User removeSpeaker(long id, long idu) {
+		User u=URepository.getById(idu);
+		event e=ERepository.findById(id).get();
+		List<User> list=e.getSpeakers();
+		Iterator<User> itr = list.iterator();
+		while (itr.hasNext()) {
+            User x = (User)itr.next();
+            if (x ==u)
+                itr.remove();
+        }
+		e.setSpeakers(list);
+		ERepository.save(e);
+		return u;
+	}
+	
+	public User removeStaff(long id, long idu) {
+		User u=URepository.getById(idu);
+		event e=ERepository.findById(id).get();
+		List<User> list=e.getStaff();
+		Iterator<User> itr = list.iterator();
+		while (itr.hasNext()) {
+            User x = (User)itr.next();
+            if (x ==u)
+                itr.remove();
+        }
+		e.setStaff(list);
+		ERepository.save(e);
+		return u;
+	}
+
 }

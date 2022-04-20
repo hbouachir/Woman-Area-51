@@ -15,7 +15,7 @@ public interface EventRepository extends JpaRepository<event,Long>{
 	List<event> retrieveByTag(@Param("tag") String tag);
 	
 	
-	@Query("SELECT e FROM event e WHERE e.eventDate BETWEEN :dateinf AND :datesup")
+	@Query("SELECT e FROM event e WHERE e.eventDateEnd BETWEEN :dateinf AND :datesup")
 	List<event> retrieveEventOfTheMonth(@Param("dateinf") Date dateInf, @Param("datesup") Date dateSup );
 
 }
