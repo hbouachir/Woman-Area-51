@@ -192,7 +192,7 @@ export const navItems: INavData[] = [
     children: [
       {
         name: 'addPost',
-        url: '/admin/post/add',
+        url: '/admin/post/addpost',
         badge: {
           color: 'success',
           text: 'FREE'

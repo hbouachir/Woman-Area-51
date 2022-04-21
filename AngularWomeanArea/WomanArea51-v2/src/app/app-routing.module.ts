@@ -11,6 +11,8 @@ import {CommingSoonComponent} from "./user/comming-soon/comming-soon.component";
 import {UserIndexComponent} from "./user/user-index/user-index.component";
 import {SigninComponent} from "./user/signin/signin.component";
 import {PaginationsComponent} from "./admin/views/base/paginations/paginations.component";
+import { PostComponent } from './admin/post/post.component';
+import { AddPostComponent } from './admin/post/add-post/add-post.component';
 
 const routes: Routes = [
 
@@ -42,9 +44,11 @@ const routes: Routes = [
     },
     children: [
       {
-        path: 'course/add',
-        component: PaginationsComponent
+        path: 'post/show',
+        component: PostComponent
       },
+      {path:'post/addpost', 
+      component: AddPostComponent},
       {
         path: '',
         loadChildren: () =>

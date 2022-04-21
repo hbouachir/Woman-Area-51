@@ -3,6 +3,7 @@ import { HashLocationStrategy, LocationStrategy, PathLocationStrategy } from '@a
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {MatCardModule} from '@angular/material/card';
 
 import {
   PERFECT_SCROLLBAR_CONFIG,
@@ -53,6 +54,8 @@ import { DefaultHeaderUComponent } from './user/default-layout-u/default-header-
 import { CommingSoonComponent } from './user/comming-soon/comming-soon.component';
 import { UserIndexComponent } from './user/user-index/user-index.component';
 import { SigninComponent } from './user/signin/signin.component';
+import { PostComponent } from './admin/post/post.component';
+import { AddPostComponent } from './admin/post/add-post/add-post.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -65,7 +68,7 @@ const APP_CONTAINERS = [
 ];
 
 @NgModule({
-  declarations: [AppComponent, ...APP_CONTAINERS, DefaultLayoutUComponent, DefaultFooterUComponent, DefaultHeaderUComponent, CommingSoonComponent, UserIndexComponent, SigninComponent],
+  declarations: [AppComponent, ...APP_CONTAINERS, DefaultLayoutUComponent, DefaultFooterUComponent, DefaultHeaderUComponent, CommingSoonComponent, UserIndexComponent, SigninComponent, PostComponent, AddPostComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -96,7 +99,8 @@ const APP_CONTAINERS = [
     FormsModule,
 
     CardModule,
-    HttpClientModule
+    HttpClientModule,
+    MatCardModule,
   ],
   providers: [
     Location, {provide: LocationStrategy, useClass: PathLocationStrategy},
