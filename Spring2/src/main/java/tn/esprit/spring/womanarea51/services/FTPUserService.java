@@ -18,8 +18,8 @@ public class FTPUserService {
 	static FTPClient ftp = new FTPClient();
 	static String TMP_UPLOAD_FOLDER = "C:/tmp/";
 	static String SERVER_DOMAIN = "ftpupload.net";
-	static String SERVER_USERNAME = "epiz_30923546";
-	static String SERVER_PASSWORD = "NnShNRiOBL";
+	static String SERVER_USERNAME = " ";
+	static String SERVER_PASSWORD = " ";
 
 	public static String uFileUpload(MultipartFile file, String Type, Long typeId) throws IOException {
 		if (file.isEmpty()) {
@@ -49,7 +49,9 @@ public class FTPUserService {
 				ftp.logout();
 				ftp.disconnect();
 				System.out.println("File Uploaded !");
+				input.close();
 				Files.delete(path);
+				System.out.println("File deleted in C:\\tmp");
 
 			} catch (Exception e) {
 				System.out.println("Error uploading file to remote server");

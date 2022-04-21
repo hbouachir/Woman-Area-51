@@ -59,6 +59,9 @@ public class fund implements Serializable {
 	@JsonIgnore
 	private Set<donation> donations;
 	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "f")
+	Set<FundFiles> files;
+	
 	
 	
 }

@@ -50,7 +50,7 @@ public class feedbackController {
 	
 	
 	
-	@SuppressWarnings("unlikely-arg-type")
+	
 	@PostMapping("/participate/{idevent}")
 	
 	void Partcipate( Authentication authentication, @PathVariable ("idevent") Long eventId) throws Exception{
@@ -71,7 +71,7 @@ public class feedbackController {
 		}
 		f.setEvent_feedback(e);
 		IFBS.Participate(f);
-		if (e.getType().equals("IN_PERSON")){
+		if (e.getType().toString()=="INPERSON"){
 			String Badge = IEmailingS.GenerateBadge(U, e);
 			IEmailingS.ParticipationConfirmation(U, e, Badge);
 			IEmailingS.DeleteBadgeFiles(U, e);
@@ -85,7 +85,7 @@ public class feedbackController {
 		
 	}
 	
-	
+
 	@PutMapping("/Feedback/{event}")
 	feedback InputFeedback(@RequestBody feedback f,@PathVariable("event") Long eventId, Authentication authentication) throws Exception  {
 		User U=UR.findByUsername(authentication.getName()).orElse(null);
@@ -186,6 +186,132 @@ public class feedbackController {
 		return IFBS.Upcomingevents(U);
 	}
 	
+	@GetMapping("/AVGEventObjectRating/{event-id}")
+	double AVGEventObjectRating(@PathVariable("event-id") Long eventId) {
+		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
+		return IFBS.AVGEventObjectRating(list);
+	}
+	
+	@GetMapping("/MinEventObjectRating/{event-id}")
+	double MinEventObjectRating(@PathVariable("event-id") Long eventId) {
+		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
+		return IFBS.MinEventObjectRating(list);
+	}
+	
+	@GetMapping("/MaxEventObjectRating/{event-id}")
+	double MaxEventObjectRating(@PathVariable("event-id") Long eventId) {
+		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
+		return IFBS.MaxEventObjectRating(list);
+	}
+
+	@GetMapping("/AVGEventOrganizersRating/{event-id}")
+	double AVGEventOrganizersRating(@PathVariable("event-id") Long eventId) {
+		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
+		return IFBS.AVGEventOrganizersRating(list);
+	}
+	
+	@GetMapping("/MinEventOrganizersRating/{event-id}")
+	double MinEventOrganizersRating(@PathVariable("event-id") Long eventId) {
+		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
+		return IFBS.MinEventOrganizersRating(list);
+	}
+	
+	@GetMapping("/MaxEventOrganizersRating/{event-id}")
+	double MaxEventOrganizersRating(@PathVariable("event-id") Long eventId) {
+		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
+		return IFBS.MaxEventOrganizersRating(list);
+	}
+	
+
+	@GetMapping("/AVGEventLocationRating/{event-id}")
+	double AVGEventLocationRating(@PathVariable("event-id") Long eventId) {
+		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
+		return IFBS.AVGEventLocationRating(list);
+	}
+	
+	@GetMapping("/MinEventLocationRating/{event-id}")
+	double MinEventLocationRating(@PathVariable("event-id") Long eventId) {
+		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
+		return IFBS.MinEventLocationRating(list);
+	}
+	
+	@GetMapping("/MaxEventLocationRating/{event-id}")
+	double MaxEventLocationRating(@PathVariable("event-id") Long eventId) {
+		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
+		return IFBS.MaxEventLocationRating(list);
+	}
+	
+	@GetMapping("/AVGEventAddedValueRating/{event-id}")
+	double AVGEventAddedValueRating(@PathVariable("event-id") Long eventId) {
+		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
+		return IFBS.AVGEventAddedValueRating(list);
+	}
+	
+	@GetMapping("/MinEventAddedValueRating/{event-id}")
+	double MinEventAddedValueRating(@PathVariable("event-id") Long eventId) {
+		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
+		return IFBS.MinEventAddedValueRating(list);
+	}
+	
+	@GetMapping("/MaxEventAddedValueRating/{event-id}")
+	double MaxEventAddedValueRating(@PathVariable("event-id") Long eventId) {
+		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
+		return IFBS.MaxEventAddedValueRating(list);
+	}
+	
+	@GetMapping("/AVGEventRecommendRating/{event-id}")
+	double AVGEventRecommendRating(@PathVariable("event-id") Long eventId) {
+		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
+		return IFBS.AVGEventRecommendRating(list);
+	}
+	
+	@GetMapping("/MinEventRecommendRating/{event-id}")
+	double MinEventRecommendRating(@PathVariable("event-id") Long eventId) {
+		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
+		return IFBS.MinEventRecommendRating(list);
+	}
+	
+	@GetMapping("/MaxEventRecommendRating/{event-id}")
+	double MaxEventRecommendRating(@PathVariable("event-id") Long eventId) {
+		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
+		return IFBS.MaxEventRecommendRating(list);
+	}
+	
+	@GetMapping("/AVGEventServiceRating/{event-id}")
+	double AVGEventServiceRating(@PathVariable("event-id") Long eventId) {
+		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
+		return IFBS.AVGEventServiceRating(list);
+	}
+	
+	@GetMapping("/MinEventServiceRating/{event-id}")
+	double MinEventServiceRating(@PathVariable("event-id") Long eventId) {
+		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
+		return IFBS.MinEventServiceRating(list);
+	}
+	
+	@GetMapping("/MaxEventServiceRating/{event-id}")
+	double MaxEventServiceRating(@PathVariable("event-id") Long eventId) {
+		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
+		return IFBS.MaxEventRecommendRating(list);
+	}
+	
+	@GetMapping("/AVGEventFutureEventsRating/{event-id}")
+	double AVGEventFutureEventsRating(@PathVariable("event-id") Long eventId) {
+		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
+		return IFBS.AVGEventFutureEventsRating(list);
+	}
+	
+	@GetMapping("/MinEventFutureEventsRating/{event-id}")
+	double MinEventFutureEventsRating(@PathVariable("event-id") Long eventId) {
+		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
+		return IFBS.MinEventFutureEventsRating(list);
+	}
+	
+	@GetMapping("/MaxEventFutureEventsRating/{event-id}")
+	double MaxEventFutureEventsRating(@PathVariable("event-id") Long eventId) {
+		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
+		return IFBS.MaxEventRecommendRating(list);
+	}
 	
 	
 

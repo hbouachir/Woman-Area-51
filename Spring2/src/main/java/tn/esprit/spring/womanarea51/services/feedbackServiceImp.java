@@ -23,13 +23,13 @@ import tn.esprit.spring.womanarea51.repositories.feedbackRepository;
 public class feedbackServiceImp implements IfeedbackService {
 
 	@Autowired
-    feedbackRepository FeedRepository;
+	feedbackRepository FeedRepository;
 
 	@Autowired
-    EventRepository ERepository;
+	EventRepository ERepository;
 
 	@Autowired
-    UserRepository URepository;
+	UserRepository URepository;
 
 	// feedback instance created to indicate that a user is participating in an
 	// event, feedback attributes are initiated as null
@@ -144,9 +144,9 @@ public class feedbackServiceImp implements IfeedbackService {
 
 	public feedback calculRating(feedback f) {
 
-		float sum = f.getFutureEvents() + f.getLocation() + f.getObject() + f.getObject() + f.getOrganizers()
+		double sum = f.getFutureEvents() + f.getLocation() + f.getObject() + f.getAddedValue() + f.getOrganizers()
 				+ f.getRecommend() + f.getService();
-		float avg = sum / 7;
+		double avg = sum / 7;
 		float rounded = (float) Math.round(avg * 100) / 100;
 		f.setRating(rounded);
 		return (f);
@@ -162,7 +162,7 @@ public class feedbackServiceImp implements IfeedbackService {
 		int daysInMonth = yearMonthObject.lengthOfMonth();
 		System.out.println(y);
 		String infDate = "00-" + String.valueOf(m) + "-" + String.valueOf(y) + " 00:00:00";
-		String SupDate = String.valueOf(daysInMonth) +"-"+ String.valueOf(m) + "-" + String.valueOf(y) + " 59:59:59";
+		String SupDate = String.valueOf(daysInMonth) + "-" + String.valueOf(m) + "-" + String.valueOf(y) + " 59:59:59";
 		SimpleDateFormat sdformat = new SimpleDateFormat("dd-MM-yyyy hh:mm:s");
 		Date MonthBeg = sdformat.parse(infDate);
 		Date MonthEnd = sdformat.parse(SupDate);
@@ -176,30 +176,30 @@ public class feedbackServiceImp implements IfeedbackService {
 
 		return filtered;
 	}
-	
-	
+
 	public double MaxRating() throws ParseException {
-		double max=0;
+		double max = 0;
 		List<event> list = new LinkedList<event>();
 		list = FilterEventBycurrentDate();
 		Iterator<event> iterator = list.listIterator();
 		while (iterator.hasNext()) {
-			List<feedback>feed=new ArrayList<feedback>();
-			iterator.next().getFeedbacks().forEach(f->feed.add(f));
-			if (AVGEventRating(feed)>=max)
-				max=AVGEventRating(feed);
+			List<feedback> feed = new ArrayList<feedback>();
+			iterator.next().getFeedbacks().forEach(f -> feed.add(f));
+			if (AVGEventRating(feed) >= max)
+				max = AVGEventRating(feed);
 
 		}
-			
+
 		return max;
 	}
-	public List<event> BestOfThisMonth(List<event> filtered){
-		List<event> bestEvents=new ArrayList<event>();
-		filtered.forEach(e->{
-			List<feedback>feed=new ArrayList<feedback>();
-			e.getFeedbacks().forEach(f->feed.add(f));
+
+	public List<event> BestOfThisMonth(List<event> filtered) {
+		List<event> bestEvents = new ArrayList<event>();
+		filtered.forEach(e -> {
+			List<feedback> feed = new ArrayList<feedback>();
+			e.getFeedbacks().forEach(f -> feed.add(f));
 			try {
-				if (AVGEventRating(feed)==MaxRating())
+				if (AVGEventRating(feed) == MaxRating())
 					bestEvents.add(e);
 			} catch (ParseException e1) {
 				e1.printStackTrace();
@@ -207,20 +207,208 @@ public class feedbackServiceImp implements IfeedbackService {
 		});
 
 		return bestEvents;
-	
+
 	}
-	public List<event>Upcomingevents(User u){
-		List<event> list=new ArrayList<event>();
-		Date d=new Date();
+
+	public List<event> Upcomingevents(User u) {
+		List<event> list = new ArrayList<event>();
+		Date d = new Date();
 		FeedRepository.findAll().forEach(f -> {
-			if ((f.getEvent_feedback().getEventDateStart().compareTo(d))>=0)
+			if ((f.getEvent_feedback().getEventDateStart().compareTo(d)) >= 0)
 				list.add(f.getEvent_feedback());
 		});
-		
+
 		return list;
 	}
+
+	public double AVGEventObjectRating(List<feedback> list) {
+
+		DoubleSummaryStatistics AvgEventsRatingStatistics = list.stream().mapToDouble(feedback::getObject)
+				.summaryStatistics();
+		Double avg = AvgEventsRatingStatistics.getAverage();
+
+		return avg;
+	}
+
+	public double MinEventObjectRating(List<feedback> list) {
+
+		DoubleSummaryStatistics AvgEventsRatingStatistics = list.stream().mapToDouble(feedback::getObject)
+				.summaryStatistics();
+		double min = AvgEventsRatingStatistics.getMin();
+
+		return min;
+	}
+
+	public double MaxEventObjectRating(List<feedback> list) {
+
+		DoubleSummaryStatistics AvgEventsRatingStatistics = list.stream().mapToDouble(feedback::getObject)
+				.summaryStatistics();
+		double max = AvgEventsRatingStatistics.getMax();
+
+		return max;
+	}
+
+	public double AVGEventOrganizersRating(List<feedback> list) {
+
+		DoubleSummaryStatistics AvgEventsRatingStatistics = list.stream().mapToDouble(feedback::getOrganizers)
+				.summaryStatistics();
+		Double avg = AvgEventsRatingStatistics.getAverage();
+
+		return avg;
+	}
+
+	public double MinEventOrganizersRating(List<feedback> list) {
+
+		DoubleSummaryStatistics AvgEventsRatingStatistics = list.stream().mapToDouble(feedback::getOrganizers)
+				.summaryStatistics();
+		double min = AvgEventsRatingStatistics.getMin();
+
+		return min;
+	}
+
+	public double MaxEventOrganizersRating(List<feedback> list) {
+
+		DoubleSummaryStatistics AvgEventsRatingStatistics = list.stream().mapToDouble(feedback::getOrganizers)
+				.summaryStatistics();
+		double max = AvgEventsRatingStatistics.getMax();
+
+		return max;
+	}
 	
+	public double AVGEventLocationRating(List<feedback> list) {
+
+		DoubleSummaryStatistics AvgEventsRatingStatistics = list.stream().mapToDouble(feedback::getLocation)
+				.summaryStatistics();
+		Double avg = AvgEventsRatingStatistics.getAverage();
+
+		return avg;
+	}
+
+	public double MinEventLocationRating(List<feedback> list) {
+
+		DoubleSummaryStatistics AvgEventsRatingStatistics = list.stream().mapToDouble(feedback::getLocation)
+				.summaryStatistics();
+		double min = AvgEventsRatingStatistics.getMin();
+
+		return min;
+	}
+
+	public double MaxEventLocationRating(List<feedback> list) {
+
+		DoubleSummaryStatistics AvgEventsRatingStatistics = list.stream().mapToDouble(feedback::getLocation)
+				.summaryStatistics();
+		double max = AvgEventsRatingStatistics.getMax();
+
+		return max;
+	}
+
+	public double AVGEventAddedValueRating(List<feedback> list) {
+
+		DoubleSummaryStatistics AvgEventsRatingStatistics = list.stream().mapToDouble(feedback::getAddedValue)
+				.summaryStatistics();
+		Double avg = AvgEventsRatingStatistics.getAverage();
+
+		return avg;
+	}
+
+	public double MinEventAddedValueRating(List<feedback> list) {
+
+		DoubleSummaryStatistics AvgEventsRatingStatistics = list.stream().mapToDouble(feedback::getAddedValue)
+				.summaryStatistics();
+		double min = AvgEventsRatingStatistics.getMin();
+
+		return min;
+	}
+
+	public double MaxEventAddedValueRating(List<feedback> list) {
+
+		DoubleSummaryStatistics AvgEventsRatingStatistics = list.stream().mapToDouble(feedback::getAddedValue)
+				.summaryStatistics();
+		double max = AvgEventsRatingStatistics.getMax();
+
+		return max;
+	}
+
+	public double AVGEventRecommendRating(List<feedback> list) {
+
+		DoubleSummaryStatistics AvgEventsRatingStatistics = list.stream().mapToDouble(feedback::getRecommend)
+				.summaryStatistics();
+		Double avg = AvgEventsRatingStatistics.getAverage();
+
+		return avg;
+	}
+
+	public double MinEventRecommendRating(List<feedback> list) {
+
+		DoubleSummaryStatistics AvgEventsRatingStatistics = list.stream().mapToDouble(feedback::getRecommend)
+				.summaryStatistics();
+		double min = AvgEventsRatingStatistics.getMin();
+
+		return min;
+	}
+
+	public double MaxEventRecommendRating(List<feedback> list) {
+
+		DoubleSummaryStatistics AvgEventsRatingStatistics = list.stream().mapToDouble(feedback::getRecommend)
+				.summaryStatistics();
+		double max = AvgEventsRatingStatistics.getMax();
+
+		return max;
+	}
+
+	public double AVGEventServiceRating(List<feedback> list) {
+
+		DoubleSummaryStatistics AvgEventsRatingStatistics = list.stream().mapToDouble(feedback::getService)
+				.summaryStatistics();
+		Double avg = AvgEventsRatingStatistics.getAverage();
+
+		return avg;
+	}
+
+	public double MinEventServiceRating(List<feedback> list) {
+
+		DoubleSummaryStatistics AvgEventsRatingStatistics = list.stream().mapToDouble(feedback::getService)
+				.summaryStatistics();
+		double min = AvgEventsRatingStatistics.getMin();
+
+		return min;
+	}
+
+	public double MaxEventServiceRating(List<feedback> list) {
+
+		DoubleSummaryStatistics AvgEventsRatingStatistics = list.stream().mapToDouble(feedback::getService)
+				.summaryStatistics();
+		double max = AvgEventsRatingStatistics.getMax();
+
+		return max;
+	}
+
 	
-	
-	
+	public double AVGEventFutureEventsRating(List<feedback> list) {
+
+		DoubleSummaryStatistics AvgEventsRatingStatistics = list.stream().mapToDouble(feedback::getFutureEvents)
+				.summaryStatistics();
+		Double avg = AvgEventsRatingStatistics.getAverage();
+
+		return avg;
+	}
+
+	public double MinEventFutureEventsRating(List<feedback> list) {
+
+		DoubleSummaryStatistics AvgEventsRatingStatistics = list.stream().mapToDouble(feedback::getFutureEvents)
+				.summaryStatistics();
+		double min = AvgEventsRatingStatistics.getMin();
+
+		return min;
+	}
+
+	public double MaxEventFutureEventsRating(List<feedback> list) {
+
+		DoubleSummaryStatistics AvgEventsRatingStatistics = list.stream().mapToDouble(feedback::getFutureEvents)
+				.summaryStatistics();
+		double max = AvgEventsRatingStatistics.getMax();
+
+		return max;
+	}
+
 }
