@@ -60,46 +60,47 @@ public class FTPUserService {
 
 	}
 
-	public static String uFileremove(String fileName, String Type, Long typeId) throws IOException {
-		try {
-
-			ftp.connect(SERVER_DOMAIN);
-
-			int replyCode = ftp.getReplyCode();
-			if (!FTPReply.isPositiveCompletion(replyCode)) {
-				System.out.println("Connect failed");
-				return "Connect failed";
-			}
-
-			boolean success = ftp.login(SERVER_USERNAME, SERVER_PASSWORD);
-
-			if (!success) {
-				System.out.println("Could not login to the server");
-				return "Could not login to the server";
-			}
-			String fileToDelete = "/htdocs/" + Type + "/" + typeId.toString();
-
-			boolean deleted = ftp.deleteFile(fileToDelete);
-			if (deleted) {
-				System.out.println("The file was deleted successfully.");
-			} else {
-				System.out.println("Could not delete the  file, it may not exist.");
-			}
-
-		} catch (IOException ex) {
-			System.out.println("Oh no, there was an error: " + ex.getMessage());
-			ex.printStackTrace();
-		} finally {
-			// logs out and disconnects from server
-			try {
-				if (ftp.isConnected()) {
-					ftp.logout();
-					ftp.disconnect();
-				}
-			} catch (IOException ex) {
-				ex.printStackTrace();
-			}
-		}
-		return "";
-	}
+//	public static String uFileremove(String fileName, String Type, Long typeId) throws IOException {
+//		try {
+//
+//			ftp.connect(SERVER_DOMAIN);
+//
+//			int replyCode = ftp.getReplyCode();
+//			if (!FTPReply.isPositiveCompletion(replyCode)) {
+//				System.out.println("Connect failed");
+//				return "Connect failed";
+//			}
+//
+//			boolean success = ftp.login(SERVER_USERNAME, SERVER_PASSWORD);
+//
+//			if (!success) {
+//				System.out.println("Could not login to the server");
+//				return "Could not login to the server";
+//			}
+//			String fileToDelete = "/htdocs/" + Type + "/" + typeId.toString();
+//
+//			boolean deleted = ftp.deleteFile(fileToDelete);
+//			if (deleted) {
+//				System.out.println("The file was deleted successfully.");
+//			} else {
+//				System.out.println("Could not delete the  file, it may not exist.");
+//			}
+//
+//		} catch (IOException ex) {
+//			System.out.println("Oh no, there was an error: " + ex.getMessage());
+//			ex.printStackTrace();
+//		} finally {
+//			// logs out and disconnects from server
+//			try {
+//				if (ftp.isConnected()) {
+//					ftp.logout();
+//					ftp.disconnect();
+//				}
+//			} catch (IOException ex) {
+//				ex.printStackTrace();
+//			}
+//		}
+//		return "";
+//	}
+//
 }

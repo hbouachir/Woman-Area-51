@@ -325,7 +325,7 @@ UserService userService;
 
 	@PostMapping("addUserAffectRole")
 	public void addUserAffectRole(@RequestParam("idRole") long idRole, @RequestBody User u) {
-		userService.addUserAffectRole(idRole, u);}
+		userService.addUserAffectRole(idRole, u.getId());}
 
 
 
