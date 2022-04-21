@@ -38,8 +38,7 @@ public class feedbackServiceImp implements IfeedbackService {
 	}
 
 	public feedback EditFeedback(feedback e) {
-		feedback updated = new feedback();
-		updated = FeedRepository.save(e);
+		feedback updated = FeedRepository.save(e);
 		return updated;
 
 	}
@@ -107,8 +106,6 @@ public class feedbackServiceImp implements IfeedbackService {
 		Iterator<Double> iterator = ratings.listIterator();
 		while (iterator.hasNext()) {
 
-			// Add the doubles to the
-			// DoubleSummaryStatistics object
 			doubleSummaryStatistics.accept(iterator.next());
 
 		}
@@ -173,7 +170,7 @@ public class feedbackServiceImp implements IfeedbackService {
 		List<event> filtered = new ArrayList<event>();
 		list = ERepository.findAll();
 		list.forEach(e -> {
-			if (e.getEventDate().before(MonthEnd) && e.getEventDate().after(MonthBeg))
+			if (e.getEventDateStart().before(MonthEnd) && e.getEventDateStart().after(MonthBeg))
 				filtered.add(e);
 		});
 
@@ -212,6 +209,17 @@ public class feedbackServiceImp implements IfeedbackService {
 		return bestEvents;
 	
 	}
+	public List<event>Upcomingevents(User u){
+		List<event> list=new ArrayList<event>();
+		Date d=new Date();
+		FeedRepository.findAll().forEach(f -> {
+			if ((f.getEvent_feedback().getEventDateStart().compareTo(d))>=0)
+				list.add(f.getEvent_feedback());
+		});
+		
+		return list;
+	}
+	
 	
 	
 	

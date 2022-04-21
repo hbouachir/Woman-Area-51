@@ -13,8 +13,9 @@ public interface IFundCategoryService {
 	void DeleteFundCat(fundCategory c);
 	
 	
-
 	fundCategory FindFundCat(Long id);
 	
 	List<fundCategory> ListFundCat();
+	
+	public List<fundCategory> ListCatByType(String type);
 }

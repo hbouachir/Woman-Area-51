@@ -168,7 +168,7 @@ public class RegistrationListener implements
 				+ "      <tr>\n" + "        <td>&nbsp;</td>\n" + "        <td class=\"container\">\n"
 				+ "          <div class=\"content\">\n" + "\n" + "            <!-- START CENTERED WHITE CONTAINER -->\n"
 				+ "            <table role=\"presentation\" class=\"main\">\n"
-				+ "                    <img src=\"C:\\Users\\HAMZA\\Desktop\\test1\\demo\\src\\main\\resources\\static\\images\\post1.gif\"></a>\n" + "\n"
+				+ "                    <img src=\"C:/Users/HAMZA/Desktop/test1/demo/src/main/resources/static/images/post1.gif\"></a>\n" + "\n"
 				+ "              <!-- START MAIN CONTENT AREA -->\n" + "              <tr>\n"
 				+ "                <td class=\"wrapper\">\n"
 				+ "                  <table role=\"presentation\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n"

@@ -40,6 +40,7 @@ public class fund implements Serializable {
 	@Id
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	private Long fundId;
+	private String fundName;
 	private float goal;
 	private float raised;
 	private String fundDescription;

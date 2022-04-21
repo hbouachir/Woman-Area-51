@@ -1,5 +1,4 @@
 package tn.esprit.spring.womanarea51.services;
-
 import org.apache.commons.net.PrintCommandListener;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
@@ -11,15 +10,17 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class FTPService {
 
-    static FTPClient ftp = new FTPClient();
+
+public class FTPService {
+	static FTPClient ftp = new FTPClient();
     static String TMP_UPLOAD_FOLDER = "/tmp/";
     static String SERVER_DOMAIN = "ftpupload.net";
-    static String SERVER_USERNAME = "username";
-    static String SERVER_PASSWORD = "password";
-
-    public static String fileUpload(MultipartFile file, Long courseId) throws IOException {
+    static String SERVER_USERNAME = "epiz_30923546";
+	static String SERVER_PASSWORD = "NnShNRiOBL";
+	
+	
+	public static String uFileUpload(MultipartFile file,String Type, Long typeId) throws IOException {
         if (file.isEmpty()) {
             System.out.println("Empty File");
             return "Empty File";
@@ -42,8 +43,9 @@ public class FTPService {
             try {
                 InputStream input = new FileInputStream(new File(TMP_UPLOAD_FOLDER + file.getOriginalFilename()));
                 System.out.println(input);
-                ftp.makeDirectory("/htdocs/Courses/"+courseId.toString());
-                ftp.storeFile("/htdocs/Courses/"+courseId.toString()+"/" + file.getOriginalFilename(), input);
+                ftp.makeDirectory("/htdocs/"+Type);
+                ftp.makeDirectory("/htdocs/"+Type+"/"+typeId.toString());
+                ftp.storeFile("/htdocs/"+Type+"/"+typeId.toString()+"/" + file.getOriginalFilename(), input);
                 ftp.logout();
                 ftp.disconnect();
                 System.out.println("File Uploaded !");
@@ -57,7 +59,7 @@ public class FTPService {
         return "";
 
     }
-    public static String removeFile(String fileName,Long courseId) throws IOException {
+    public static String uFileremove(String fileName,String Type,Long typeId) throws IOException {
         try {
 
             ftp.connect(SERVER_DOMAIN);
@@ -74,7 +76,7 @@ public class FTPService {
                 System.out.println("Could not login to the server");
                 return "Could not login to the server";
             }
-            String fileToDelete = "/htdocs/Courses/"+ courseId.toString()+"/"+fileName;
+            String fileToDelete = "/htdocs/"+Type+"/"+ typeId.toString()+"/"+fileName;
 
             boolean deleted = ftp.deleteFile(fileToDelete);
             if (deleted) {

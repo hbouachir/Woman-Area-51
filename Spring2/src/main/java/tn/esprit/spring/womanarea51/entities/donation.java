@@ -3,6 +3,7 @@ package tn.esprit.spring.womanarea51.entities;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -12,10 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -41,6 +40,8 @@ public class donation implements Serializable {
 	private float amount;
 	@Enumerated(EnumType.STRING)
 	private Method payMethod;
+	@Column(columnDefinition = "boolean default false")
+	private Boolean confirmed;
 	
 	@ManyToOne
 	@JsonIgnore
