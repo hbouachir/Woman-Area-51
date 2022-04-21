@@ -43,8 +43,8 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
-
-@CrossOrigin(origins = "*", maxAge = 3600)
+//@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600,allowCredentials = "true")
 @RestController
 @RequestMapping("/api")
 public class AuthController {
@@ -179,13 +179,15 @@ UserService userService;
 		tokens.put("access_token", access_token.getAccessToken());
 		cookie=new Cookie("access_token", access_token.getAccessToken());
 
-		cookie.setMaxAge(60*60);
-		//cookie.setSecure(true);
-		//cookie.setHttpOnly(true);
-		response.addCookie(cookie);
+		//cookie.setMaxAge(60*60);
+		cookie.setSecure(false);
+		cookie.setHttpOnly(true);
+		cookie.setPath("/");
+	response.addCookie(cookie);
 
-
-		response.setHeader("access_token", access_token.getAccessToken());
+//String jwt=
+	response.addHeader("access_token", access_token.getAccessToken());
+		//response.addHeader("access_token",access_token );
 		loginTime=LocalDateTime.now();
 
 		return ResponseEntity.ok(access_token);

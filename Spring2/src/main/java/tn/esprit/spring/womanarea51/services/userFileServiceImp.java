@@ -25,13 +25,13 @@ public class userFileServiceImp implements IuserFileService{
         
         try {
             FTPUserService.uFileUpload(file,"profile",U.getId());
-            userFile f =  new userFile();
+            userFile f = U.getFile();
+            if (f == null) f = new userFile();
             f.setUploadDate(new Date());
             f.setFileName(U.getId().toString());
             f.setFilePath("https://www.womanarea51.ml/profile/"+U.getId().toString());
             U.setFile(f);
             f.setU(U);
-            IUS.updateUser(U);
             return fr.save(f);
         }catch (Exception e){
             System.out.println("Error Uploading file");

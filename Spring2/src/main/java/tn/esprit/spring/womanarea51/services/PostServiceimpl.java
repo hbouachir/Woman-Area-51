@@ -9,6 +9,7 @@ import java.util.Base64;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.Set;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -21,6 +22,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import tn.esprit.spring.womanarea51.entities.Filepost;
 import tn.esprit.spring.womanarea51.entities.Post;
 import tn.esprit.spring.womanarea51.entities.RatePub;
 import tn.esprit.spring.womanarea51.entities.User;
@@ -309,7 +311,51 @@ public static String uploadDirectory = System.getProperty("user.dir") + "/upload
 		return 	postRepository.affichPublication();
 	}
 
-	
+	@Override
+	public Post upPost(Post post) {
+		// TODO Auto-generated method stub
+		return postRepository.save(post);
+	}
+
+	@Override
+	public User getUser(Long id) {
+	Post p=	getById(id);
+	User u =p.getUserp();
+		return u;
+	}
+
+	@Override
+	public String urlFilePost(Long idPost) {
+		// TODO Auto-generated method stub
+		Post p=	getById(idPost);
+		String url="";
+		Set<Filepost> fp= p.getFilespost();
+	/*	fp.forEach(entity ->{
+		 entity.getFilePath();
+			
+		});*/
+		for (Filepost o : fp) {
+			 url=o.getFilePath();
+			}
+		
+		return url;
+	}
+
+	@Override
+	public Filepost urlFilePostt(Long idPost) {
+		Post p=	getById(idPost);
+	Filepost i=new Filepost();
+		Set<Filepost> fp= p.getFilespost();
+	/*	fp.forEach(entity ->{
+		 entity.getFilePath();
+			
+		});*/
+		for (Filepost o : fp) {
+			i=o;
+			}
+		
+		return i;
+	}
 	
 	}
 	

@@ -27,7 +27,7 @@ public class FileServiceImpl implements FileService{
         Course course = cr.findById(idCourse).orElse(null);
         if ((course == null) || (!(course.getInstructor().equals(U)) && !(U.getRoles().contains(ERole.ROLE_ADMIN)))) return null;
         try {
-            FTPService.uFileUpload(file,"Course", idCourse);
+            FTPService.uFileUpload(file,"Courses", idCourse);
             File f = new File();
             f.setUploadDate(new Date());
             f.setFileName(file.getOriginalFilename());
@@ -46,7 +46,7 @@ public class FileServiceImpl implements FileService{
         File file = fr.findById(f).orElse(null);
         if (!((file == null) || ((!(file.getCourse().getInstructor().equals(U))) && (!(U.getRoles().contains(ERole.ROLE_ADMIN)))))) {
             try {
-                FTPService.uFileremove(file.getFileName(),"Course", file.getCourse().getCourseId());
+                FTPService.uFileremove(file.getFileName(),"Courses", file.getCourse().getCourseId());
                 fr.delete(file);
             } catch (Exception e) {
                 System.out.println(e);
