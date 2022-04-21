@@ -12,6 +12,16 @@ public class Role {
 	@Enumerated(EnumType.STRING)
 	@Column(length = 20)
 	private ERole name;
+	
+	String expertField;
+
+	public String getExpertField() {
+		return expertField;
+	}
+
+	public void setExpertField(String expertField) {
+		this.expertField = expertField;
+	}
 
 	public Role() {
 

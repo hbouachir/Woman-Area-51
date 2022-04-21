@@ -75,4 +75,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	@Query(value = "SELECT Avg(`point_fidelite`) FROM user",nativeQuery=true)
 	public float moyenneNpointFidelet();
 
+	User findByFirstName(String username);
+
 }
