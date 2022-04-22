@@ -19,13 +19,17 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
 	</properties>
+	<repositories>
+		<repository>
+			<id>elmakers-repo</id>
+			<url>https://maven.elmakers.com/repository/</url>
+		</repository>
+	</repositories>
 	<dependencies>
 		<dependency>
-		<artifactId>com.google</artifactId>
-		<groupId>Ab</groupId>
-		<version>0.0.4.3</version>
-		<scope>system</scope>
-		<systemPath>C:\Users\Thrall\Downloads\studies\program-ab-0.0.4.3\lib\Ab.jar</systemPath>
+			<groupId>org.alicebot</groupId>
+			<artifactId>ab</artifactId>
+			<version>0.0.4.3</version>
 	</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
