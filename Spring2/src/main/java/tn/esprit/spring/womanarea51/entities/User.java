@@ -106,6 +106,15 @@ public class User implements Serializable {
 	List<Enrollement> enrollements;
 	
 
+	@OneToMany(cascade=CascadeType.ALL, mappedBy="expert")
+	@JsonIgnore
+	Set<ExpertInterview> expertinterviews;
+
+	@OneToMany(cascade=CascadeType.ALL, mappedBy="user")
+	@JsonIgnore
+	Set<Complaint> complaints;
+
+
 	@OneToOne(mappedBy = "u")
 	userFile file;
 
@@ -225,5 +234,84 @@ public class User implements Serializable {
 	@OneToMany(cascade = CascadeType.ALL)
 	@JsonIgnore
 	private Set<fund> Funds;
+
+	@OneToMany
+	private Set<Post> posts;
+
+	@OneToMany
+	private Set<Comment> comments;
+
+	@OneToMany
+	private Set<Comment> souscomment;
+
+	@OneToMany
+	private Set<Pub> pubs;
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((password == null) ? 0 : password.hashCode());
+		result = prime * result + pointWord;
+		result = prime * result + ((posts == null) ? 0 : posts.hashCode());
+		result = prime * result + ((pubs == null) ? 0 : pubs.hashCode());
+		result = prime * result + ((roles == null) ? 0 : roles.hashCode());
+		result = prime * result + ((sexe == null) ? 0 : sexe.hashCode());
+		result = prime * result + ((souscomment == null) ? 0 : souscomment.hashCode());
+		result = prime * result + ((tel == null) ? 0 : tel.hashCode());
+		result = prime * result + ((username == null) ? 0 : username.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		if (password == null) {
+			if (other.password != null)
+				return false;
+		} else if (!password.equals(other.password))
+			return false;
+		if (pointWord != other.pointWord)
+			return false;
+		if (posts == null) {
+			if (other.posts != null)
+				return false;
+		} else if (!posts.equals(other.posts))
+			return false;
+		if (pubs == null) {
+			if (other.pubs != null)
+				return false;
+		} else if (!pubs.equals(other.pubs))
+			return false;
+		if (roles == null) {
+			if (other.roles != null)
+				return false;
+		} else if (!roles.equals(other.roles))
+			return false;
+		if (sexe != other.sexe)
+			return false;
+		if (souscomment == null) {
+			if (other.souscomment != null)
+				return false;
+		} else if (!souscomment.equals(other.souscomment))
+			return false;
+		if (tel == null) {
+			if (other.tel != null)
+				return false;
+		} else if (!tel.equals(other.tel))
+			return false;
+		if (username == null) {
+			if (other.username != null)
+				return false;
+		} else if (!username.equals(other.username))
+			return false;
+		return true;
+	}
 
 }
