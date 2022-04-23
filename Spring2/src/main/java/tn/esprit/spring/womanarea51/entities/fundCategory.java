@@ -9,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -37,8 +39,8 @@ public class fundCategory implements Serializable  {
 	@OneToMany(cascade = CascadeType.REMOVE, mappedBy="fCategory")
 	private Set<fund> Funds;
 	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "fc")
-	Set<FundCategoryFile> files;
+	@OneToOne(cascade = CascadeType.ALL, mappedBy = "fc")
+	FundCategoryFile file;
 	
 
 }

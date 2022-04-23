@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +22,7 @@ import tn.esprit.spring.womanarea51.repositories.UserRepository;
 import tn.esprit.spring.womanarea51.services.IUserService;
 import tn.esprit.spring.womanarea51.services.IeventFileService;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class eventFileController {
 	
@@ -33,7 +35,7 @@ public class eventFileController {
 	@Autowired
 	UserRepository UR;
 	
-	@PostMapping(path="/event/{id}/addFile")
+	@PostMapping(path="/event/addFile/{id}")
     public eventFile addFile(@PathVariable("id")long id, @RequestParam("file") MultipartFile file, Authentication authentication) throws IOException {
         User U = UR.findByUsername(authentication.getName()).orElse(null);
         return IEFS.addFile(file, id, U);
@@ -44,7 +46,7 @@ public class eventFileController {
         User U = UR.findByUsername(authentication.getName()).orElse(null);
         IEFS.removeFile(File, id, U);};
         
-   @GetMapping("/event/{id}/getFiles")
+   @GetMapping("/event/getFiles/{id}")
 	 public List<eventFile>eventFiles(@PathVariable("id")Long id){
 		 return IEFS.GeteventFiles(id);
 	 }
