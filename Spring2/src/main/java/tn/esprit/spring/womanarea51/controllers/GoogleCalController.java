@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.google.api.client.json.gson.GsonFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -42,7 +43,9 @@ public class GoogleCalController {
 	private final static Log logger = LogFactory.getLog(GoogleCalController.class);
 	private static final String APPLICATION_NAME = "";
 	private static HttpTransport httpTransport;
-	private static final JsonFactory JSON_FACTORY = new JacksonFactory();
+	//private static final JsonFactory JSON_FACTORY = new JacksonFactory();
+	private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
+	//private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
 	private static com.google.api.services.calendar.Calendar client;
 
 	GoogleClientSecrets clientSecrets;
@@ -135,5 +138,25 @@ public class GoogleCalController {
 			//event.setDescription(description);
 			client.events().insert("primary", event).execute();
 		}
-	
+
+	@RequestMapping(value = "/add", method = RequestMethod.GET)
+	public void addevent2() throws IOException{
+		Event event = new Event();
+		event.setDescription("Expert interview");
+		event.setSummary("Oussama API");
+		DateTime startDateTime = new DateTime("2022-04-15T09:00:00+01:00");
+		EventDateTime start = new EventDateTime()
+				.setDateTime(startDateTime)
+				.setTimeZone("Africa/Tunis");
+		event.setStart(start);
+		DateTime endDateTime = new DateTime("2022-04-16T17:00:00+01:00");
+		EventDateTime end = new EventDateTime()
+				.setDateTime(endDateTime)
+				.setTimeZone("Africa/Tunis");
+		event.setEnd(end);
+		//event.setSummary(eventEntity.getSummary());
+		//event.setLocation(location);
+		//event.setDescription(description);
+		client.events().insert("oussama.lahouel@esprit.tn", event).execute();
+	}
 }
