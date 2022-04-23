@@ -1,0 +1,87 @@
+
+<p>post works!</p>
+<!--<div class="container">
+    
+<div  class="row">
+<c-card class="col-6" *ngFor="let post of posts">
+   <c-carousel [interval]="0">
+        <c-carousel-inner>
+          <c-carousel-item *ngFor="let slide of slides">
+            <img
+              [src]="slide.src"
+              alt="{{slide.title}}"
+              class="d-block w-100"
+              loading="lazy"
+            />
+          </c-carousel-item>
+        </c-carousel-inner>
+        <c-carousel-control [routerLink] caption="Previous" direction="prev"></c-carousel-control>
+        <c-carousel-control [routerLink] caption="Next" direction="next"></c-carousel-control>
+      </c-carousel>
+    <img cCardImg="top" src="./assets/img/angular.jpg">
+    <c-card-body>
+      <h5 cCardTitle>{{post.title}}</h5>
+      <p cCardText>
+        {{post.body}}
+        <br>
+        {{post.tags}}
+        <br>
+        {{post.id}}
+        Some quick example text to build on the card title and {{user.username}}....make up the bulk of the card's content.
+      </p>
+      <button cButton color="light">Go somewhere</button>
+    </c-card-body>
+  </c-card>
+  </div>
+</div>-->
+
+    <div class="row">
+        <!--BLOG LIST START-->
+        <div class="col-md-4 col-sm-6" *ngFor="let post of posts"  style="width: 600px;  border-radius: 1.5%;font-size: 0.9375rem;">
+    <mat-card  >
+        <mat-card-header>
+            <mat-card-title>Sirine Belhassen... <span>{{post.id}}</span> </mat-card-title>
+            <mat-card-subtitle>
+                <span> {{post.createdate | date:'dd/MM/yyyy'}} <i class="fa fa-globe-americas"></i></span>
+
+               </mat-card-subtitle>
+
+            <img src="assets/img/pic.jpg" mat-card-avatar>
+            
+        </mat-card-header>
+     
+        <mat-card-content>
+            <section class="post-content">
+                <h3>{{post.title}}</h3>
+                <p>------</p>
+                <p>{{post.body}}</p>
+                <p>{{post.tags}}</p>
+                <a ><button>iiiii</button></a>
+                <p>{{post.userp}}</p>
+                <p>{{post.filespost}}</p>
+                <section class="post-picture">
+                  <!-- <img class="pic" src="{{urlImage(post)}}" alt="pic" />--> 
+                  
+                </section>
+             
+           </section>
+        </mat-card-content>
+        <mat-card-footer class="post-footer">
+            <div class="post-num">
+                <span>
+                    <i class="fa fa-thumbs-up"></i> 
+                    {{post.score}}
+                </span>
+                <div>
+                    <a href='#' >{{post.countCom}} Comments</a>
+                   
+                    
+                </div>
+            </div>
+             
+        
+    </mat-card-footer>
+    </mat-card>
+    </div>
+    </div>
+    
