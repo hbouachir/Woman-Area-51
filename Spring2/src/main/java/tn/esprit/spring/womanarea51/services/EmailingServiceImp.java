@@ -7,8 +7,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import javax.swing.JColorChooser;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -18,14 +16,12 @@ import com.google.zxing.WriterException;
 import com.itextpdf.io.font.FontConstants;
 import com.itextpdf.io.image.ImageData;
 import com.itextpdf.io.image.ImageDataFactory;
-import com.itextpdf.kernel.color.Color;
 import com.itextpdf.kernel.color.DeviceRgb;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
-import com.itextpdf.kernel.pdf.colorspace.PdfDeviceCs.Cmyk;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Image;
 import com.itextpdf.layout.element.Paragraph;
@@ -94,7 +90,7 @@ public class EmailingServiceImp implements IEmailingService {
 	public void ParticipationConfirmation(User U, event e, String pathPDF) throws Exception {
 
 		// Mail with Badge attachement
-		DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy");
+		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 		MimeMessage mm = emailSender.createMimeMessage();
 		MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mm, true);
 		mimeMessageHelper.setFrom(U.getEmail());
@@ -276,9 +272,9 @@ public class EmailingServiceImp implements IEmailingService {
 		String QRpath = e.getEventId() + "ID-" + U.getId() + "QR"+".png";
 		File f = new File(pathPDF);
 		try {
-			if (f.delete()) // returns Boolean value
+			if (f.delete()) 
 			{
-				System.out.println(f.getName() + " deleted"); // getting and printing the file name
+				System.out.println(f.getName() + " deleted"); 
 			} else {
 				System.out.println("failed");
 			}
@@ -292,7 +288,7 @@ public class EmailingServiceImp implements IEmailingService {
 		try {
 			if (f2.delete()) // returns Boolean value
 			{
-				System.out.println(f2.getName() + " deleted"); // getting and printing the file name
+				System.out.println(f2.getName() + " deleted"); 
 			} else {
 				System.out.println("failed");
 			}
@@ -305,7 +301,7 @@ public class EmailingServiceImp implements IEmailingService {
 	}
 
 	public void feedbackConfirmation(feedback f, User U) throws Exception {
-		DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy");
+		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
 		MimeMessage mm = emailSender.createMimeMessage();
 		MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mm, true);
@@ -331,7 +327,7 @@ public class EmailingServiceImp implements IEmailingService {
 
 	public void CancelParticipation(feedback f) throws Exception {
 
-		DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy");
+		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
 		User U = f.getParticipant();
 		MimeMessage mm = emailSender.createMimeMessage();
@@ -360,7 +356,7 @@ public class EmailingServiceImp implements IEmailingService {
 	}
 
 	public void StaffMail(User U, event e, String pathPDF) throws Exception {
-		DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy");
+		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 		MimeMessage mm = emailSender.createMimeMessage();
 		MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mm, true);
 		mimeMessageHelper.setFrom(U.getEmail());
@@ -383,7 +379,7 @@ public class EmailingServiceImp implements IEmailingService {
 	}
 	
 	public void SpeakerMail(User U, event e, String pathPDF) throws Exception {
-		DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy");
+		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 		MimeMessage mm = emailSender.createMimeMessage();
 		MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mm, true);
 		mimeMessageHelper.setFrom(U.getEmail());
@@ -407,7 +403,7 @@ public class EmailingServiceImp implements IEmailingService {
 
 	public void VirtualEvent(User U, event e) throws Exception {
 		
-		DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy");
+		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 		MimeMessage mm = emailSender.createMimeMessage();
 		MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mm, true);
 		mimeMessageHelper.setFrom(U.getEmail());
@@ -429,15 +425,14 @@ public class EmailingServiceImp implements IEmailingService {
 		
 	}
 
-	@SuppressWarnings("unlikely-arg-type")
 	public void eventUpdate(User U, event e,String pathPDF) throws Exception {
 		
 		String type;
-		if (e.getType().equals("IN_PERSON"))
+		if (e.getType().toString()=="INPERSON")
 			type="Location";
 		else
 			type="Virtual meeting link";
-		DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy");
+		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 		MimeMessage mm = emailSender.createMimeMessage();
 		MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mm, true);
 		mimeMessageHelper.setFrom(U.getEmail());

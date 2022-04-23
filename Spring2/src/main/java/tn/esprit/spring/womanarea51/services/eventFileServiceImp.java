@@ -26,7 +26,9 @@ public class eventFileServiceImp implements IeventFileService {
     public eventFile addFile(MultipartFile file, Long id, User U) {
         event event = IES.FindEvent(id);
         try {
+        	
             FTPService.uFileUpload(file,"event",id);
+           
             eventFile f = new eventFile();
             f.setUploadDate(new Date());
             f.setFileName(file.getOriginalFilename());
