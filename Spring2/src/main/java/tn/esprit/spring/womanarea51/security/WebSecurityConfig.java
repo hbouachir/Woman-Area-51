@@ -1,5 +1,6 @@
 package tn.esprit.spring.womanarea51.security;
 
+import com.google.common.collect.ImmutableList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,10 +15,15 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import tn.esprit.spring.womanarea51.security.jwt.AuthEntryPointJwt;
 import tn.esprit.spring.womanarea51.security.jwt.AuthTokenFilter;
 
 import tn.esprit.spring.womanarea51.security.services.UserDetailsServiceImpl;
+
+import java.util.Arrays;
 
 
 @Configuration
@@ -73,7 +79,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 	}
-
+	@Bean
+	CorsConfigurationSource corsConfigurationSource()
+	{
+		CorsConfiguration configuration = new CorsConfiguration();
+		configuration.setAllowedOrigins(Arrays.asList("https://womanarea51.ml", "https://www.womanarea51.ml"));
+		configuration.setAllowedMethods(Arrays.asList("GET","POST", "DELETE", "PUT"));
+		//configuration.setAllowCredentials(true);
+		configuration.setAllowedHeaders(ImmutableList.of("Authorization", "Cache-Control", "Content-Type"));
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration);
+		return source;
+	}
 
 	
 	
