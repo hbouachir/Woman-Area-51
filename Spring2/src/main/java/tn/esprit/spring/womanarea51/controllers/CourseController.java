@@ -66,7 +66,7 @@ public class CourseController {
         return cs.findInstructorAll_courses(username);
     }
 
-    @GetMapping("/Course/getCoursesByNCat")
+    @PostMapping("/Course/getCoursesByNCat")
     @JsonView(CourseView.Less.class)
     public List<Course> getCoursesByNCat(@RequestBody List<CourseCategory> categories){
         return cs.findByCat_courses(categories);
