@@ -18,8 +18,11 @@ public interface ExpertInterviewRepository extends CrudRepository<ExpertIntervie
 	@Query(value="SELECT COUNT(*) FROM expert_interview WHERE expert_user_id=?1",nativeQuery = true)
 	public int countInterviews(long l) ;
 	
-	@Query(value="SELECT role_id FROM user WHERE user_id=?1",nativeQuery = true)
+	@Query(value="SELECT role_id FROM user_roles WHERE user_id=?1",nativeQuery = true)
 	public int getRoles(long l) ;
+	
+	@Query(value="SELECT COUNT(*) FROM expert_interview WHERE rating=?1",nativeQuery = true)
+	public int countBotInterviews(long l) ;
 	
 	@Query(value="SELECT expert_field FROM roles WHERE id=?1",nativeQuery = true)
 	public String getRoleField(long l) ;
