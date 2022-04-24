@@ -1,9 +1,11 @@
 package tn.esprit.spring.womanarea51.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import javax.annotation.Nullable;
 import javax.persistence.*;
 import java.time.LocalDate;
 
@@ -23,11 +25,13 @@ public class Enrollement {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
     User user;
 
+
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "subscription_id")
     Subscription subscription;
