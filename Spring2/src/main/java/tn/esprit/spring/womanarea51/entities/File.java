@@ -13,7 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@JsonView(CourseView.More.class)
+
 public class File {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,6 +27,8 @@ public class File {
 
     @JsonIgnore
     @ManyToOne
-    Course course;
-
+    Post post;
+    @JsonIgnore
+    @ManyToOne
+    Pub pub;
 }

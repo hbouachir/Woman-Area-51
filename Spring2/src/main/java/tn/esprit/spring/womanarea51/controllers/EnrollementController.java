@@ -3,7 +3,6 @@ package tn.esprit.spring.womanarea51.controllers;
 import com.stripe.model.Charge;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +21,7 @@ import tn.esprit.spring.womanarea51.security.services.UserDetailsImpl;
 import java.time.LocalDate;
 import java.util.List;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
+
 @RestController
 
 public class EnrollementController {
@@ -38,7 +37,6 @@ public class EnrollementController {
     UserRepository userRepository;
     @Autowired
     StripeService stripeService;
-
 
     @PostMapping("addEnrollement")
 
@@ -90,7 +88,6 @@ public class EnrollementController {
 
 
     }
-
 
     @DeleteMapping("deleteEnrollement")
     public void deleteRole(@RequestParam("enrollementId") long enrollementId){
