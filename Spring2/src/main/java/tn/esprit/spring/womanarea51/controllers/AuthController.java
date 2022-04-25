@@ -345,7 +345,20 @@ UserService userService;
 
 
 	}
+/*
+	@PreAuthorize("hasRole('ROLE_SUPER_USER')")
+	@PutMapping("userdisable/{id}")
+	public void banUser(@PathVariable("id") long id){
+		User U = userRepository.findById(id)
+				.orElseThrow(() -> new UsernameNotFoundException("User Not Found "));
+		U.setEtatAcc(!U.getEtatAcc());
 
+		userService.updateUser(U);
+
+
+
+	}
+*/
 
 
 

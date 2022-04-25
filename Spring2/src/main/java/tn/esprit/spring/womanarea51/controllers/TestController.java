@@ -32,23 +32,19 @@ public class TestController {
 
 
 	
-	@PutMapping("/disableUser/{username}")
+	@PutMapping("/disableUser/{id}")
 	@PreAuthorize("hasRole('ROLE_SUPER_USER')")
-	public ResponseEntity<?> DisableUser(@PathVariable(value = "username") String username) {
+	public ResponseEntity<?> DisableUser(@PathVariable(value = "id") long id) {
 		
-		if (!userRepository.existsByUsername(username)) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: Username not found!"));
-		}
-		
-		User U = userRepository.findByUsername(username)
-				.orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
-		U.setEtatAcc(false);
+
+		User U = userRepository.findById(id)
+				.orElseThrow(() -> new UsernameNotFoundException("User Not Found : "  ));
+		U.setEtatAcc(!U.getEtatAcc());
 		
 		userService.updateUser(U);
-		
+		if (!U.getEtatAcc())
 		return ResponseEntity.ok(new MessageResponse("User Disabled successfully!"));
+		else  return ResponseEntity.ok(new MessageResponse("User activated successfully!"));
 	}
 
 }
