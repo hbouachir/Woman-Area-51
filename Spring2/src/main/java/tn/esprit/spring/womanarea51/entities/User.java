@@ -140,6 +140,8 @@ public class User implements Serializable {
 		this.tel = tel;
 	}
 
+
+
 	public User(String firstName, String stripe_id, String lastName, String username, String password, String passwordConfirm, String email, String address, Date dateN, String tel, int loginTime, int pointFidelite, Set<Role> roles, Sexe sexe, Boolean etatAcc, boolean enabled, LocalDate signupDay) {
 		this.firstName = firstName;
 		this.stripe_id = stripe_id;

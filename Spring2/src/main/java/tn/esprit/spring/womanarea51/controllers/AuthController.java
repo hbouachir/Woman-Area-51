@@ -3,6 +3,7 @@ package tn.esprit.spring.womanarea51.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -94,6 +95,8 @@ UserService userService;
 		User u=userService.findOne(id);
 		return u;
 	}
+
+	@PreAuthorize("hasRole('ROLE_SUPER_USER')")
 	@GetMapping("/users")
 	public List<User> findUser() {
 		return userService.findAll();
@@ -191,6 +194,7 @@ UserService userService;
 	}
 	@PostMapping("/signup")
 	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest, HttpServletRequest request ) {
+
 		if (userRepository.existsByUsername(signUpRequest.getUsername())) {
 			return ResponseEntity
 					.badRequest()
@@ -317,6 +321,7 @@ UserService userService;
 	@PostMapping("/sendOTP")
 	public void sendOTP(@RequestBody PasswordResetRequest passwordResetRequest){
 
+
 		twilioOTPService.sendOTPForPasswordReset(passwordResetRequest);	}
 
 
@@ -325,9 +330,23 @@ UserService userService;
 
 		twilioOTPService.validateOTP(activateOtpRequest.getUserInputOtp(),activateOtpRequest.getUsername(),activateOtpRequest.getNewPassword());	}
 
+
+	@PreAuthorize("hasRole('ROLE_SUPER_USER')")
 	@PostMapping("addUserAffectRole")
-	public void addUserAffectRole(@RequestParam("idRole") long idRole, @RequestBody User u) {
-		userService.addUserAffectRole(idRole, u);}
+	public void addUserAffectRole(@RequestParam  long idRole, @RequestParam long idUser) {
+		userService.addUserAffectRole(idRole, idUser);}
+
+
+	@PreAuthorize("hasRole('ROLE_SUPER_USER')")
+	@DeleteMapping("deleteUser")
+	public void deleteRole(@RequestParam long userId){
+		userService.deleteUser(userId);
+
+
+
+	}
+
+
 
 
 

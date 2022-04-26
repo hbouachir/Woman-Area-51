@@ -46,7 +46,7 @@ public class fund implements Serializable {
 	private String fundDescription;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date lastDonation;
-	private String benficiaries;
+	private String beneficiaries;
 	@ElementCollection
 	List<String> tags = new ArrayList<>();
 	
