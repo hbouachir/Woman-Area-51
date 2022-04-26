@@ -4,10 +4,14 @@ import com.twilio.Twilio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import org.springframework.scheduling.annotation.EnableScheduling;
 import tn.esprit.spring.womanarea.demo.Configurations.TwilioConfig;
 
 import javax.annotation.PostConstruct;
 
+
+@EnableScheduling
 @SpringBootApplication
 public class DemoApplication {
 
