@@ -124,6 +124,45 @@ public class Monitor {
                 user.setEnabled(true);
                 userRepository.save(user);
             }
+            if (!userRepository.existsByUsername("ainstructor")) {
+                Set<Role> rolesi = new HashSet<>();
+                Role adminRole = roleRepository.findByName(ERole.ROLE_INSTRUCTOR).orElse(null);
+                rolesi.add(adminRole);
+                //create admin account
+                User user = new User("ainstructor",
+                        "ainstructor@mail.com",
+                        encoder.encode("changeme"
+                        ), "ainstructor", "lainstructor", "ainstructor", null, "11117754", null);
+                user.setRoles(rolesi);
+                user.setEnabled(true);
+                userRepository.save(user);
+            }
+            if (!userRepository.existsByUsername("abinstructor")) {
+                Set<Role> rolesi = new HashSet<>();
+                Role adminRole = roleRepository.findByName(ERole.ROLE_INSTRUCTOR).orElse(null);
+                rolesi.add(adminRole);
+                //create admin account
+                User user = new User("abinstructor",
+                        "abinstructor@mail.com",
+                        encoder.encode("changeme"
+                        ), "abinstructor", "labinstructor", "abinstructor", null, "18811154", null);
+                user.setRoles(rolesi);
+                user.setEnabled(true);
+                userRepository.save(user);
+            }
+            if (!userRepository.existsByUsername("aabinstructor")) {
+                Set<Role> rolesi = new HashSet<>();
+                Role adminRole = roleRepository.findByName(ERole.ROLE_INSTRUCTOR).orElse(null);
+                rolesi.add(adminRole);
+                //create admin account
+                User user = new User("aabinstructor",
+                        "aabinstructor@mail.com",
+                        encoder.encode("changeme"
+                        ), "aabinstructor", "laabinstructor", "aabinstructor", null, "18871154", null);
+                user.setRoles(rolesi);
+                user.setEnabled(true);
+                userRepository.save(user);
+            }
         }
 
     }
