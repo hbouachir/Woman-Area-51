@@ -10,7 +10,7 @@ public interface IUserService {
 	User UpdateUser(User u);
 	void DeleteUser(long id);
 	List<User> ShowAllUser();
-	void addUserAffectRole(long idRole,User u);
+
 	
 	
 }

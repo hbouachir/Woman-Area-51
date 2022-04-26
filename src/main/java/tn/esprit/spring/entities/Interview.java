@@ -37,12 +37,12 @@ public class Interview {
 		private String interviewTitle ;
 		private String interviewer ;
 		@Temporal(TemporalType.DATE)
-		@DateTimeFormat(pattern = "MM-dd-yyyy") 
-		private Date dateInterview ;  
+		@DateTimeFormat(pattern = "MM-dd-yyyy")
+		private Date dateInterview ;
 		@Enumerated(EnumType.STRING)
 		private Valid valid ;
 		// associations
-		@JsonIgnore  
+		@JsonIgnore
 		@ManyToOne
 		JobOffer jobOffer ;
 		@JsonIgnore

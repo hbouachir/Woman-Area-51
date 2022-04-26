@@ -2,21 +2,18 @@ package tn.esprit.spring.services;
 
 import java.util.List;
 
-import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import tn.esprit.spring.entities.Role;
 import tn.esprit.spring.entities.User;
-import tn.esprit.spring.repositories.RoleRepository;
+
 import tn.esprit.spring.repositories.UserRepository;
 
 @Service
 public class UserService implements IUserService {
 
-	@Autowired
-	RoleRepository rr;
+	
 	
 	@Autowired 
 	UserRepository ur;
@@ -50,13 +47,6 @@ public class UserService implements IUserService {
 		return (List<User>) ur.findAll();
 	}
 
-	@Transactional
-	@Override
-	public void addUserAffectRole(long idRole, User u) {
-		Role r=rr.findById(idRole).orElse(null);
-		u.setRole(r);
-		ur.save(u);
-	}
-
+	
 
 }
