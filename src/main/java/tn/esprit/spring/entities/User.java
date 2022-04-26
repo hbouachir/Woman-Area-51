@@ -1,18 +1,26 @@
 package tn.esprit.spring.entities;
 
-import java.sql.Timestamp;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.JoinColumn;
+
 
 import org.springframework.lang.Nullable;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.AccessLevel;
@@ -21,6 +29,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
 @Entity
@@ -29,6 +38,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class User {
 	@Id
@@ -50,20 +60,33 @@ public class User {
 	long phoneNumber;
 	@Nullable
 	String cvURL;
-	
+
 	@Nullable
 	String imageURL;
 	boolean status;
-	
-	@ManyToOne
-	private Role role;
-	
-@OneToMany
-private Set<Post> posts;
-@OneToMany
-private Set<Message> messages;
 
-@ManyToMany
-private Set<User> user1;
+
+//	@ManyToMany(fetch = FetchType.EAGER)
+//	@JoinTable(name = "user_roles",
+//	joinColumns = @JoinColumn(name = "userId"),
+//	inverseJoinColumns = @JoinColumn(name = "roleId"))
+//	Set<Role> roles = new HashSet<>();
+//
+	@ManyToOne
+	Role role;
+
+	@ManyToMany(cascade=CascadeType.ALL)
+    public Set<JobOffer> jobOffers ;
+
+	@OneToMany
+	private Set<Post> posts;
+	@OneToMany
+	private Set<Message> messages;
+
+	@ManyToMany
+	private Set<User> user1;
+
+	@OneToMany
+	private Set<Publication> pubs;
 
 }
