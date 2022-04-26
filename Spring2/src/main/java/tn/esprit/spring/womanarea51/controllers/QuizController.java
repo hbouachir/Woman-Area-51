@@ -12,6 +12,7 @@ import tn.esprit.spring.womanarea51.services.QuestionService;
 import tn.esprit.spring.womanarea51.services.QuizService;
 
 @RestController
+@RequestMapping("/api")
 public class QuizController {
     @Autowired
     QuizService qs;

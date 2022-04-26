@@ -15,7 +15,7 @@ public interface IFundFilesService {
 
 	public List<FundFiles> findAll();
 
-	public List<FundFiles> GeteventFiles(Long id);
+	public List<FundFiles> GetFundFiles(Long id);
 	
 
 }
