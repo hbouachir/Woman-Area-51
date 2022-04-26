@@ -47,4 +47,19 @@ public class TestController {
 		else  return ResponseEntity.ok(new MessageResponse("User activated successfully!"));
 	}
 
+	@PutMapping("/enableUser/{id}")
+	@PreAuthorize("hasRole('ROLE_SUPER_USER')")
+	public ResponseEntity<?> enableUser(@PathVariable(value = "id") long id) {
+
+
+		User U = userRepository.findById(id)
+				.orElseThrow(() -> new UsernameNotFoundException("User Not Found : "  ));
+		U.setEnabled(!U.isEnabled());
+
+		userService.updateUser(U);
+		if (U.isEnabled())
+			return ResponseEntity.ok(new MessageResponse("User enabled successfully!"));
+		else  return ResponseEntity.ok(new MessageResponse("User not enabled successfully!"));
+	}
+
 }
