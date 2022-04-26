@@ -1,0 +1,90 @@
+<div *ngIf="connectado">
+<div class="chatbox__user--active" *ngFor ="let mensaje of mensajes" >
+  <a [routerLink]="['/chatroom/',mensaje.username]"> 
+  <span *ngIf="mensaje.tipo=='new_user'" >
+ {{mensaje.fecha |date:'shortTime'}}  <span [ngStyle]="{'color':mensaje.color}">{{mensaje.username}} :connecter</span>
+
+</span>
+</a>
+</div>
+</div>
+<div class="card mx-4 my-4">
+    <div class="card-header">
+        <ul class="nav nav-pills card-header-pills">
+          <li class="nav-item mr-2" *ngIf="!connectado" >
+<input type="text" class="form-control" [(ngModel)]="mensaje.username" placeholder=" your username" name="username" >
+          </li>
+            <li class="nav-item mr-2">
+              <button class="btn btn-success" type="button" (click)="connecter()" *ngIf="!connectado" [disabled]="!mensaje.username">connecter</button>
+
+          </li>
+          <li class="nav-item"> 
+            <button class="btn btn-warning" type="button" (click)="deconnecter()" *ngIf="connectado">deconnecter</button>
+
+        </li>
+        </ul>
+
+    </div>
+
+    <div #scrollChat [scrollTop]="scrollChat.scrollHeight" class="card-body" style="overflow: scroll; height: 360px;" *ngIf="connectado">
+     <ul class="list-group" >
+       
+         <li class="list-group-item list-group-item-light" *ngFor ="let mensaje of mensajes">
+          <!--  {{mensaje.texto}}--> 
+          <!--{{mensaje.fecha |date:'shortTime'}} {{mensaje.texto}}-->
+        <span *ngIf="mensaje.tipo=='new_user'" >
+            {{mensaje.fecha |date:'shortTime'}} {{mensaje.texto}} <span [ngStyle]="{'color':mensaje.color}">{{mensaje.username}}</span>
+
+        </span>
+        <span *ngIf="mensaje.tipo=='MENSAJE'" >
+            {{mensaje.fecha |date:'shortTime'}}-<span [ngStyle]="{'color':mensaje.color}">{{mensaje.username}}</span>dit: <br> {{mensaje.texto}} 
+
+        </span>
+        </li>
+     </ul>
+    </div>
+<div class="card-footer" *ngIf="connectado">
+  <form class="form-inline">
+       <div class="form-group mx-3">
+          <input type="text" class="form-control" [(ngModel)]="mensaje.texto" placeholder="ecrire un msg" name="texto" (keyup)="escribirEvento()" >
+       </div>
+       <button class="btn btn-primary" type="submit" (click)="enviarMensaje()">Send</button>
+  </form>
+  <div>
+    {{escribiendo}}  
+  </div>
+    </div>
+</div>
+<br>
+<br>
+<br>
+<br>
+
+
+  <div class="container">
+    <div class="row align-items-start">
+      <div class="col">
+        <h2>User list</h2>
+        <div class="chatbox__user--active" *ngFor ="let mensaje of mensajes">
+          <a  [routerLink]="['/chatroom/',mensaje.username]"> 
+          <span *ngIf="mensaje.tipo=='new_user'" >
+         {{mensaje.fecha |date:'shortTime'}}  <span [ngStyle]="{'color':mensaje.color}">{{mensaje.username}} :connecter</span>
+
+        </span>
+      </a>
+        </div>
+      </div>
+      <div class="col" >
+        <div *ngFor ="let mensaje of mensajes" >
+        <span *ngIf="mensaje.tipo=='MENSAJE'" >
+          {{mensaje.fecha |date:'shortTime'}}-<span [ngStyle]="{'color':mensaje.color}">{{mensaje.username}}</span>dit: <br> {{mensaje.texto}} 
+        
+      </span>
+    </div>
+      </div>
+      
+    </div>
+    <router-outlet></router-outlet>
+  
+  
+    
