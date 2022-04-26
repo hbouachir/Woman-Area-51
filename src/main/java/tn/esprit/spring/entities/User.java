@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -42,6 +43,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class User {
 	@Id
+	@Column(name = "userId")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	long userId;
 	String firstName;
@@ -82,6 +84,13 @@ public class User {
 	private Set<Post> posts;
 	@OneToMany
 	private Set<Message> messages;
+
+	@OneToMany(mappedBy = "student")
+	Set<Class> classes;
+
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="instructor")
+	private Set<Course> courses;
+
 
 	@ManyToMany
 	private Set<User> user1;
