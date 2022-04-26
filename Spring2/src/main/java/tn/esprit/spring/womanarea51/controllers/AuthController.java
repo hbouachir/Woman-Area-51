@@ -194,6 +194,7 @@ UserService userService;
 	}
 	@PostMapping("/signup")
 	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest, HttpServletRequest request ) {
+
 		if (userRepository.existsByUsername(signUpRequest.getUsername())) {
 			return ResponseEntity
 					.badRequest()
@@ -335,6 +336,7 @@ UserService userService;
 	public void addUserAffectRole(@RequestParam  long idRole, @RequestParam long idUser) {
 		userService.addUserAffectRole(idRole, idUser);}
 
+
 	@PreAuthorize("hasRole('ROLE_SUPER_USER')")
 	@DeleteMapping("deleteUser")
 	public void deleteRole(@RequestParam long userId){
@@ -343,7 +345,6 @@ UserService userService;
 
 
 	}
-
 
 
 
