@@ -26,6 +26,6 @@ public class FundCategoryFile {
 	    Date uploadDate;
 
 	    @JsonIgnore
-	    @ManyToOne
+	    @OneToOne
 	    fundCategory fc;
 }
