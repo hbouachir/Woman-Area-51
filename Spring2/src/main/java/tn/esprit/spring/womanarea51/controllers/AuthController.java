@@ -90,11 +90,11 @@ UserService userService;
 						.body(new MessageResponse("user deleted"));}
 		else return ResponseEntity.badRequest().body(new MessageResponse("user doesn't exist"));
 	}
-	@GetMapping("/user/{id}")
+	/*@GetMapping("/user/{id}")
 	public User findUser(@PathVariable("id") long id) {
 		User u=userService.findOne(id);
 		return u;
-	}
+	}*/
 
 	@PreAuthorize("hasRole('ROLE_SUPER_USER')")
 	@GetMapping("/users")
@@ -154,7 +154,7 @@ UserService userService;
 		
 		if (!userDetails.getEtatAcc()) {
 			return ResponseEntity
-					.badRequest()
+					.accepted()
 					.body(new MessageResponse("Error: Your account is Disabled by Admin!"));
 		}
 		
@@ -345,6 +345,19 @@ UserService userService;
 
 
 	}
+
+
+	@GetMapping("/user/{username}")
+	public User findOneByUsename( @PathVariable("username") String username) {
+
+		User U=new User();
+		U=userRepository.findByUsername(username).orElse(null);
+
+
+
+		return U;
+	}
+
 
 
 
