@@ -12,6 +12,7 @@ import tn.esprit.spring.womanarea51.repositories.UserRepository;
 import tn.esprit.spring.womanarea51.services.ClassService;
 
 @RestController
+@RequestMapping("/api")
 public class ClassController {
     @Autowired
     ClassService cls;

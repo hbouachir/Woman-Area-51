@@ -18,6 +18,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.restfb.DefaultFacebookClient;
+import com.restfb.FacebookClient;
+import com.restfb.Parameter;
+import com.restfb.types.FacebookType;
+
 import tn.esprit.spring.womanarea51.entities.Filepost;
 import tn.esprit.spring.womanarea51.entities.Post;
 import tn.esprit.spring.womanarea51.entities.RatePub;
@@ -227,5 +232,20 @@ public Filepost getImagee(@PathVariable Long id) {
 
 
 			return g;
+}
+
+@GetMapping("/getpostt/{id}")
+
+public Post getPostt(@PathVariable Long id) {
+	
+	Post  g=postService.getPostt(id);
+
+
+			return g;
+}
+@GetMapping("/postfb/{id}")
+public void listPubFb(@PathVariable Long id){
+	postService.listPubFb(id);
+	 
 }
 }

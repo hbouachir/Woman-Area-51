@@ -13,8 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-
-public class File {
+public class FileComplaint {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long fileId;
@@ -27,8 +26,7 @@ public class File {
 
     @JsonIgnore
     @ManyToOne
-    Post post;
-    @JsonIgnore
-    @ManyToOne
-    Pub pub;
+    Attachment attachment;
+    
+
 }

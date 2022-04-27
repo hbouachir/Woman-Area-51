@@ -2,6 +2,7 @@ package tn.esprit.spring.womanarea51.controllers;
 
 
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -159,19 +160,34 @@ public class feedbackController {
 	@GetMapping("/AVG-event-rating/{event-id}")
 	double AvgRatingPerEvent(@PathVariable("event-id") Long eventId) {
 		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
-		return IFBS.AVGEventRating(list);
+		List<feedback> fb= new ArrayList<feedback>();
+		list.forEach(f->{
+			if (f.getRating()!=null)
+				fb.add(f);
+		});
+		return IFBS.AVGEventRating(fb);
 	}
 	
 	@GetMapping("/Min-event-rating/{event-id}")
 	double MinRatingPerEvent(@PathVariable("event-id") Long eventId) {
 		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
-		return IFBS.MinEventRating(list);
+		List<feedback> fb= new ArrayList<feedback>();
+		list.forEach(f->{
+			if (f.getRating()!=null)
+				fb.add(f);
+		});
+		return IFBS.MinEventRating(fb);
 	}
 	
 	@GetMapping("/Max-event-rating/{event-id}")
 	double MaxRatingPerEvent(@PathVariable("event-id") Long eventId) {
 		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
-		return IFBS.MaxEventRating(list);
+		List<feedback> fb= new ArrayList<feedback>();
+		list.forEach(f->{
+			if (f.getRating()!=null)
+				fb.add(f);
+		});
+		return IFBS.MaxEventRating(fb);
 	}
 	
 	@GetMapping("My-upcoming-events")
@@ -189,128 +205,233 @@ public class feedbackController {
 	@GetMapping("/AVGEventObjectRating/{event-id}")
 	double AVGEventObjectRating(@PathVariable("event-id") Long eventId) {
 		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
-		return IFBS.AVGEventObjectRating(list);
+		List<feedback> fb= new ArrayList<feedback>();
+		list.forEach(f->{
+			if (f.getRating()!=null)
+				fb.add(f);
+		});
+		return IFBS.AVGEventObjectRating(fb);
 	}
 	
 	@GetMapping("/MinEventObjectRating/{event-id}")
 	double MinEventObjectRating(@PathVariable("event-id") Long eventId) {
 		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
-		return IFBS.MinEventObjectRating(list);
+		List<feedback> fb= new ArrayList<feedback>();
+		list.forEach(f->{
+			if (f.getRating()!=null)
+				fb.add(f);
+		});
+		return IFBS.MinEventObjectRating(fb);
 	}
 	
 	@GetMapping("/MaxEventObjectRating/{event-id}")
 	double MaxEventObjectRating(@PathVariable("event-id") Long eventId) {
 		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
-		return IFBS.MaxEventObjectRating(list);
+		List<feedback> fb= new ArrayList<feedback>();
+		list.forEach(f->{
+			if (f.getRating()!=null)
+				fb.add(f);
+		});
+		return IFBS.MaxEventObjectRating(fb);
 	}
 
 	@GetMapping("/AVGEventOrganizersRating/{event-id}")
 	double AVGEventOrganizersRating(@PathVariable("event-id") Long eventId) {
 		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
-		return IFBS.AVGEventOrganizersRating(list);
+		List<feedback> fb= new ArrayList<feedback>();
+		list.forEach(f->{
+			if (f.getRating()!=null)
+				fb.add(f);
+		});
+		return IFBS.AVGEventOrganizersRating(fb);
 	}
 	
 	@GetMapping("/MinEventOrganizersRating/{event-id}")
 	double MinEventOrganizersRating(@PathVariable("event-id") Long eventId) {
 		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
-		return IFBS.MinEventOrganizersRating(list);
+		List<feedback> fb= new ArrayList<feedback>();
+		list.forEach(f->{
+			if (f.getRating()!=null)
+				fb.add(f);
+		});
+		return IFBS.MinEventOrganizersRating(fb);
 	}
 	
 	@GetMapping("/MaxEventOrganizersRating/{event-id}")
 	double MaxEventOrganizersRating(@PathVariable("event-id") Long eventId) {
 		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
-		return IFBS.MaxEventOrganizersRating(list);
+		List<feedback> fb= new ArrayList<feedback>();
+		list.forEach(f->{
+			if (f.getRating()!=null)
+				fb.add(f);
+		});
+		return IFBS.MaxEventOrganizersRating(fb);
 	}
 	
 
 	@GetMapping("/AVGEventLocationRating/{event-id}")
 	double AVGEventLocationRating(@PathVariable("event-id") Long eventId) {
 		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
-		return IFBS.AVGEventLocationRating(list);
+		List<feedback> fb= new ArrayList<feedback>();
+		list.forEach(f->{
+			if (f.getRating()!=null)
+				fb.add(f);
+		});
+		return IFBS.AVGEventLocationRating(fb);
 	}
 	
 	@GetMapping("/MinEventLocationRating/{event-id}")
 	double MinEventLocationRating(@PathVariable("event-id") Long eventId) {
 		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
-		return IFBS.MinEventLocationRating(list);
+		List<feedback> fb= new ArrayList<feedback>();
+		list.forEach(f->{
+			if (f.getRating()!=null)
+				fb.add(f);
+		});
+		return IFBS.MinEventLocationRating(fb);
 	}
 	
 	@GetMapping("/MaxEventLocationRating/{event-id}")
 	double MaxEventLocationRating(@PathVariable("event-id") Long eventId) {
 		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
-		return IFBS.MaxEventLocationRating(list);
+		List<feedback> fb= new ArrayList<feedback>();
+		list.forEach(f->{
+			if (f.getRating()!=null)
+				fb.add(f);
+		});
+		return IFBS.MaxEventLocationRating(fb);
 	}
 	
 	@GetMapping("/AVGEventAddedValueRating/{event-id}")
 	double AVGEventAddedValueRating(@PathVariable("event-id") Long eventId) {
 		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
-		return IFBS.AVGEventAddedValueRating(list);
+		List<feedback> fb= new ArrayList<feedback>();
+		list.forEach(f->{
+			if (f.getRating()!=null)
+				fb.add(f);
+		});
+		return IFBS.AVGEventAddedValueRating(fb);
 	}
 	
 	@GetMapping("/MinEventAddedValueRating/{event-id}")
 	double MinEventAddedValueRating(@PathVariable("event-id") Long eventId) {
 		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
-		return IFBS.MinEventAddedValueRating(list);
+		List<feedback> fb= new ArrayList<feedback>();
+		list.forEach(f->{
+			if (f.getRating()!=null)
+				fb.add(f);
+		});
+		return IFBS.MinEventAddedValueRating(fb);
 	}
 	
 	@GetMapping("/MaxEventAddedValueRating/{event-id}")
 	double MaxEventAddedValueRating(@PathVariable("event-id") Long eventId) {
 		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
-		return IFBS.MaxEventAddedValueRating(list);
+		List<feedback> fb= new ArrayList<feedback>();
+		list.forEach(f->{
+			if (f.getRating()!=null)
+				fb.add(f);
+		});
+		return IFBS.MaxEventAddedValueRating(fb);
 	}
 	
 	@GetMapping("/AVGEventRecommendRating/{event-id}")
 	double AVGEventRecommendRating(@PathVariable("event-id") Long eventId) {
 		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
-		return IFBS.AVGEventRecommendRating(list);
+		List<feedback> fb= new ArrayList<feedback>();
+		list.forEach(f->{
+			if (f.getRating()!=null)
+				fb.add(f);
+		});
+		return IFBS.AVGEventRecommendRating(fb);
 	}
 	
 	@GetMapping("/MinEventRecommendRating/{event-id}")
 	double MinEventRecommendRating(@PathVariable("event-id") Long eventId) {
 		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
-		return IFBS.MinEventRecommendRating(list);
+		List<feedback> fb= new ArrayList<feedback>();
+		list.forEach(f->{
+			if (f.getRating()!=null)
+				fb.add(f);
+		});
+		return IFBS.MinEventRecommendRating(fb);
 	}
 	
 	@GetMapping("/MaxEventRecommendRating/{event-id}")
 	double MaxEventRecommendRating(@PathVariable("event-id") Long eventId) {
 		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
-		return IFBS.MaxEventRecommendRating(list);
+		List<feedback> fb= new ArrayList<feedback>();
+		list.forEach(f->{
+			if (f.getRating()!=null)
+				fb.add(f);
+		});
+		return IFBS.MaxEventRecommendRating(fb);
 	}
 	
 	@GetMapping("/AVGEventServiceRating/{event-id}")
 	double AVGEventServiceRating(@PathVariable("event-id") Long eventId) {
 		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
-		return IFBS.AVGEventServiceRating(list);
+		List<feedback> fb= new ArrayList<feedback>();
+		list.forEach(f->{
+			if (f.getRating()!=null)
+				fb.add(f);
+		});
+		return IFBS.AVGEventServiceRating(fb);
 	}
 	
 	@GetMapping("/MinEventServiceRating/{event-id}")
 	double MinEventServiceRating(@PathVariable("event-id") Long eventId) {
 		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
-		return IFBS.MinEventServiceRating(list);
+		List<feedback> fb= new ArrayList<feedback>();
+		list.forEach(f->{
+			if (f.getRating()!=null)
+				fb.add(f);
+		});
+		return IFBS.MinEventServiceRating(fb);
 	}
 	
 	@GetMapping("/MaxEventServiceRating/{event-id}")
 	double MaxEventServiceRating(@PathVariable("event-id") Long eventId) {
 		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
-		return IFBS.MaxEventRecommendRating(list);
+		List<feedback> fb= new ArrayList<feedback>();
+		list.forEach(f->{
+			if (f.getRating()!=null)
+				fb.add(f);
+		});
+		return IFBS.MaxEventRecommendRating(fb);
 	}
 	
 	@GetMapping("/AVGEventFutureEventsRating/{event-id}")
 	double AVGEventFutureEventsRating(@PathVariable("event-id") Long eventId) {
 		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
-		return IFBS.AVGEventFutureEventsRating(list);
+		List<feedback> fb= new ArrayList<feedback>();
+		list.forEach(f->{
+			if (f.getRating()!=null)
+				fb.add(f);
+		});
+		return IFBS.AVGEventFutureEventsRating(fb);
 	}
 	
 	@GetMapping("/MinEventFutureEventsRating/{event-id}")
 	double MinEventFutureEventsRating(@PathVariable("event-id") Long eventId) {
 		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
-		return IFBS.MinEventFutureEventsRating(list);
+		List<feedback> fb= new ArrayList<feedback>();
+		list.forEach(f->{
+			if (f.getRating()!=null)
+				fb.add(f);
+		});
+		return IFBS.MinEventFutureEventsRating(fb);
 	}
 	
 	@GetMapping("/MaxEventFutureEventsRating/{event-id}")
 	double MaxEventFutureEventsRating(@PathVariable("event-id") Long eventId) {
 		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
-		return IFBS.MaxEventRecommendRating(list);
+		List<feedback> fb= new ArrayList<feedback>();
+		list.forEach(f->{
+			if (f.getRating()!=null)
+				fb.add(f);
+		});
+		return IFBS.MaxEventRecommendRating(fb);
 	}
 	
 	

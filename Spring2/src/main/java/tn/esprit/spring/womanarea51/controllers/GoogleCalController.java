@@ -8,13 +8,14 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.google.api.client.json.gson.GsonFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -44,7 +45,7 @@ public class GoogleCalController {
 	private static final String APPLICATION_NAME = "";
 	private static HttpTransport httpTransport;
 	//private static final JsonFactory JSON_FACTORY = new JacksonFactory();
-	private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
+	private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
 	//private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
 	private static com.google.api.services.calendar.Calendar client;
 
@@ -153,6 +154,27 @@ public class GoogleCalController {
 		EventDateTime end = new EventDateTime()
 				.setDateTime(endDateTime)
 				.setTimeZone("Africa/Tunis");
+		event.setEnd(end);
+		//event.setSummary(eventEntity.getSummary());
+		//event.setLocation(location);
+		//event.setDescription(description);
+		client.events().insert("oussama.lahouel@esprit.tn", event).execute();
+	}
+	
+	@GetMapping("/addEvent/{date}")
+	public void addeventtest(@PathVariable String date) throws IOException{
+		Event event = new Event();
+		event.setDescription("Expert interview");
+		event.setSummary("Oussama API test");
+		DateTime startDateTime = new DateTime(date+"T09:00:00+01:00");
+		EventDateTime start = new EventDateTime()
+				    .setDateTime(startDateTime)
+				    .setTimeZone("Africa/Tunis");
+		event.setStart(start);
+		DateTime endDateTime = new DateTime(date+"T17:00:00+01:00");
+			EventDateTime end = new EventDateTime()
+			    .setDateTime(endDateTime)
+			    .setTimeZone("Africa/Tunis");
 		event.setEnd(end);
 		//event.setSummary(eventEntity.getSummary());
 		//event.setLocation(location);

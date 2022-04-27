@@ -1,16 +1,9 @@
 package tn.esprit.spring.womanarea51.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonView;
 
 
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -18,12 +11,7 @@ import java.time.LocalDate;
 import java.util.*;
 
 @Entity
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @Table(name = "user")
-@Builder
 public class User implements Serializable {
 
 	/**
@@ -34,22 +22,18 @@ public class User implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "USER_ID")
-	@JsonView(CourseView.Less.class)
 	private Long id;
 
 
 
 	@Column(name = "FIRST_NAME")
-	@JsonView(CourseView.Less.class)
 	private String firstName;
 
 	private String stripe_id=null;
 	@Column(name = "LAST_NAME")
-	@JsonView(CourseView.Less.class)
 	private String lastName;
 
 	@Column(name = "username")
-	@JsonView(CourseView.Less.class)
 	private String username;
 
 	@Column(name = "password")
@@ -72,16 +56,14 @@ public class User implements Serializable {
 	private String tel;
 	private int loginTime=0;
 	private int pointFidelite = 0;
-
+	
 	private int pointWord = 0;
-
+	
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<>();
 	
-	public void  addRole(Role role){
-		this.roles.add(role);
-	}
+
 
 	@Column(name = "sexe")
 	@Enumerated(EnumType.STRING)
@@ -106,17 +88,25 @@ public class User implements Serializable {
 	List<Enrollement> enrollements;
 	
 
-	@OneToMany(cascade=CascadeType.ALL, mappedBy="expert")
-	@JsonIgnore
-	Set<ExpertInterview> expertinterviews;
-
-	@OneToMany(cascade=CascadeType.ALL, mappedBy="user")
-	@JsonIgnore
-	Set<Complaint> complaints;
 
 
-	@OneToOne(mappedBy = "u")
-	userFile file;
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+
+	public Boolean getEtatAcc() {
+		return EtatAcc;
+	}
+
+	public void setEtatAcc(Boolean etatAcc) {
+		EtatAcc = etatAcc;
+	}
+
 
 	public User(String firstName, String lastName, String username, String password, String passwordConfirm, String email, String address, Date dateN, String tel, int loginTime, int pointFidelite, Set<Role> roles, Sexe sexe, Boolean etatAcc, boolean enabled, LocalDate signupDay) {
 		this.firstName = firstName;
@@ -149,6 +139,8 @@ public class User implements Serializable {
 		this.dateN = dateN;
 		this.tel = tel;
 	}
+
+
 
 	public User(String firstName, String stripe_id, String lastName, String username, String password, String passwordConfirm, String email, String address, Date dateN, String tel, int loginTime, int pointFidelite, Set<Role> roles, Sexe sexe, Boolean etatAcc, boolean enabled, LocalDate signupDay) {
 		this.firstName = firstName;
@@ -206,46 +198,183 @@ public class User implements Serializable {
 		this.email = email;
 		this.password = password;
 	}
-	@ManyToMany(cascade=CascadeType.ALL)
-	public Set<JobOffer> jobOffers ;
 
-	@OneToMany(mappedBy = "student")
-	Set<Class> classes;
+	public String getTel() {
+		return tel;
+	}
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy="instructor")
-	private Set<Course> courses;
+	public void setTel(String tel) {
+		this.tel = tel;
+	}
 
-	@OneToMany(mappedBy="user")
-	private List<Interview> interviews;
+	public String getUsername() {
+		return username;
+	}
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy="user")
-	@JsonIgnore
-	private Set<donation> donations;
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getPasswordConfirm() {
+		return passwordConfirm;
+	}
+
+	public void setPasswordConfirm(String passwordConfirm) {
+		this.passwordConfirm = passwordConfirm;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public Date getDateN() {
+		return dateN;
+	}
+
+	public void setDateN(Date dateN) {
+		this.dateN = dateN;
+	}
+
+	public Set<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
+	}
 	
 
-	@OneToMany(cascade = CascadeType.ALL,mappedBy = "participant")
-	@JsonIgnore
-    Set<feedback> participant_feedbacks;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy="admin")
-	@JsonIgnore
-	private Set<event> eventsMonitered;
-	
-	@OneToMany(cascade = CascadeType.ALL)
-	@JsonIgnore
-	private Set<fund> Funds;
+
+
+	public Long getId() {
+		return id;
+	}
+
+
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+
+
+
+	}
+
+	public String getStripe_id() {
+		return stripe_id;
+	}
+
+	public void setStripe_id(String stripe_id) {
+		this.stripe_id = stripe_id;
+	}
+
+	public int getLoginTime() {
+		return loginTime;
+	}
+
+	public void setLoginTime(int loginTime) {
+		this.loginTime = loginTime;
+	}
+
+	public static Long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public User() {
+		super();
+
+	}
+
+	public User(Long iduser) {
+		super();
+		this.id = iduser;
+
+	}
+
+	public Sexe getSexe() {
+		return sexe;
+	}
+
+	public void setSexe(Sexe sexe) {
+		this.sexe = sexe;
+	}
+
+
+	public int getPointFidelite() {
+		return pointFidelite;
+	}
+
+	public void setPointFidelite(int pointFidelite) {
+		this.pointFidelite = pointFidelite;
+	}
+
+
+
+
+
+	public LocalDate getSignupDay() {
+		return signupDay;
+	}
+
+	public void setSignupDay(LocalDate signupDay) {
+		this.signupDay = signupDay;
+	}
+
+	public void  addRole(Role role){
+		this.roles.add(role);
+	}
 
 	@OneToMany
 	private Set<Post> posts;
 
 	@OneToMany
 	private Set<Comment> comments;
-
+	
 	@OneToMany
 	private Set<Comment> souscomment;
 
 	@OneToMany
 	private Set<Pub> pubs;
+
+
+
+
 
 	@Override
 	public int hashCode() {
@@ -313,5 +442,47 @@ public class User implements Serializable {
 			return false;
 		return true;
 	}
+
+	public int getPointWord() {
+		return pointWord;
+	}
+
+	public void setPointWord(int pointWord) {
+		this.pointWord = pointWord;
+	}
+
+	public Set<Post> getPosts() {
+		return posts;
+	}
+
+	public void setPosts(Set<Post> posts) {
+		this.posts = posts;
+	}
+
+	public Set<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(Set<Comment> comments) {
+		this.comments = comments;
+	}
+
+	public Set<Comment> getSouscomment() {
+		return souscomment;
+	}
+
+	public void setSouscomment(Set<Comment> souscomment) {
+		this.souscomment = souscomment;
+	}
+
+	public Set<Pub> getPubs() {
+		return pubs;
+	}
+
+	public void setPubs(Set<Pub> pubs) {
+		this.pubs = pubs;
+	}
+	
+	
 
 }

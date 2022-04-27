@@ -7,21 +7,11 @@ import javax.persistence.*;
 public class Role {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private Integer id;
 
 	@Enumerated(EnumType.STRING)
 	@Column(length = 20)
 	private ERole name;
-	
-	String expertField;
-
-	public String getExpertField() {
-		return expertField;
-	}
-
-	public void setExpertField(String expertField) {
-		this.expertField = expertField;
-	}
 
 	public Role() {
 
@@ -31,7 +21,7 @@ public class Role {
 		this.name = name;
 	}
 
-	public long getId() {
+	public Integer getId() {
 		return id;
 	}
 

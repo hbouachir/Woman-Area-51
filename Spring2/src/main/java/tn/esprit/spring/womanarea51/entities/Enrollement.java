@@ -27,14 +27,13 @@ public class Enrollement {
     private long id;
 
     @JsonIgnore
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @ManyToOne
     @JoinColumn(name = "user_id")
     User user;
 
 
     @JsonIgnore
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    //@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @ManyToOne
     @JoinColumn(name = "subscription_id")
     Subscription subscription;
