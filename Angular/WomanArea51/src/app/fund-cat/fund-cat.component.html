@@ -1,0 +1,123 @@
+<app-nav-bar></app-nav-bar>
+<div class="container">
+    <br><br><br>
+    <b>Fund Categories</b>
+    <!--fund categories list-->
+    <div class="body table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Category Type</th>
+                    <th>Category Img</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let f of listFundCat">
+                    <th scope="row">{{f.categoryId}}</th>
+                    <td>{{f.categoryType}}</td>
+                    <td>{{f.categoryImg}}</td>
+                    <td><button type="button" (click)="deleteFundCateById(f.categoryId)"
+                            class="btn btn-danger">DELETE</button>
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br><br><br>
+    <!--search cat by type input-->
+    <div class="col-md-12 text-center">
+        <input type="text" [(ngModel)]="type" placeholder="Find category/Type"
+            (keydown.enter)="SearchCatByType()"><br><br>
+        <button type="button" class="btn btn-primary" (click)="SearchCatByType()">Search</button>
+    </div>
+
+    <br><br><br><br>
+    <!--search cat by type input-->
+    <div class="container">
+        Fund Categories by type search :
+        <div class="body table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Category Type</th>
+                        <th>Category Img</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let ft of listCategories">
+                        <th scope="row">{{ft.categoryId}}</th>
+                        <td>{{ft.categoryType}}</td>
+                        <td>{{ft.categoryImg}}</td>
+                        <td><button type="button" (click)="deleteFundCateById(ft.categoryId)"
+                                class="btn btn-danger">DELETE</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+
+        </div>
+    </div>
+    <br><br><br>
+    <!--add fund category-->
+    <div class="container">
+
+        <app-add-fund-cat></app-add-fund-cat>
+
+    </div>
+    <br><br><br>
+    <!--Update fund category-->
+    <div class="col-md-12 text-center">
+        <input type="number" [(ngModel)]="catId" placeholder="Search by id"
+            (keydown.enter)="SearchCatById(catId)"><br><br>
+        <button type="button" class="btn btn-primary" (click)="SearchCatById(catId)">Search</button>
+    </div>
+    <div class="container">
+        Update fund category by Id :
+        <div class="body table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Category Type</th>
+                        <th>Category Img</th>
+
+                    </tr>
+                </thead>
+
+                <tbody>
+                    
+                        <!--<tr *ngFor="let fc of listCatById">-->
+                        <th scope="row">{{fc.categoryId}}</th>
+                        <td>{{fc.categoryType}}<input type="text" #TypeU="ngModel" [(ngModel)]="catType"
+                                placeholder="{{fc.categoryType}}" minlength="1" class="form-control"></td>
+
+                        <td>{{fc.categoryImg}}<input type=" text" #ImgU="ngModel" [(ngModel)]="catImg"
+                                placeholder="{{fc.categoryImg}}" minlength="1" class="form-control"></td>
+                        <td><button type="button" (click)="UpdateFundCat(fc)" [hidden]='search' [disabled]=" catType==='' && catImg==='' "
+                                class="btn btn-warning">UPDATE</button>
+                            <!--</td>-->
+                    
+                </tbody>
+
+            </table>
+
+            <div class="alert-danger" *ngIf="TypeU.invalid">
+                <div *ngIf="TypeU.errors?.['minlength']"> minimum length required for type is 1 </div>
+            </div>
+            <div class="alert-danger" *ngIf="ImgU.invalid">
+                <div *ngIf="ImgU.errors?.['minlength']"> minimum length required for imageURL is 1 </div>
+            </div>
+        </div>
+    </div>
+    <br><br><br>
+
+</div>
+
+
+<br><br><br>
+<app-footer-front></app-footer-front>
