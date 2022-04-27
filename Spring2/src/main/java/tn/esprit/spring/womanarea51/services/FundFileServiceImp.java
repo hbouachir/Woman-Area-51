@@ -16,7 +16,8 @@ public class FundFileServiceImp implements IFundFilesService {
 
 	@Autowired
 	IFundService IFS;
-
+	
+	@Autowired
 	FundFileRepository fr;
 
 	public FundFiles addFile(MultipartFile file, Long id, User U) {
@@ -30,6 +31,7 @@ public class FundFileServiceImp implements IFundFilesService {
 			f.setFileName(file.getOriginalFilename());
 			f.setFilePath("https://www.womanarea51.ml/fund/" + id.toString() + "/" + file.getOriginalFilename());
 			f.setF(fund);
+			System.out.println(f.toString());
 			return fr.save(f);
 		} catch (Exception e) {
 			System.out.println("Error Uploading file");
