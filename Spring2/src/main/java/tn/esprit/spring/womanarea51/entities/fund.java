@@ -52,11 +52,9 @@ public class fund implements Serializable {
 	
 	
 	@ManyToOne
-	@JsonIgnore
 	private fundCategory fCategory;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="Fund")
-	@JsonIgnore
 	private Set<donation> donations;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "f")

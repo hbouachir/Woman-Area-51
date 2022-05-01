@@ -15,8 +15,8 @@ public class FTPService {
 	static FTPClient ftp = new FTPClient();
     static String TMP_UPLOAD_FOLDER = "C:/tmp/";
     static String SERVER_DOMAIN = "ftpupload.net";
-    static String SERVER_USERNAME = " ";
-	static String SERVER_PASSWORD = " ";
+    static String SERVER_USERNAME = "epiz_30923546";
+	static String SERVER_PASSWORD = "NnShNRiOBL";
 	
 	
 	public static String uFileUpload(MultipartFile file,String Type, Long typeId) throws IOException {
