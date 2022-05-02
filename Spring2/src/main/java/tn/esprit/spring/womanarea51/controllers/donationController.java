@@ -142,4 +142,8 @@ public class donationController {
 		return IDS.ListConfirmedStatus(s);
 		
 	}
+	@GetMapping("/donation/getUser/{id}")
+	User GetUser(@PathVariable("id")Long id) {
+		return IDS.FindDonation(id).getUser();
+	}
 }
