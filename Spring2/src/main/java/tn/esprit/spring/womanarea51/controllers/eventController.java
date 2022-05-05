@@ -184,28 +184,28 @@ public class eventController {
 		return IFS.BestOfThisMonth(IFS.FilterEventBycurrentDate());
 	}
 
-	@GetMapping("/event-by-status")
-	public List<event> SearchByStatus(@RequestBody eventStatus s) {
+	@GetMapping("/event-by-status/{s}")
+	public List<event> SearchByStatus(@PathVariable("s") eventStatus s) {
 		return IES.SearchByStatus(s);
 
 	}
 
-	@GetMapping("/event-by-type")
-	public List<event> SearchByStatus(@RequestBody eventType t) {
+	@GetMapping("/event-by-type/{t}")
+	public List<event> SearchByType(@PathVariable("t") eventType t) {
 		return IES.SearchByType(t);
 
 	}
 
-	@PostMapping("/generateParticipantBadge/{id}")
-	public void generateParticipantBadge(@PathVariable("id") Long id, Authentication authentication) throws Exception {
-		User U = UR.findByUsername(authentication.getName()).orElse(null);
+	@GetMapping("/generateParticipantBadge/{id}/{uid}")
+	public void generateParticipantBadge(@PathVariable("id") Long id,@PathVariable("uid") Long uid, Authentication authentication) throws Exception {
+		User U = UR.getById(uid);
 		event e = IES.FindEvent(id);
 		IemailS.GenerateBadge(U, e);
 
 	}
 
-	@PostMapping("/generateParticipantBadge/{id}/{uid}/{type}")
-	public void generateParticipantBadge(@PathVariable("id") Long id, @PathVariable("uid") Long uid,
+	@GetMapping("/generateBadge/{id}/{uid}/{type}")
+	public void generateBadge(@PathVariable("id") Long id, @PathVariable("uid") Long uid,
 			@PathVariable("type") String type) throws Exception {
 		User U = UR.getById(uid);
 		event e = IES.FindEvent(id);
@@ -228,7 +228,7 @@ public class eventController {
 	}
 
 	@PreAuthorize("hasRole('ADMIN')")
-	@PostMapping("/AddSpeaker/{id}/{idu}")
+	@GetMapping("/AddSpeaker/{id}/{idu}")
 	public void addSpeaker(@PathVariable("id") Long id, @PathVariable("idu") Long idu, Authentication authentication)
 			throws Exception, Exception, Exception {
 		User u = US.findOne(idu);
@@ -242,7 +242,7 @@ public class eventController {
 	}
 
 	@PreAuthorize("hasRole('ADMIN')")
-	@PostMapping("/AddStaff/{id}/{idu}")
+	@GetMapping("/AddStaff/{id}/{idu}")
 	public void addStaff(@PathVariable("id") Long id, @PathVariable("idu") Long idu, Authentication authentication)
 			throws Exception, Exception, Exception {
 
@@ -270,6 +270,11 @@ public class eventController {
 	public void RemoveStaff(@PathVariable("id") Long id, @PathVariable("idu") Long idu, Authentication authentication) {
 		User u = IES.removeStaff(id, idu);
 		System.out.println(u.getId());
+	}
+	
+	@GetMapping("/getEventTags")
+	public List<String> GetTags(){
+		return IES.getTags();
 	}
 
 }

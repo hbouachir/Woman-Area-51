@@ -40,6 +40,7 @@ public interface IEventService {
 	
 	public User removeStaff(long id, long idu);
 	
+	public List<String> getTags();
 	
 	
 

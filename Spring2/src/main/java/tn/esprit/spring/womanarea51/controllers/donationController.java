@@ -100,7 +100,7 @@ public class donationController {
 	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/Donation/Update/{fid}/{uid}")
 	donation EditDonation( Authentication authentication, @RequestBody donation d,@PathVariable("fid")Long fid,@PathVariable("uid")Long uid) {
-		d.setUser(UR.getById(uid));
+		d.setUser(IUS.findOne(uid));
 		d.setFund(IFS.FindFund(fid));
 		return IDS.EditDonation(d);
 				

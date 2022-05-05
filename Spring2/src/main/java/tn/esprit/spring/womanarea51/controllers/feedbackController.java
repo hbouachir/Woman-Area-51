@@ -434,6 +434,11 @@ public class feedbackController {
 		return IFBS.MaxEventRecommendRating(fb);
 	}
 	
-	
+	@PostMapping("/sendPersonalizedMail/{id-user}/{subject}")
+	String SendMailPers(@PathVariable("id-user") Long uId,@PathVariable("subject")String subject,@RequestBody String body) throws Exception {
+		User U=IUS.findOne(uId);
+		IEmailingS.Personalized(U, subject, body);
+		return "Mail Sent";
+	}
 
 }
