@@ -58,7 +58,7 @@ public class EmailingServiceImp implements IEmailingService {
 		mimeMessageHelper.setText("Hello " + d.getUser().getFirstName() + " " + d.getUser().getLastName() + ","
 				+ "\n \n" + "Your donation amount of " + String.valueOf(d.getAmount()) + "DT has been confirmed for "
 				+ d.getFund().getFundName() + "- " + d.getFund().getFundDescription() + "\nFundRaiser Link: "
-				+ "https://www.womanarea51.ml/FundRaisers/" + d.getFund().getFundId().toString() + ".\n"
+				+ "https://www.womanarea51.ml/Fundraisers/" + d.getFund().getFundId().toString() + ".\n"
 				+ "Thank you for your contribution.\n\n" + "Regards,\n" + "The womenArea51 Team");
 		mimeMessageHelper.setSubject("Donation confirmation");
 		FileSystemResource res = new FileSystemResource(
@@ -78,7 +78,7 @@ public class EmailingServiceImp implements IEmailingService {
 		mimeMessageHelper.setText("Hello " + d.getUser().getFirstName() + " " + d.getUser().getLastName() + ","
 				+ "\n \n" + "Your donation amount of " + String.valueOf(d.getAmount()) + "DT has been confirmed for "
 				+ d.getFund().getFundName() + "- " + d.getFund().getFundDescription() + "\nFundRaiser Link: "
-				+ "https://www.womanarea51.ml/FundRaisers/" + d.getFund().getFundId().toString() + ".\n"
+				+ "https://www.womanarea51.ml/Fundraisers/" + d.getFund().getFundId().toString() + ".\n"
 				+ "Thank you for your contribution.\n\n" + "Regards,\n" + "The womenArea51 Team");
 		mimeMessageHelper.setSubject("Donation confirmation");
 		FileSystemResource res = new FileSystemResource(

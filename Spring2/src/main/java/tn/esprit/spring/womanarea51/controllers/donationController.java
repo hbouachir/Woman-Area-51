@@ -157,5 +157,16 @@ public class donationController {
 	List<User>ListUsers(){
 		return UR.findAll();
 	}
+	
+	@GetMapping("/FindUserForDonation/{Username}")
+	User GetUer(@PathVariable("Username")String user){
+		return UR.findByUsername(user).orElse(null);
+	}
+	
+	@GetMapping("/GetDonationFund/{id}")
+	fund GetDonationFund(@PathVariable("id")Long id) {
+		return IDS.FindDonation(id).getFund();
+		
+	}
 
 }
