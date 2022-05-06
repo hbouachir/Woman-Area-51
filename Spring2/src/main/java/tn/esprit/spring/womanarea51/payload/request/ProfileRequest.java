@@ -17,7 +17,8 @@ public class ProfileRequest {
     @NotBlank
     @Size(min = 3, max = 20)
     private String firstName;
-    
+
+
     @NotBlank
     @Size(min = 3, max = 20)
     private String lastName;
