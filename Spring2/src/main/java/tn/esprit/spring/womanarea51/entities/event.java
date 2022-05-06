@@ -70,7 +70,6 @@ public class event implements Serializable {
 	Set<feedback> feedbacks;
 
 	@ManyToOne
-	@JsonIgnore
 	private User admin;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "e")

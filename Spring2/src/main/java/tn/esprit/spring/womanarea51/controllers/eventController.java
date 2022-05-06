@@ -50,7 +50,6 @@ public class eventController {
 	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("/Add-event")
 	void AddEvent(@RequestBody event e, Authentication authentication) {
-
 		User U = UR.findByUsername(authentication.getName()).orElse(null);
 		e.setAdmin(U);
 		IES.AddEvent(e);
@@ -199,8 +198,9 @@ public class eventController {
 	@GetMapping("/generateParticipantBadge/{id}/{uid}")
 	public void generateParticipantBadge(@PathVariable("id") Long id,@PathVariable("uid") Long uid, Authentication authentication) throws Exception {
 		User U = UR.getById(uid);
-		event e = IES.FindEvent(id);
-		IemailS.GenerateBadge(U, e);
+		event e = IES.FindEvent(id);	
+		IemailS.ParticipationConfirmation(U, e, IemailS.GenerateBadge(U, e));
+		IemailS.DeleteBadgeFiles(U, e);
 
 	}
 
@@ -209,8 +209,16 @@ public class eventController {
 			@PathVariable("type") String type) throws Exception {
 		User U = UR.getById(uid);
 		event e = IES.FindEvent(id);
-		IemailS.GeneratgeBadgeByType(U, e, type);
-		// IemailS.DeleteBadgeFiles(U, e);
+		String badge=IemailS.GeneratgeBadgeByType(U, e, type);
+		if (type.contentEquals("STAFF")) {
+			
+			IemailS.StaffMail(U, e, badge);
+		}
+		else if(type.contentEquals("SPEAKER")) {
+			
+			IemailS.SpeakerMail(U, e, badge); }
+		
+		IemailS.DeleteBadgeFiles(U, e);
 
 	}
 
@@ -275,6 +283,12 @@ public class eventController {
 	@GetMapping("/getEventTags")
 	public List<String> GetTags(){
 		return IES.getTags();
+	}
+	
+	@GetMapping("/GetEventAdmin/{id}")
+	public User GetAdmin(@PathVariable("id")Long id) {
+		System.out.println(IES.FindEvent(id).getAdmin()+"**************************");
+		return IES.FindEvent(id).getAdmin();
 	}
 
 }
