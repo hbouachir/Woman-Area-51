@@ -170,7 +170,6 @@ public class eventController {
 
 	}
 
-	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/{event-id}/partipants")
 	List<User> EventParticipants(@PathVariable("event-id") Long eventId, Authentication authentication) {
 		event e = IES.FindEvent(eventId);

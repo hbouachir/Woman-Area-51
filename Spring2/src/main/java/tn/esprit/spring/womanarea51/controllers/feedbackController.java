@@ -445,4 +445,12 @@ public class feedbackController {
 		return IFBS.FindFeedback(id).getParticipant();
 	}
 
+	@GetMapping("/GetParticipatedEvents/{id}")
+	List<event>GetParticipatedEvents(@PathVariable("id")Long id){
+		List<event> events= new ArrayList<event>();
+		IFBS.FindFeedbacksByParticipant(id).forEach(f->{
+			events.add(f.getEvent_feedback());
+		});
+		return events;
+	}
 }
