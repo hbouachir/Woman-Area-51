@@ -65,10 +65,10 @@ public static String uploadDirectory = System.getProperty("user.dir") + "/upload
 	public List<Post> listepost(Long idUser) {
 		User u = userRepository.findById(idUser).orElse(null);
 		return postRepository.findByUserp(u);
-
+//return postRepository.findAllByOrderByUserpDesc(idUser);
 }
 	@Override
-	public void addPost(Post post,Long idUser) {
+	public Post addPost(Post post,Long idUser) {
 		User u = userRepository.findById(idUser).orElse(null);
 		
 		if (post.getId()!=null) 
@@ -82,7 +82,7 @@ public static String uploadDirectory = System.getProperty("user.dir") + "/upload
         post.setCreatedate(currentTimestamp);
 		post.setUserp(u);
 		
-		postRepository.save(post);	
+		return postRepository.save(post);	
 	}
 
 	/*@Override

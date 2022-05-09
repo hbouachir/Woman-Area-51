@@ -30,6 +30,7 @@ import tn.esprit.spring.womanarea51.entities.User;
 import tn.esprit.spring.womanarea51.entities.donation;
 import tn.esprit.spring.womanarea51.entities.event;
 import tn.esprit.spring.womanarea51.entities.feedback;
+import tn.esprit.spring.womanarea51.entities.fund;
 
 @Service
 public class EmailingServiceImp implements IEmailingService {
@@ -57,7 +58,7 @@ public class EmailingServiceImp implements IEmailingService {
 		mimeMessageHelper.setText("Hello " + d.getUser().getFirstName() + " " + d.getUser().getLastName() + ","
 				+ "\n \n" + "Your donation amount of " + String.valueOf(d.getAmount()) + "DT has been confirmed for "
 				+ d.getFund().getFundName() + "- " + d.getFund().getFundDescription() + "\nFundRaiser Link: "
-				+ "https://www.womanarea51.ml/FundRaisers/" + d.getFund().getFundId().toString() + ".\n"
+				+ "https://www.womanarea51.ml/Fundraisers/" + d.getFund().getFundId().toString() + ".\n"
 				+ "Thank you for your contribution.\n\n" + "Regards,\n" + "The womenArea51 Team");
 		mimeMessageHelper.setSubject("Donation confirmation");
 		FileSystemResource res = new FileSystemResource(
@@ -77,7 +78,7 @@ public class EmailingServiceImp implements IEmailingService {
 		mimeMessageHelper.setText("Hello " + d.getUser().getFirstName() + " " + d.getUser().getLastName() + ","
 				+ "\n \n" + "Your donation amount of " + String.valueOf(d.getAmount()) + "DT has been confirmed for "
 				+ d.getFund().getFundName() + "- " + d.getFund().getFundDescription() + "\nFundRaiser Link: "
-				+ "https://www.womanarea51.ml/FundRaisers/" + d.getFund().getFundId().toString() + ".\n"
+				+ "https://www.womanarea51.ml/Fundraisers/" + d.getFund().getFundId().toString() + ".\n"
 				+ "Thank you for your contribution.\n\n" + "Regards,\n" + "The womenArea51 Team");
 		mimeMessageHelper.setSubject("Donation confirmation");
 		FileSystemResource res = new FileSystemResource(
@@ -447,6 +448,20 @@ public class EmailingServiceImp implements IEmailingService {
 				+ "Thank you for your participation. We look forward to hearing your feedback on the event after attending.\n\n"
 				+ "Regards,\n" + "The womenArea51 Team");
 		mimeMessageHelper.setSubject("Event Updates");
+		emailSender.send(mm);
+		
+	}
+	public void Personalized(User U,String subject, String body) throws Exception {
+		MimeMessage mm = emailSender.createMimeMessage();
+		MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mm, true);
+		mimeMessageHelper.setFrom(U.getEmail());
+		mimeMessageHelper.setTo(U.getEmail());
+		mimeMessageHelper.setText(body);
+		mimeMessageHelper.setSubject(subject);
+		FileSystemResource res = new FileSystemResource(
+				new File(ClassLoader.getSystemResource("static/images/logoWomenArea51.png").toURI()));
+		mimeMessageHelper.addInline("WomenArea51", res);
+
 		emailSender.send(mm);
 		
 	}

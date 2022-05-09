@@ -52,15 +52,14 @@ public class PostController {
 	public static String uploadDirectory = System.getProperty("user.dir") + "/uploads";
 ////ok
 	@PostMapping("addpost")
-	public String createNewPost( @RequestBody Post post, Authentication authentication) { 
+	public Post createNewPost( @RequestBody Post post, Authentication authentication) {
 	String msg="";
 	UserDetailsImpl U1 = (UserDetailsImpl) authentication.getPrincipal();
     User U = userRepository.findByUsername(U1.getUsername())
             .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + U1.getUsername()));
-    postService.addPost(post, U.getId());
+
 	
-msg="post ajouté de user name: "+U.getFirstName()+"  "+U.getLastName();
-	return msg; 
+	return  postService.addPost(post, U.getId());
 	}
 ////angularr test
 	@PostMapping("addpostt")
@@ -237,7 +236,7 @@ public Filepost getImagee(@PathVariable Long id) {
 @GetMapping("/getpostt/{id}")
 
 public Post getPostt(@PathVariable Long id) {
-	
+
 	Post  g=postService.getPostt(id);
 
 
@@ -246,6 +245,15 @@ public Post getPostt(@PathVariable Long id) {
 @GetMapping("/postfb/{id}")
 public void listPubFb(@PathVariable Long id){
 	postService.listPubFb(id);
-	 
+
+}
+@GetMapping("/listepostsuser")
+
+public List<Post> getPostByUser(@RequestParam("username") String username) {
+	User u=userRepository.findByUsername(username).get();
+	List<Post>  g=postService.listepost(u.getId());
+
+
+			return g;
 }
 }

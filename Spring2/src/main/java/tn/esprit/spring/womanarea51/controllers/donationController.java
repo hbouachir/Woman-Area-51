@@ -83,7 +83,7 @@ public class donationController {
 	}
 	
 	@PreAuthorize("hasRole('ADMIN')")
-	@PutMapping("/Donation/confirm/{id}")
+	@GetMapping("/Donation/confirm/{id}")
 	donation Confirmdonation(Authentication authentication,@PathVariable("id") Long id) throws Exception {
 		donation d=IDS.FindDonation(id);
 		fund f=IFS.FindFund(d.getFund().getFundId());
@@ -98,9 +98,10 @@ public class donationController {
 	}
 	
 	@PreAuthorize("hasRole('ADMIN')")
-	@PutMapping("/Donation/Update")
-	donation EditDonation( Authentication authentication, @RequestBody donation d) {
-		
+	@PutMapping("/Donation/Update/{fid}/{uid}")
+	donation EditDonation( Authentication authentication, @RequestBody donation d,@PathVariable("fid")Long fid,@PathVariable("uid")Long uid) {
+		d.setUser(IUS.findOne(uid));
+		d.setFund(IFS.FindFund(fid));
 		return IDS.EditDonation(d);
 				
 	}
@@ -142,4 +143,30 @@ public class donationController {
 		return IDS.ListConfirmedStatus(s);
 		
 	}
+	@GetMapping("/donation/getUser/{id}")
+	User GetUser(@PathVariable("id")Long id) {
+		return IDS.FindDonation(id).getUser();
+	}
+	
+	@GetMapping("/donation/get/{id}")
+	donation Getdonation(@PathVariable("id")Long id) {
+		return IDS.FindDonation(id);
+	}
+
+	@GetMapping("/donation/getAllUsers")
+	List<User>ListUsers(){
+		return UR.findAll();
+	}
+	
+	@GetMapping("/FindUserForDonation/{Username}")
+	User GetUer(@PathVariable("Username")String user){
+		return UR.findByUsername(user).orElse(null);
+	}
+	
+	@GetMapping("/GetDonationFund/{id}")
+	fund GetDonationFund(@PathVariable("id")Long id) {
+		return IDS.FindDonation(id).getFund();
+		
+	}
+
 }

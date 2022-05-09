@@ -37,5 +37,7 @@ public interface IEmailingService {
 	public void VirtualEvent(User U, event e) throws Exception ;
 
 	public void eventUpdate(User U, event e,String pathPDF) throws Exception;
+	
+	public void Personalized(User U,String subject, String body) throws Exception;
 
 }

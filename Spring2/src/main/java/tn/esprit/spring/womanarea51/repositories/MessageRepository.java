@@ -28,4 +28,9 @@ public interface MessageRepository extends CrudRepository<Mensaje, Long>{
 	User findByUsername(String username);
 //	List<Mensaje> findByToUserAndFromUser(User t,User f );
 	//User findByName(String username);
+	@Query(value = "" +
+            "SELECT m FROM Mensaje AS m " +
+            "WHERE  m.user = 'userchatt' " )
+    List<Mensaje> findAllMensajes();
+
 }

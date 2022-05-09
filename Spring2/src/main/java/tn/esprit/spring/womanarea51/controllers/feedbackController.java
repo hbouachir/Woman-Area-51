@@ -52,7 +52,7 @@ public class feedbackController {
 	
 	
 	
-	@PostMapping("/participate/{idevent}")
+	@GetMapping("/participate/{idevent}")
 	
 	void Partcipate( Authentication authentication, @PathVariable ("idevent") Long eventId) throws Exception{
 		User U=UR.findByUsername(authentication.getName()).orElse(null);
@@ -107,7 +107,7 @@ public class feedbackController {
 	}
 	
 	
-	@PutMapping("/remove-feedback/{feedbackId}")
+	@GetMapping("/remove-feedback/{feedbackId}")
 	
 	void RemoveFeedback(Authentication authentication,@PathVariable("feedbackId") Long id) {
 		feedback f=IFBS.FindFeedback(id);
@@ -150,7 +150,7 @@ public class feedbackController {
 		return IFBS.FindFeedbacksByParticipant(id);
 	}
 	
-	@PreAuthorize("hasRole('ADMIN')")
+	
 	@GetMapping("/find-feedbacks/{event-id}/{user-id}")
 	feedback FindFeedbacksByEventAndUSer(@PathVariable("event-id") Long eventId, @PathVariable("user-id") Long userId) {
 		return IFBS.FindFeedbackByUserAndEvent(userId,eventId).get(0);
@@ -434,6 +434,23 @@ public class feedbackController {
 		return IFBS.MaxEventRecommendRating(fb);
 	}
 	
-	
+	@PostMapping("/sendPersonalizedMail/{id-user}/{subject}")
+	String SendMailPers(@PathVariable("id-user") Long uId,@PathVariable("subject")String subject,@RequestBody String body) throws Exception {
+		User U=IUS.findOne(uId);
+		IEmailingS.Personalized(U, subject, body);
+		return "Mail Sent";
+	}
+	@GetMapping("/GetFeedBackUser/{id}")
+	User getFeedBackUser(@PathVariable("id")Long id) {
+		return IFBS.FindFeedback(id).getParticipant();
+	}
 
+	@GetMapping("/GetParticipatedEvents/{id}")
+	List<event>GetParticipatedEvents(@PathVariable("id")Long id){
+		List<event> events= new ArrayList<event>();
+		IFBS.FindFeedbacksByParticipant(id).forEach(f->{
+			events.add(f.getEvent_feedback());
+		});
+		return events;
+	}
 }

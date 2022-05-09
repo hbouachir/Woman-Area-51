@@ -21,10 +21,10 @@ public class UserService implements IUserService {
 	UserRepository userRepository;
 	@Autowired
 	RoleRepository roleRepository;
-	
+
 	@Autowired
     private VerificationTokenRepository tokenRepository;
-	
+
 	/*Chercher un utilisateur*/
 
 	public User findOne(long id){
@@ -39,12 +39,12 @@ public class UserService implements IUserService {
 	public List<User> findAll() {
 		return userRepository.findAll();
 	}
-	
+
 	/*Update d'un user*/
 	@Override
 	public  User updateUser(User user)	{
 		return userRepository.save(user);
-		
+
 	}
 
 	@Transactional
@@ -68,11 +68,11 @@ public class UserService implements IUserService {
 		 userRepository.deleteById(id);
 
 	}
-	
+
 	/*get all Users by Role*/
 	public List<User> getAllUsers(){
 		 List<Long> listUsersId=userRepository.ListeUsers();
-	
+
 			List<User> listUsers = new ArrayList();
 		 User u = new User();
 		 for(Long  a : listUsersId)
@@ -83,29 +83,29 @@ public class UserService implements IUserService {
 				 listUsers.add(u);
 			// }
 		 }
-		return  listUsers;		
+		return  listUsers;
 	}
-	
+
 	public User getUser(String verificationToken) {
         User user = tokenRepository.findByToken(verificationToken).getUser();
         return user;
     }
-	
+
 	public VerificationToken getVerificationToken(String VerificationToken) {
         return tokenRepository.findByToken(VerificationToken);
     }
-	
+
 	public void createVerificationToken(User user, String token) {
         VerificationToken myToken = new VerificationToken(token, user);
         tokenRepository.save(myToken);
     }
 
-  
+
 	public int getNombresUsersSelonSexe(String sexe)
 	{
 		return userRepository.NombreUsersSelonSexe(sexe);
 	}
-	
+
 	public List<User> getUserSelonUsername( String username)
 	{
 		return userRepository.getUserSelonUsername(username);
@@ -120,7 +120,7 @@ public class UserService implements IUserService {
 	public int getmbreUsersbyPointfideletBetwen100300(){
 		return userRepository.nombreUsersbyPointfideletbetwen100et300();
 	};
-	
+
 	public int getmbreUsersbyPointfideletSup(){
 		return userRepository.nombreUsersbyPointfideletSup300();
 	};
@@ -129,5 +129,10 @@ public class UserService implements IUserService {
 	}
 	public float moyennenbpointfiedelete(){
 		return userRepository.moyenneNpointFidelet();
+	}
+	@Override
+	public User findByUsername(String username) {
+		// TODO Auto-generated method stub
+		return userRepository.findByUsername(username).get();
 	}
 }

@@ -9,12 +9,14 @@ import javax.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,8 +28,9 @@ import tn.esprit.spring.womanarea51.repositories.UserRepository;
 import tn.esprit.spring.womanarea51.services.ContractServicempl;
 import tn.esprit.spring.womanarea51.services.EmailSenderService;
 import tn.esprit.spring.womanarea51.services.InterviewService;
-
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
+@RequestMapping("/api")
 public class InterviewController {
 	@Autowired
 	InterviewService in ;
@@ -68,6 +71,11 @@ public class InterviewController {
 		return in.showAllInterview();
 	}
 	@PreAuthorize("hasRole('ADMIN')")
+	@GetMapping("/getOneInterview/{idOffer}/{userId}")
+	public Interview showOneInterview(@PathVariable("idOffer") Long idOffer, @PathVariable("userId") Long userId){
+		return in.showOneInterview(idOffer, userId);
+	}
+	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/ListOfAcceptedUser")
 	public List<User> ListOfAcceptedUser(){
 		return in.ListOfAcceptedUser();
@@ -90,21 +98,20 @@ public class InterviewController {
 	}
 	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/AcceptUser/{userId}")
-	public List<Contract> AcceptInterview(@RequestBody Interview i, @PathVariable("userId") Long userId){
+	public void AcceptInterview(@RequestBody Interview i){
 		in.generateContract(i);
-		return in.ContractParUser(userId);
+		//return in.ContractParUser(userId);
 	}
 	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/rejectCandidate")
-	public List<User> rejectCandidate(@RequestBody Interview i){
+	public void rejectCandidate(@RequestBody Interview i){
 		in.rejectUser(i);
-		return in.ListOfRejectedUser() ;
 	}
 	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/PendCandidate")
-	public List<User> PendCandidate(@RequestBody Interview i){
+	public void  PendCandidate(@RequestBody Interview i){
 		in.PendUser(i);
-		return in.ListOfPendingUser();
+
 	}
 	@PreAuthorize("hasRole('USER')")
 	@GetMapping("/showContract")

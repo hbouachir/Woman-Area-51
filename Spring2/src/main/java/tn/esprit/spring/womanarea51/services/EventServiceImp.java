@@ -165,5 +165,18 @@ public class EventServiceImp implements IEventService {
 		ERepository.save(e);
 		return u;
 	}
+	
+	public List<String> getTags(){
+		List<String>list=new ArrayList<String>();
+		ERepository.findAll().forEach(e->{
+				e.getTags().forEach(t->{
+				if (!list.contains(t)){
+					list.addAll(e.getTags());
+				}
+			});
+			
+		});
+		return list;
+	}
 
 }
