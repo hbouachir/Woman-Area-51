@@ -94,6 +94,13 @@ UserService userService;
 		User u=userService.findOne(id);
 		return u;
 	}
+	@GetMapping("/usernamemsg/{username}")
+	public User findUserByUsername(@PathVariable("username") String username) {
+		System.out.println("usernameee........."+username);
+		User u=userService.findByUsername(username);
+		System.out.println("usernameee"+username);
+		return u;
+	}
 	@GetMapping("/users")
 	public List<User> findUser() {
 		return userService.findAll();

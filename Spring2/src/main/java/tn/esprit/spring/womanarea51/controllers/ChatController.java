@@ -32,7 +32,11 @@ public class ChatController {
 		if(mensaje.getTipo().equals("new_user")){
 			mensaje.setColor(colors[new Random().nextInt(colors.length)]);
 			mensaje.setTexto(" - new user connecter");
-		}else {
+		}if (mensaje.getTipo().equals("old_user")) {
+			mensaje.setColor(colors[new Random().nextInt(colors.length)]);
+			mensaje.setTexto(".. deconnecter");
+		}
+		else {
 			imsg.createMessage(mensaje);
 		}
 	//	mensaje.setTexto("recibido por el broker :"+mensaje.getTexto());

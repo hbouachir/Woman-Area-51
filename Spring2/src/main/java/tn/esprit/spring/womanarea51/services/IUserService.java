@@ -13,6 +13,7 @@ public interface IUserService {
 
 	List<User> findAll();
 	void addUserAffectRole(long idRole,User u);
+	User findByUsername(String username);
 	
 	
 }

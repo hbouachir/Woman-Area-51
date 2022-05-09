@@ -3,6 +3,8 @@ package tn.esprit.spring.womanarea51.repositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+
+import tn.esprit.spring.womanarea51.entities.Post;
 import tn.esprit.spring.womanarea51.entities.User;
 
 import java.util.List;
@@ -76,5 +78,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	public float moyenneNpointFidelet();
 
 	User findByFirstName(String username);
+
+
 
 }

@@ -8,6 +8,7 @@ import javax.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,6 +21,7 @@ import tn.esprit.spring.womanarea51.security.services.UserDetailsImpl;
 import tn.esprit.spring.womanarea51.services.IMessageService;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 public class MessageRestController {
 @Autowired 
 IMessageService messageService;
@@ -36,6 +38,18 @@ List<Mensaje> listedePostsanscom(Authentication authentication,@PathParam("idUse
 	User U2= userRepository.findById(idUser).orElse(null);
 	 System.out.println("id    "+U2.getId());
 	return messageService.getAllMessages(U.getUsername(), U2.getUsername());
+}
+@GetMapping("/listemsg")
+@ResponseBody
+List<Mensaje> listedeMsg(){
+
+	return messageService.getAllMessage();
+}
+@GetMapping("/listemsggroup")
+@ResponseBody
+List<Mensaje> listedeMsgGroup(){
+
+	return messageService.getAllMessageGroup();
 }
 @DeleteMapping("/deleteconversation")
 public String deleteChat(Authentication authentication,@PathParam("idUser")Long idUser){

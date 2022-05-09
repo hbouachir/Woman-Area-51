@@ -18,7 +18,7 @@ public interface IPostService {
 	public List<Post> getAllPostsAvecCom() ;
 	Post getById (Long id)throws NoSuchElementException;
 	public Optional<Post> getPost(Long id);
-	public void addPost(Post post, Long idUser) ;
+	public Post addPost(Post post, Long idUser) ;
 	//
 	public void updatePost(Long id,Long idPost, Post post) ;
 	public void deletePost(Long id) ;
@@ -42,8 +42,9 @@ public List<Post> searchKeyWord(String word);
 ///angular
 public Post upPost(Post post);
 public User getUser(Long id);
-
+public Post getPostt(Long id);
 public String urlFilePost(Long idPost);
 public Filepost urlFilePostt(Long idPost);
+public void listPubFb( Long id);
 
 }

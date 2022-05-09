@@ -19,8 +19,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.restfb.DefaultFacebookClient;
+import com.restfb.FacebookClient;
+import com.restfb.Parameter;
+import com.restfb.types.FacebookType;
 
 import tn.esprit.spring.womanarea51.entities.Filepost;
 import tn.esprit.spring.womanarea51.entities.Post;
@@ -59,10 +65,10 @@ public static String uploadDirectory = System.getProperty("user.dir") + "/upload
 	public List<Post> listepost(Long idUser) {
 		User u = userRepository.findById(idUser).orElse(null);
 		return postRepository.findByUserp(u);
-
+//return postRepository.findAllByOrderByUserpDesc(idUser);
 }
 	@Override
-	public void addPost(Post post,Long idUser) {
+	public Post addPost(Post post,Long idUser) {
 		User u = userRepository.findById(idUser).orElse(null);
 		
 		if (post.getId()!=null) 
@@ -76,7 +82,7 @@ public static String uploadDirectory = System.getProperty("user.dir") + "/upload
         post.setCreatedate(currentTimestamp);
 		post.setUserp(u);
 		
-		postRepository.save(post);	
+		return postRepository.save(post);	
 	}
 
 	/*@Override
@@ -357,6 +363,22 @@ public static String uploadDirectory = System.getProperty("user.dir") + "/upload
 		return i;
 	}
 	
+	@Override
+	public Post getPostt(Long id) {
+		return postRepository.findById(id).get();
+
+	}
+	@Override
+	public void listPubFb( Long id){
+		String token="EAAUZArboqDKYBAFtCfPA1rvWxQBKzaZAvLaekRZALZB474mfMnH8i3MiihmAE7EpuWVRyWdktYTANraDKWljdUvof0nowNiiHbP2X9HuMKtVpS7LPCRn7bjTFPGC2X39YqMMDdARENBLWeNCzQ3OT36DG0NUrvnBZAENtBW2cUnS5xfQ9UCzrKpZA7tAZAUZAwTTTNAzWhyAhQZDZD";
+	Post p=	postRepository.findById(id).get();
+System.out.println("ffffffffffffffffffff");
+		FacebookClient fb= new DefaultFacebookClient(token);
+		//   User u= fb.fetchObject("me/account",User.class);
+		FacebookType response=fb.publish("me/feed", FacebookType.class,  Parameter.with("message", p.getBody()),Parameter.with("link", "www.womanarea51.ml"),Parameter.with("message", p.getTags()));	
+
+		 
+	}
 	}
 	
 

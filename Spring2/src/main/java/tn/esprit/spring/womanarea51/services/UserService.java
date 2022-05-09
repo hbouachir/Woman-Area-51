@@ -129,4 +129,9 @@ public class UserService implements IUserService {
 	public float moyennenbpointfiedelete(){
 		return userRepository.moyenneNpointFidelet();
 	}
+	@Override
+	public User findByUsername(String username) {
+		// TODO Auto-generated method stub
+		return userRepository.findByUsername(username).get();
+	}
 }
