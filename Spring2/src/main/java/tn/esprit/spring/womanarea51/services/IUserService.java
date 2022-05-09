@@ -2,6 +2,7 @@ package tn.esprit.spring.womanarea51.services;
 
 import tn.esprit.spring.womanarea51.entities.User;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 public interface IUserService {
@@ -9,10 +10,15 @@ public interface IUserService {
 
 	User findOne(long id);
 	User updateUser(User u);
-	void deleteUser(long id);
+
+    @Transactional
+    void addUserAffectRole(long idRole, long idUser);
+
+    void deleteUser(long id);
 
 	List<User> findAll();
-	void addUserAffectRole(long idRole,long idUser);
-	
+
+	User findByUsername(String username);
+
 	
 }

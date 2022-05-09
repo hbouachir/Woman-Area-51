@@ -285,4 +285,7 @@ Comment c=	commRepository.findById(id).get();
 		User u=c.getUserc(); 
 		return u;
 	}
+
+	
+	
 }

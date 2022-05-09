@@ -3,6 +3,7 @@ package tn.esprit.spring.womanarea51.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,7 @@ import tn.esprit.spring.womanarea51.entities.User;
 import tn.esprit.spring.womanarea51.repositories.UserRepository;
 import tn.esprit.spring.womanarea51.services.FilepostService;
 @RestController
+@CrossOrigin
 public class FilepostController {
     @Autowired
     FilepostService fs;

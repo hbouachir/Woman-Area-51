@@ -4,20 +4,23 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import tn.esprit.spring.womanarea51.entities.JobOffer;
 import tn.esprit.spring.womanarea51.repositories.UserRepository;
 import tn.esprit.spring.womanarea51.services.JobOfferService;
-
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
+@RequestMapping("/api")
 public class JobOfferController {
 	@Autowired
 	JobOfferService js ;
@@ -40,12 +43,12 @@ public class JobOfferController {
 	public JobOffer updateOffer(@PathVariable ("idOffer") long idOffer,@RequestBody JobOffer jo){
 		return js.updateJobOffer(jo, idOffer);
 	}
-	@PreAuthorize("hasRole('ADMIN')")
+	//@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	@GetMapping("/getOneOffer/{idOffer}")
 	public JobOffer showOffer(@PathVariable long idOffer ){
 		return js.showOneOffer(idOffer);
 	}
-	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+	//	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	@GetMapping("/ShowAllOffer")
 	public List<JobOffer> showAllOffer(){
 		return js.showAllOffer();
@@ -60,9 +63,9 @@ public class JobOfferController {
 	public List<JobOffer> searchOfferByPlace(@PathVariable("offerPlace")String offerPlace) {
 		return js.searchOfferByPlace(offerPlace);
 	}
-	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-	@GetMapping("/JobOfferMotCle")
-	public List<JobOffer> searchOfferMotCle(@RequestParam ("mc")String mc) {
+	//@PreAuthorize("hasRole('ADMIN')")
+	@GetMapping("/JobOfferMotCle/{mc}")
+	public List<JobOffer> searchOfferMotCle(@PathVariable ("mc")String mc) {
 		return js.searchOfferMocCle("%"+mc+"%");
 	}
 

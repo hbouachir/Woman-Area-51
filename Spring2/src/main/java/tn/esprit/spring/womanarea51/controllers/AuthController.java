@@ -55,17 +55,17 @@ public class AuthController {
 	UserRepository userRepository;
 
 	@Autowired
-    TwilioOTPService twilioOTPService;
+	TwilioOTPService twilioOTPService;
 
-	Cookie cookie=new Cookie("access_token","");
-	LocalDateTime loginTime=null;
-	LocalDateTime logoutTime=null;
+	Cookie cookie = new Cookie("access_token", "");
+	LocalDateTime loginTime = null;
+	LocalDateTime logoutTime = null;
 
 
-/*	@Autowired
-	TwilioOTPHandler twilioOTPHandler;*/
+	/*	@Autowired
+		TwilioOTPHandler twilioOTPHandler;*/
 	@Autowired
-UserService userService;
+	UserService userService;
 
 	@Autowired
 	RoleRepository roleRepository;
@@ -75,28 +75,34 @@ UserService userService;
 
 	@Autowired
 	JwtUtils jwtUtils;
-	
+
 	@Autowired
 	ApplicationEventPublisher eventPublisher;
 
 	@DeleteMapping("/user/{id}")
 	public ResponseEntity<?> logout(@PathVariable("id") long id) {
-		User u=userService.findOne(id);
-		if (u!=null)
-		{
-		return
-				ResponseEntity
-						.ok()
-						.body(new MessageResponse("user deleted"));}
-		else return ResponseEntity.badRequest().body(new MessageResponse("user doesn't exist"));
+		User u = userService.findOne(id);
+		if (u != null) {
+			return
+					ResponseEntity
+							.ok()
+							.body(new MessageResponse("user deleted"));
+		} else return ResponseEntity.badRequest().body(new MessageResponse("user doesn't exist"));
 	}
-	@GetMapping("/user/{id}")
+	/*@GetMapping("/user/{id}")
 	public User findUser(@PathVariable("id") long id) {
 		User u=userService.findOne(id);
 		return u;
-	}
+	}*/
 
-	@PreAuthorize("hasRole('ROLE_SUPER_USER')")
+
+	@GetMapping("/usernamemsg/{username}")
+	public User findUserByUsername(@PathVariable("username") String username) {
+		System.out.println("usernameee........."+username);
+		User u=userService.findByUsername(username);
+		System.out.println("usernameee"+username);
+		return u;
+	}
 	@GetMapping("/users")
 	public List<User> findUser() {
 		return userService.findAll();
@@ -154,7 +160,7 @@ UserService userService;
 		
 		if (!userDetails.getEtatAcc()) {
 			return ResponseEntity
-					.badRequest()
+					.accepted()
 					.body(new MessageResponse("Error: Your account is Disabled by Admin!"));
 		}
 		
@@ -194,6 +200,7 @@ UserService userService;
 	}
 	@PostMapping("/signup")
 	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest, HttpServletRequest request ) {
+
 		if (userRepository.existsByUsername(signUpRequest.getUsername())) {
 			return ResponseEntity
 					.badRequest()
@@ -335,6 +342,7 @@ UserService userService;
 	public void addUserAffectRole(@RequestParam  long idRole, @RequestParam long idUser) {
 		userService.addUserAffectRole(idRole, idUser);}
 
+
 	@PreAuthorize("hasRole('ROLE_SUPER_USER')")
 	@DeleteMapping("deleteUser")
 	public void deleteRole(@RequestParam long userId){
@@ -342,6 +350,18 @@ UserService userService;
 
 
 
+	}
+
+
+	@GetMapping("/user/{username}")
+	public User findOneByUsename( @PathVariable("username") String username) {
+
+		User U=new User();
+		U=userRepository.findByUsername(username).orElse(null);
+
+
+
+		return U;
 	}
 
 

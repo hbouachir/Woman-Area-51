@@ -29,15 +29,15 @@ import tn.esprit.spring.womanarea51.repositories.UserRepository;
 @Service
 public class InterviewServicempl implements InterviewService {
 	@Autowired
-    InterviewRepository ir ;
+	InterviewRepository ir ;
 	@Autowired
-    UserRepository ur ;
+	UserRepository ur ;
 	@Autowired
-    JobOfferRepository jr ;
+	JobOfferRepository jr ;
 	@Autowired
-    ContractRepository cr ;
+	ContractRepository cr ;
 	@Autowired
-    private JavaMailSender javaMailSender;
+	private JavaMailSender javaMailSender;
 	@Override
 	public List<Interview> showAllInterview() {
 		// TODO Auto-generated method stub
@@ -95,59 +95,59 @@ public class InterviewServicempl implements InterviewService {
 		i.setValid(Valid.Accepted);
 		Optional<User> user =  ur.findById(i.getIdInterview().getUserId());
 		Optional<JobOffer> offer =  jr.findById(i.getIdInterview().getIdOffer());
-	    k.setUserId(user.get().getId());
-	    k.setIdOffer(offer.get().getIdOffer());
-	    c.setUserName(user.get().getUsername());
-	    c.setEmail(user.get().getEmail());
-	    c.setCompanyName(offer.get().getCompanyName());
-	    c.setOfferTitle(offer.get().getOfferTitle());
-	    c.setSalaire(offer.get().getSalaire());
-	    c.setStartDate(offer.get().getStartDate());
-	    c.setEndDate(offer.get().getEndDate());
-	    c.setTypeContract(offer.get().getTypeContract());
-	    c.setContractKey(k);
-	    ir.save(i);
-	    cr.save(c);  		
+		k.setUserId(user.get().getId());
+		k.setIdOffer(offer.get().getIdOffer());
+		c.setUserName(user.get().getUsername());
+		c.setEmail(user.get().getEmail());
+		c.setCompanyName(offer.get().getCompanyName());
+		c.setOfferTitle(offer.get().getOfferTitle());
+		c.setSalaire(offer.get().getSalaire());
+		c.setStartDate(offer.get().getStartDate());
+		c.setEndDate(offer.get().getEndDate());
+		c.setTypeContract(offer.get().getTypeContract());
+		c.setContractKey(k);
+		ir.save(i);
+		cr.save(c);
 	}
 	public void sendMail(String toEmail,String body,String subject,String attachment) throws MessagingException {
-        MimeMessage mimeMessage=javaMailSender.createMimeMessage();
-        MimeMessageHelper mimeMessageHelper=new MimeMessageHelper(mimeMessage,true);
-        mimeMessageHelper.setFrom("test.esprit2021@gmail.com");
-        mimeMessageHelper.setTo(toEmail);
-        mimeMessageHelper.setText(body);
-        mimeMessageHelper.setSubject(subject);
-        
-        
-        
-        
-        FileSystemResource fileSystemResource=
-                new FileSystemResource(new File(attachment));
-        mimeMessageHelper.addAttachment(fileSystemResource.getFilename(),
-                fileSystemResource); 
-        
-        
-        javaMailSender.send(mimeMessage);
-        System.out.println("Mail sent successfully..");
+		MimeMessage mimeMessage=javaMailSender.createMimeMessage();
+		MimeMessageHelper mimeMessageHelper=new MimeMessageHelper(mimeMessage,true);
+		mimeMessageHelper.setFrom("test.esprit2021@gmail.com");
+		mimeMessageHelper.setTo(toEmail);
+		mimeMessageHelper.setText(body);
+		mimeMessageHelper.setSubject(subject);
 
-    }
-	
+
+
+
+		FileSystemResource fileSystemResource=
+				new FileSystemResource(new File(attachment));
+		mimeMessageHelper.addAttachment(fileSystemResource.getFilename(),
+				fileSystemResource);
+
+
+		javaMailSender.send(mimeMessage);
+		System.out.println("Mail sent successfully..");
+
+	}
+
 	public void sendMailNoAttachement(String toEmail,String body,String subject) throws MessagingException {
 
-        MimeMessage mimeMessage=javaMailSender.createMimeMessage();
-        MimeMessageHelper mimeMessageHelper=new MimeMessageHelper(mimeMessage,true);
-        mimeMessageHelper.setFrom("test.esprit2021@gmail.com");
-        mimeMessageHelper.setTo(toEmail);
-        mimeMessageHelper.setText(body);
-        mimeMessageHelper.setSubject(subject);
-       
-        
-        
-        
-        javaMailSender.send(mimeMessage);
-        System.out.println("Mail sent successfully..");
+		MimeMessage mimeMessage=javaMailSender.createMimeMessage();
+		MimeMessageHelper mimeMessageHelper=new MimeMessageHelper(mimeMessage,true);
+		mimeMessageHelper.setFrom("test.esprit2021@gmail.com");
+		mimeMessageHelper.setTo(toEmail);
+		mimeMessageHelper.setText(body);
+		mimeMessageHelper.setSubject(subject);
 
 
-    }
+
+
+		javaMailSender.send(mimeMessage);
+		System.out.println("Mail sent successfully..");
+
+
+	}
 
 	@Override
 	public List<Contract> ContractParUser(Long userId) {
@@ -158,12 +158,15 @@ public class InterviewServicempl implements InterviewService {
 	@Override
 	public void PostToOffer(Long idOffer, Long userId) {
 		// TODO Auto-generated method stub
+
 		InterviewKey interviewKey = new InterviewKey();
 		interviewKey.setIdOffer(idOffer);
 		interviewKey.setUserId(userId);
 		Interview i = new Interview();
+		//Optional<User> user =  ur.findById(i.getIdInterview().getUserId());
+		//Optional<JobOffer> offer =  jr.findById(i.getIdInterview().getIdOffer());
 		i.setUrlMeet("meet.google.com/wap-rkzc-usb");
-	    i.setIdInterview(interviewKey);
+		i.setIdInterview(interviewKey);
 		ir.save(i);
 	}
 
@@ -176,7 +179,7 @@ public class InterviewServicempl implements InterviewService {
 		interviewKey.setUserId(userId);
 		i.setIdInterview(interviewKey);
 		ir.delete(i);
-		
+
 	}
 
 	@Override
@@ -184,7 +187,7 @@ public class InterviewServicempl implements InterviewService {
 		// TODO Auto-generated method stub
 		i.setValid(Valid.Rejected);
 		ir.save(i);
-		
+
 	}
 
 	@Override
@@ -192,7 +195,7 @@ public class InterviewServicempl implements InterviewService {
 		// TODO Auto-generated method stub
 		i.setValid(Valid.Pending);
 		ir.save(i);
-		
+
 	}
 
 	@Override
@@ -201,9 +204,15 @@ public class InterviewServicempl implements InterviewService {
 		return (List<Contract>) cr.findAll();
 	}
 
-	
+	@Override
+	public Interview showOneInterview(Long idOffer, Long userId) {
+		// TODO Auto-generated method stub
+		return ir.showOneInterview(userId, idOffer);
+	}
 
 
-	
+
+
+
 
 }

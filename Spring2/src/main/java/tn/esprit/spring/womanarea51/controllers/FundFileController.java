@@ -1,6 +1,8 @@
 package tn.esprit.spring.womanarea51.controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,11 +37,11 @@ public class FundFileController {
 	UserRepository UR;
 	
 	@PreAuthorize("hasRole('ADMIN')")
-	@PostMapping(path="/fund/addFile/{id}")
+	@PostMapping("/fund/addFile/{id}")
 	  
 	    public FundFiles addFile(@PathVariable("id")long id, @RequestParam("file") MultipartFile file, Authentication authentication) throws IOException {
-	        User U = UR.findByUsername(authentication.getName()).orElse(null);
-	        return IFFS.addFile(file, id, U);
+	        User U = UR.findByUsername(authentication.getName()).orElse(null);	          	        
+	        return IFFS.addFile(file, id, U) ;
 	    };
 	    
 	    @PreAuthorize("hasRole('ADMIN')")
