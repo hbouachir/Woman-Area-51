@@ -27,61 +27,39 @@ public class TestController {
 	@Autowired
 	UserRepository userRepository;
 	
-	@GetMapping("/all")
-	public String allAccess() {
-		return "Public Content.";
-	}
+
+
+
+
 	
-	@GetMapping("/user")
-	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
-	public String userAccess() {
-
-		return "User Content.";
-	}
-	
-	@RequestMapping(value = "/profile", method = RequestMethod.GET)
-    @ResponseBody
-    public UserDetailsImpl currentUserName(Authentication authentication) {
-		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();		
-       // return userDetails.getAddress();
-		// return userDetails.getId(); //LONG
-	    return userDetails;
-
-    }
-
-	@GetMapping("/mod")
-	@PreAuthorize("hasRole('MODERATOR')")
-	public String moderatorAccess() {
-		return "Moderator Board.";
-	}
-
-	@GetMapping("/admin")
-	@PreAuthorize("hasRole('ADMIN')")
-	public String adminAccess() {
-		return "Admin Board.";
-	}
-	@GetMapping("/afficherUsers")
-	public List<User> getAllUser() {
-		return userService.findAll();
-	}
-	
-	@PutMapping("/disableUser/{username}")
-	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<?> DisableUser(@PathVariable(value = "username") String username,@Valid @RequestBody SignupRequest signUpRequest) {
+	@PutMapping("/disableUser/{id}")
+	@PreAuthorize("hasRole('ROLE_SUPER_USER')")
+	public ResponseEntity<?> DisableUser(@PathVariable(value = "id") long id) {
 		
-		if (!userRepository.existsByUsername(signUpRequest.getUsername())) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: Username not found!"));
-		}
-		
-		User U = userRepository.findByUsername(username)
-				.orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
-		U.setEtatAcc(false);
+
+		User U = userRepository.findById(id)
+				.orElseThrow(() -> new UsernameNotFoundException("User Not Found : "  ));
+		U.setEtatAcc(!U.getEtatAcc());
 		
 		userService.updateUser(U);
-		
+		if (!U.getEtatAcc())
 		return ResponseEntity.ok(new MessageResponse("User Disabled successfully!"));
+		else  return ResponseEntity.ok(new MessageResponse("User activated successfully!"));
+	}
+
+	@PutMapping("/enableUser/{id}")
+	@PreAuthorize("hasRole('ROLE_SUPER_USER')")
+	public ResponseEntity<?> enableUser(@PathVariable(value = "id") long id) {
+
+
+		User U = userRepository.findById(id)
+				.orElseThrow(() -> new UsernameNotFoundException("User Not Found : "  ));
+		U.setEnabled(!U.isEnabled());
+
+		userService.updateUser(U);
+		if (U.isEnabled())
+			return ResponseEntity.ok(new MessageResponse("User enabled successfully!"));
+		else  return ResponseEntity.ok(new MessageResponse("User not enabled successfully!"));
 	}
 
 }

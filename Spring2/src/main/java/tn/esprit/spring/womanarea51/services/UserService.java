@@ -39,7 +39,7 @@ public class UserService implements IUserService {
 	public List<User> findAll() {
 		return userRepository.findAll();
 	}
-	
+
 	/*Update d'un user*/
 	@Override
 	public  User updateUser(User user)	{
@@ -49,8 +49,9 @@ public class UserService implements IUserService {
 
 	@Transactional
 	@Override
-	public void addUserAffectRole(long idRole, User u) {
+	public void addUserAffectRole(long idRole, long idUser) {
 		Role r=roleRepository.findById(idRole).orElse(null);
+		User u=userRepository.findById(idUser).orElse(null);
 		if (r!=null && !u.getRoles().contains(r)){
 			u.addRole(r);
 			userRepository.save(u);

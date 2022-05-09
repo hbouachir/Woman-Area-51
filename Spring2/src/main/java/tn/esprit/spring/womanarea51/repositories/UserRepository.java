@@ -1,5 +1,6 @@
 package tn.esprit.spring.womanarea51.repositories;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -79,6 +80,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 	User findByFirstName(String username);
 
-
-
+	@Query(value = "SELECT u.username FROM User u inner JOIN u.roles r  WHERE r.name = 'ROLE_INSTRUCTOR' and u.username like :username% ORDER BY u.username desc")
+	public List<String> findInstructorByUsername(String username, Pageable pageable);
 }

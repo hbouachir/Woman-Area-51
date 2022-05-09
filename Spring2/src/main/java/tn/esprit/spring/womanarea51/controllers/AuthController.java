@@ -3,6 +3,7 @@ package tn.esprit.spring.womanarea51.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -54,17 +55,17 @@ public class AuthController {
 	UserRepository userRepository;
 
 	@Autowired
-    TwilioOTPService twilioOTPService;
+	TwilioOTPService twilioOTPService;
 
-	Cookie cookie=new Cookie("access_token","");
-	LocalDateTime loginTime=null;
-	LocalDateTime logoutTime=null;
+	Cookie cookie = new Cookie("access_token", "");
+	LocalDateTime loginTime = null;
+	LocalDateTime logoutTime = null;
 
 
-/*	@Autowired
-	TwilioOTPHandler twilioOTPHandler;*/
+	/*	@Autowired
+		TwilioOTPHandler twilioOTPHandler;*/
 	@Autowired
-UserService userService;
+	UserService userService;
 
 	@Autowired
 	RoleRepository roleRepository;
@@ -74,26 +75,27 @@ UserService userService;
 
 	@Autowired
 	JwtUtils jwtUtils;
-	
+
 	@Autowired
 	ApplicationEventPublisher eventPublisher;
 
 	@DeleteMapping("/user/{id}")
 	public ResponseEntity<?> logout(@PathVariable("id") long id) {
-		User u=userService.findOne(id);
-		if (u!=null)
-		{
-		return
-				ResponseEntity
-						.ok()
-						.body(new MessageResponse("user deleted"));}
-		else return ResponseEntity.badRequest().body(new MessageResponse("user doesn't exist"));
+		User u = userService.findOne(id);
+		if (u != null) {
+			return
+					ResponseEntity
+							.ok()
+							.body(new MessageResponse("user deleted"));
+		} else return ResponseEntity.badRequest().body(new MessageResponse("user doesn't exist"));
 	}
-	@GetMapping("/user/{id}")
+	/*@GetMapping("/user/{id}")
 	public User findUser(@PathVariable("id") long id) {
 		User u=userService.findOne(id);
 		return u;
-	}
+	}*/
+
+
 	@GetMapping("/usernamemsg/{username}")
 	public User findUserByUsername(@PathVariable("username") String username) {
 		System.out.println("usernameee........."+username);
@@ -158,7 +160,7 @@ UserService userService;
 		
 		if (!userDetails.getEtatAcc()) {
 			return ResponseEntity
-					.badRequest()
+					.accepted()
 					.body(new MessageResponse("Error: Your account is Disabled by Admin!"));
 		}
 		
@@ -198,6 +200,7 @@ UserService userService;
 	}
 	@PostMapping("/signup")
 	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest, HttpServletRequest request ) {
+
 		if (userRepository.existsByUsername(signUpRequest.getUsername())) {
 			return ResponseEntity
 					.badRequest()
@@ -324,6 +327,7 @@ UserService userService;
 	@PostMapping("/sendOTP")
 	public void sendOTP(@RequestBody PasswordResetRequest passwordResetRequest){
 
+
 		twilioOTPService.sendOTPForPasswordReset(passwordResetRequest);	}
 
 
@@ -332,9 +336,36 @@ UserService userService;
 
 		twilioOTPService.validateOTP(activateOtpRequest.getUserInputOtp(),activateOtpRequest.getUsername(),activateOtpRequest.getNewPassword());	}
 
+
+	@PreAuthorize("hasRole('ROLE_SUPER_USER')")
 	@PostMapping("addUserAffectRole")
-	public void addUserAffectRole(@RequestParam("idRole") long idRole, @RequestBody User u) {
-		userService.addUserAffectRole(idRole, u);}
+	public void addUserAffectRole(@RequestParam  long idRole, @RequestParam long idUser) {
+		userService.addUserAffectRole(idRole, idUser);}
+
+
+	@PreAuthorize("hasRole('ROLE_SUPER_USER')")
+	@DeleteMapping("deleteUser")
+	public void deleteRole(@RequestParam long userId){
+		userService.deleteUser(userId);
+
+
+
+	}
+
+
+	@GetMapping("/user/{username}")
+	public User findOneByUsename( @PathVariable("username") String username) {
+
+		User U=new User();
+		U=userRepository.findByUsername(username).orElse(null);
+
+
+
+		return U;
+	}
+
+
+
 
 
 
