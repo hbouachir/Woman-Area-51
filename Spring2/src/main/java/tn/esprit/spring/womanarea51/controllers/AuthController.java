@@ -16,7 +16,25 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
-
+import tn.esprit.spring.womanarea51.entities.ERole;
+import tn.esprit.spring.womanarea51.entities.Role;
+import tn.esprit.spring.womanarea51.entities.User;
+import tn.esprit.spring.womanarea51.entities.VerificationToken;
+import tn.esprit.spring.womanarea51.payload.request.LoginRequest;
+import tn.esprit.spring.womanarea51.payload.request.PasswordRequest;
+import tn.esprit.spring.womanarea51.payload.request.ProfileRequest;
+import tn.esprit.spring.womanarea51.payload.request.SignupRequest;
+import tn.esprit.spring.womanarea51.payload.request.Twilio.ActivateOtpRequest;
+import tn.esprit.spring.womanarea51.payload.request.Twilio.PasswordResetRequest;
+import tn.esprit.spring.womanarea51.payload.response.JwtResponse;
+import tn.esprit.spring.womanarea51.payload.response.MessageResponse;
+import tn.esprit.spring.womanarea51.repositories.RoleRepository;
+import tn.esprit.spring.womanarea51.repositories.UserRepository;
+import tn.esprit.spring.womanarea51.security.jwt.JwtUtils;
+import tn.esprit.spring.womanarea51.security.services.UserDetailsImpl;
+import tn.esprit.spring.womanarea51.services.OnRegistrationCompleteEvent;
+import tn.esprit.spring.womanarea51.services.TwilioOTPService;
+import tn.esprit.spring.womanarea51.services.UserService;
 
 
 import javax.mail.MessagingException;
@@ -43,7 +61,7 @@ public class AuthController {
 	@Autowired
 	JavaMailSender javaMailSender;
 	@Autowired
-    TwilioOTPService twilioOTPService;
+	TwilioOTPService twilioOTPService;
 
 	Cookie cookie=new Cookie("access_token","");
 	LocalDateTime loginTime=null;

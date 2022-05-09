@@ -16,7 +16,7 @@ import java.nio.file.Paths;
 public class FTPUserService {
 
 	static FTPClient ftp = new FTPClient();
-	static String TMP_UPLOAD_FOLDER = "C:/tmp/";
+	static String TMP_UPLOAD_FOLDER = "/tmp/";
 	static String SERVER_DOMAIN = "ftpupload.net";
 	static String SERVER_USERNAME = "epiz_30923546";
 	static String SERVER_PASSWORD = "NnShNRiOBL";
