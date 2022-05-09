@@ -3,9 +3,6 @@ package tn.esprit.spring.womanarea51.services;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -16,7 +13,6 @@ import tn.esprit.spring.womanarea51.payload.request.Twilio.PasswordResetRequest;
 import tn.esprit.spring.womanarea51.payload.request.Twilio.PasswordResetResponse;
 import tn.esprit.spring.womanarea51.repositories.UserRepository;
 
-import javax.mail.internet.MimeMessage;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,17 +25,13 @@ public class TwilioOTPService {
     PasswordEncoder encoder;
     @Autowired
     UserRepository userRepository;
-
-
-    @Autowired
-    private JavaMailSender javaMailSender;
     @Autowired
     private TwilioConfig twilioConfig;
 
 
-    Map<String, String> otpMap = new HashMap<>();
+    public Map<String, String> otpMap = new HashMap<>();
 
-    public Mono<PasswordResetResponse> sendOTPForPasswordReset(PasswordResetRequest passwordResetRequestDto) {
+    public Mono<PasswordResetResponse>  sendOTPForPasswordReset(PasswordResetRequest passwordResetRequestDto) {
             PasswordResetResponse passwordResetResponseDto = null;
 
 
@@ -55,7 +47,6 @@ public class TwilioOTPService {
 
                 otpMap.put(passwordResetRequestDto.getUsername(), otp);
                 passwordResetResponseDto = new PasswordResetResponse(OtpStatus.DELIVERED, otpMessage);
-
 
             } catch (Exception ex) {
                 passwordResetResponseDto = new PasswordResetResponse(OtpStatus.FAILED, ex.getMessage());
@@ -81,7 +72,7 @@ public class TwilioOTPService {
     }
 
     //6 digit otp
-    private String generateOTP() {
+    public String generateOTP() {
         return new DecimalFormat("000000")
                 .format(new Random().nextInt(999999));
     }

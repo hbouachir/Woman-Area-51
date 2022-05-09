@@ -42,8 +42,9 @@ public List<Post> searchKeyWord(String word);
 ///angular
 public Post upPost(Post post);
 public User getUser(Long id);
-
+public Post getPostt(Long id);
 public String urlFilePost(Long idPost);
 public Filepost urlFilePostt(Long idPost);
+public void listPubFb( Long id);
 
 }

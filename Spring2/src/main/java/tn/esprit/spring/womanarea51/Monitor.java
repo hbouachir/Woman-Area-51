@@ -85,15 +85,31 @@ public class Monitor {
                 user.setEnabled(true);
                 userRepository.save(user);
             }
-            if (!userRepository.existsByUsername("chaima")) {
+            if (!userRepository.existsByUsername("expert1")) {
                 Set<Role> roles = new HashSet<>();
-                Role adminRole = roleRepository.findByName(ERole.ROLE_USER).orElse(null);
+                Role adminRole = roleRepository.findByName(ERole.ROLE_EXPERT_F).orElse(null);
+                adminRole.setExpertField("fights");
+
                 roles.add(adminRole);
                 //create admin account
-                User user = new User("chaima",
-                        "chaima@mail.com",
+                User user = new User("expert1",
+                        "chaima1@mail.com",
                         encoder.encode("changeme"
-                        ), "chaima", "lchaima", "chaima", null, "45454545", null);
+                        ), "expert1", "lexpert1", "expert1", null, "7777777", null);
+                user.setRoles(roles);
+                user.setEnabled(true);
+                userRepository.save(user);
+            }
+            if (!userRepository.existsByUsername("expert2")) {
+                Set<Role> roles = new HashSet<>();
+                Role adminRole = roleRepository.findByName(ERole.ROLE_EXPERT_H).orElse(null);
+                adminRole.setExpertField("harrasment");
+                roles.add(adminRole);
+                //create admin account
+                User user = new User("expert2",
+                        "chaima2@mail.com",
+                        encoder.encode("changeme"
+                        ), "expert2", "lexpert2", "expert2", null, "6666666", null);
                 user.setRoles(roles);
                 user.setEnabled(true);
                 userRepository.save(user);
@@ -120,6 +136,45 @@ public class Monitor {
                         "instructor@mail.com",
                         encoder.encode("changeme"
                         ), "instructor", "linstructor", "instructor", null, "11111154", null);
+                user.setRoles(rolesi);
+                user.setEnabled(true);
+                userRepository.save(user);
+            }
+            if (!userRepository.existsByUsername("ainstructor")) {
+                Set<Role> rolesi = new HashSet<>();
+                Role adminRole = roleRepository.findByName(ERole.ROLE_INSTRUCTOR).orElse(null);
+                rolesi.add(adminRole);
+                //create admin account
+                User user = new User("ainstructor",
+                        "ainstructor@mail.com",
+                        encoder.encode("changeme"
+                        ), "ainstructor", "lainstructor", "ainstructor", null, "11117754", null);
+                user.setRoles(rolesi);
+                user.setEnabled(true);
+                userRepository.save(user);
+            }
+            if (!userRepository.existsByUsername("abinstructor")) {
+                Set<Role> rolesi = new HashSet<>();
+                Role adminRole = roleRepository.findByName(ERole.ROLE_INSTRUCTOR).orElse(null);
+                rolesi.add(adminRole);
+                //create admin account
+                User user = new User("abinstructor",
+                        "abinstructor@mail.com",
+                        encoder.encode("changeme"
+                        ), "abinstructor", "labinstructor", "abinstructor", null, "18811154", null);
+                user.setRoles(rolesi);
+                user.setEnabled(true);
+                userRepository.save(user);
+            }
+            if (!userRepository.existsByUsername("aabinstructor")) {
+                Set<Role> rolesi = new HashSet<>();
+                Role adminRole = roleRepository.findByName(ERole.ROLE_INSTRUCTOR).orElse(null);
+                rolesi.add(adminRole);
+                //create admin account
+                User user = new User("aabinstructor",
+                        "aabinstructor@mail.com",
+                        encoder.encode("changeme"
+                        ), "aabinstructor", "laabinstructor", "aabinstructor", null, "18871154", null);
                 user.setRoles(rolesi);
                 user.setEnabled(true);
                 userRepository.save(user);

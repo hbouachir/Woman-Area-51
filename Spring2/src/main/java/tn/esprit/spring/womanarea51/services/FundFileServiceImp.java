@@ -16,20 +16,22 @@ public class FundFileServiceImp implements IFundFilesService {
 
 	@Autowired
 	IFundService IFS;
-
+	
+	@Autowired
 	FundFileRepository fr;
 
 	public FundFiles addFile(MultipartFile file, Long id, User U) {
 		fund fund = IFS.FindFund(id);
 		try {
 
-			FTPService.uFileUpload(file, "event", id);
+			FTPService.uFileUpload(file, "fund", id);
 
 			FundFiles f = new FundFiles();
 			f.setUploadDate(new Date());
 			f.setFileName(file.getOriginalFilename());
-			f.setFilePath("https://www.womanarea51.ml/event/" + id.toString() + "/" + file.getOriginalFilename());
+			f.setFilePath("https://www.womanarea51.ml/fund/" + id.toString() + "/" + file.getOriginalFilename());
 			f.setF(fund);
+			System.out.println(f.toString());
 			return fr.save(f);
 		} catch (Exception e) {
 			System.out.println("Error Uploading file");
@@ -41,7 +43,7 @@ public class FundFileServiceImp implements IFundFilesService {
 		FundFiles file = fr.findById(f).orElse(null);
 		if (!(file == null)) {
 			try {
-				FTPService.uFileremove(file.getFileName(), "event", file.getF().getFundId());
+				FTPService.uFileremove(file.getFileName(), "fund", file.getF().getFundId());
 				fr.delete(file);
 			} catch (Exception e) {
 				System.out.println(e);
@@ -54,7 +56,7 @@ public class FundFileServiceImp implements IFundFilesService {
 
 	}
 
-	public List<FundFiles> GeteventFiles(Long id) {
+	public List<FundFiles> GetFundFiles(Long id) {
 		List<FundFiles> list = new ArrayList<FundFiles>();
 		fr.findAll().forEach(f -> {
 			if (f.getF().getFundId() == id)

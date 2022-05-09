@@ -30,7 +30,7 @@
 		<dependency>
 			<groupId>com.restfb</groupId>
 			<artifactId>restfb</artifactId>
-			<version>2.16.0</version>
+			<version>1.16.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.alicebot</groupId>
@@ -262,15 +262,11 @@
 			<version>7.0.4</version>
 		</dependency>
 		<dependency>
-			<groupId>com.google.apis</groupId>
-			<artifactId>google-api-services-calendar</artifactId>
-			<version>v3-rev20211026-1.32.1</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.http-client</groupId>
-			<artifactId>google-http-client-jackson2</artifactId>
-			<version>1.15.0-rc</version>
-		</dependency>
+    <groupId>com.google.apis</groupId>
+    <artifactId>google-api-services-calendar</artifactId>
+    <version>v3-rev411-1.25.0</version>
+</dependency>
+
 		<!-- Gmail Maven Dependency -->
 		<dependency>
 			<groupId>com.google.apis</groupId>

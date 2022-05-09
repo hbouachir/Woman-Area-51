@@ -33,7 +33,7 @@ public class TestController {
 
 	
 	@PutMapping("/disableUser/{id}")
-	@PreAuthorize("hasRole('ROLE_SUPER_USER')")
+
 	public ResponseEntity<?> DisableUser(@PathVariable(value = "id") long id) {
 		
 
@@ -48,7 +48,7 @@ public class TestController {
 	}
 
 	@PutMapping("/enableUser/{id}")
-	@PreAuthorize("hasRole('ROLE_SUPER_USER')")
+
 	public ResponseEntity<?> enableUser(@PathVariable(value = "id") long id) {
 
 

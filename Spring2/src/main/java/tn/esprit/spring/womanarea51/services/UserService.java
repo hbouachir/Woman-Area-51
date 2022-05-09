@@ -21,14 +21,14 @@ public class UserService implements IUserService {
 	UserRepository userRepository;
 	@Autowired
 	RoleRepository roleRepository;
-
+	
 	@Autowired
-	private VerificationTokenRepository tokenRepository;
-
+    private VerificationTokenRepository tokenRepository;
+	
 	/*Chercher un utilisateur*/
 
 	public User findOne(long id){
-		return userRepository.findById(id).get();
+	return userRepository.findById(id).get();
 	}
 	@Override
 	public User save(User u) {
@@ -39,12 +39,12 @@ public class UserService implements IUserService {
 	public List<User> findAll() {
 		return userRepository.findAll();
 	}
-
+	
 	/*Update d'un user*/
 	@Override
 	public  User updateUser(User user)	{
 		return userRepository.save(user);
-
+		
 	}
 
 	@Transactional
@@ -65,47 +65,47 @@ public class UserService implements IUserService {
 	/*Delete user */
 	@Override
 	public  void deleteUser(long id)	{
-		userRepository.deleteById(id);
+		 userRepository.deleteById(id);
 
 	}
-
+	
 	/*get all Users by Role*/
 	public List<User> getAllUsers(){
-		List<Long> listUsersId=userRepository.ListeUsers();
-
-		List<User> listUsers = new ArrayList();
-		User u = new User();
-		for(Long  a : listUsersId)
-		{
-			u=findOne(a);
+		 List<Long> listUsersId=userRepository.ListeUsers();
+	
+			List<User> listUsers = new ArrayList();
+		 User u = new User();
+		 for(Long  a : listUsersId)
+		 {
+			 u=findOne(a);
 			// if(u.getEtatAcc().equals("waiting"))
 			// {
-			listUsers.add(u);
+				 listUsers.add(u);
 			// }
-		}
-		return  listUsers;
+		 }
+		return  listUsers;		
 	}
-
+	
 	public User getUser(String verificationToken) {
-		User user = tokenRepository.findByToken(verificationToken).getUser();
-		return user;
-	}
-
+        User user = tokenRepository.findByToken(verificationToken).getUser();
+        return user;
+    }
+	
 	public VerificationToken getVerificationToken(String VerificationToken) {
-		return tokenRepository.findByToken(VerificationToken);
-	}
-
+        return tokenRepository.findByToken(VerificationToken);
+    }
+	
 	public void createVerificationToken(User user, String token) {
-		VerificationToken myToken = new VerificationToken(token, user);
-		tokenRepository.save(myToken);
-	}
+        VerificationToken myToken = new VerificationToken(token, user);
+        tokenRepository.save(myToken);
+    }
 
-
+  
 	public int getNombresUsersSelonSexe(String sexe)
 	{
 		return userRepository.NombreUsersSelonSexe(sexe);
 	}
-
+	
 	public List<User> getUserSelonUsername( String username)
 	{
 		return userRepository.getUserSelonUsername(username);
@@ -120,7 +120,7 @@ public class UserService implements IUserService {
 	public int getmbreUsersbyPointfideletBetwen100300(){
 		return userRepository.nombreUsersbyPointfideletbetwen100et300();
 	};
-
+	
 	public int getmbreUsersbyPointfideletSup(){
 		return userRepository.nombreUsersbyPointfideletSup300();
 	};

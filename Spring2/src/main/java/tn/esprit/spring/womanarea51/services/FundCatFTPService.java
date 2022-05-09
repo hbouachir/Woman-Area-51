@@ -1,5 +1,14 @@
 package tn.esprit.spring.womanarea51.services;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import org.apache.commons.net.PrintCommandListener;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
@@ -7,19 +16,13 @@ import org.apache.commons.net.ftp.FTPReply;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 @Service
-public class FTPUserService {
-
+public class FundCatFTPService {
 	static FTPClient ftp = new FTPClient();
 	static String TMP_UPLOAD_FOLDER = "C:/tmp/";
 	static String SERVER_DOMAIN = "ftpupload.net";
-	static String SERVER_USERNAME = "epiz_30923546";
-	static String SERVER_PASSWORD = "NnShNRiOBL";
+	static String SERVER_USERNAME = " ";
+	static String SERVER_PASSWORD = " ";
 
 	public static String uFileUpload(MultipartFile file, String Type, Long typeId) throws IOException {
 		if (file.isEmpty()) {
@@ -62,47 +65,4 @@ public class FTPUserService {
 
 	}
 
-//	public static String uFileremove(String fileName, String Type, Long typeId) throws IOException {
-//		try {
-//
-//			ftp.connect(SERVER_DOMAIN);
-//
-//			int replyCode = ftp.getReplyCode();
-//			if (!FTPReply.isPositiveCompletion(replyCode)) {
-//				System.out.println("Connect failed");
-//				return "Connect failed";
-//			}
-//
-//			boolean success = ftp.login(SERVER_USERNAME, SERVER_PASSWORD);
-//
-//			if (!success) {
-//				System.out.println("Could not login to the server");
-//				return "Could not login to the server";
-//			}
-//			String fileToDelete = "/htdocs/" + Type + "/" + typeId.toString();
-//
-//			boolean deleted = ftp.deleteFile(fileToDelete);
-//			if (deleted) {
-//				System.out.println("The file was deleted successfully.");
-//			} else {
-//				System.out.println("Could not delete the  file, it may not exist.");
-//			}
-//
-//		} catch (IOException ex) {
-//			System.out.println("Oh no, there was an error: " + ex.getMessage());
-//			ex.printStackTrace();
-//		} finally {
-//			// logs out and disconnects from server
-//			try {
-//				if (ftp.isConnected()) {
-//					ftp.logout();
-//					ftp.disconnect();
-//				}
-//			} catch (IOException ex) {
-//				ex.printStackTrace();
-//			}
-//		}
-//		return "";
-//	}
-//
 }

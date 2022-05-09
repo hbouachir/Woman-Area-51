@@ -41,8 +41,7 @@ public class EnrollementController {
 
 
     @PostMapping("addEnrollement")
-
-    public ResponseEntity<?> addUser(Authentication authentication, @RequestParam int months, @RequestParam long idSubscription,@RequestParam boolean renewable) throws Exception {
+        public ResponseEntity<?> addUser(Authentication authentication, @RequestParam int months, @RequestParam long idSubscription,@RequestParam boolean renewable) throws Exception {
         Subscription S=subscriptionRepository.findById(idSubscription).orElse(null);
         UserDetailsImpl U1 = (UserDetailsImpl) authentication.getPrincipal();
         User U = userRepository.findByUsername(U1.getUsername())
@@ -81,7 +80,7 @@ public class EnrollementController {
 
 
 
-            return ResponseEntity.ok("consult your bill at :"+new RedirectView(c.getReceiptUrl()).getUrl());}
+            return ResponseEntity.ok(new RedirectView(c.getReceiptUrl()).getUrl());}
         else
             return ResponseEntity.ok("transaction refused");
 
