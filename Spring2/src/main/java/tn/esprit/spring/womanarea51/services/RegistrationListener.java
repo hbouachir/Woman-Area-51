@@ -184,7 +184,7 @@ public class RegistrationListener implements
 				+ "                            </tr>\n" + "                          </tbody>\n"
 				+ "                        </table>\n" + "                        <h3>Bienvenue chez Women Area 51!</h3>\n"
 				+ "                        <p>Merci pour votre inscription. veuillez vérifier votre adresse e-mail pour commencer à utiliser notre service</p>\n"
-				+ "                        <p>Cliquez ici :"+"http://localhost:8081"+ confirmationUrl+"</p>\n"
+				+ "                        <p>Cliquez ici :"+"https://spring.womanarea51.ml"+ confirmationUrl+"</p>\n"
 				+ "                        <p></p>\n"
 				+ "                        <p>Cordialement.</p>\n"
 				+ "                        <p>Women Area 51.</p>\n" + "                      </td>\n"
