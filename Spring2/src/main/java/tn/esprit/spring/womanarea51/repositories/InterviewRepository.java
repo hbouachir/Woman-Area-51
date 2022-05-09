@@ -22,6 +22,6 @@ public interface InterviewRepository extends CrudRepository<Interview, Long> {
     List<User> ListOfRejectedUser();
     @Query("Select i from Interview i where i.user.id=:userId")
     List<Interview> listInterviewsParUser (@Param("userId") Long userId );
-
-
+    @Query("Select i from Interview i where i.user.id=:userId and i.jobOffer.id=:idOffer")
+    Interview showOneInterview(@Param("userId") Long userId ,@Param("idOffer") Long idOffer);
 }

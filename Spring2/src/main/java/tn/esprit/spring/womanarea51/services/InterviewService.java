@@ -27,5 +27,6 @@ public interface InterviewService {
 	List<Contract> ContractParUser (Long userId );
 	void DelteInterview(Long idOffer, Long userId);
 	List<Contract> showAllContract();
+	Interview showOneInterview(Long idOffer, Long userId);
 
 }

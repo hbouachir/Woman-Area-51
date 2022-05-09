@@ -14,6 +14,7 @@ import tn.esprit.spring.womanarea51.services.FileService;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api")
 public class FileController {
 
     @Autowired

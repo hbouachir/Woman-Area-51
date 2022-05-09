@@ -1,13 +1,17 @@
 package tn.esprit.spring.womanarea51.services;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -23,7 +27,9 @@ import com.restfb.FacebookClient;
 import com.restfb.Parameter;
 import com.restfb.types.FacebookType;
 
-
+import tn.esprit.spring.womanarea51.entities.Filepost;
+import tn.esprit.spring.womanarea51.entities.Filepub;
+import tn.esprit.spring.womanarea51.entities.Post;
 import tn.esprit.spring.womanarea51.entities.Pub;
 import tn.esprit.spring.womanarea51.entities.User;
 import tn.esprit.spring.womanarea51.repositories.PubRepository;
@@ -110,4 +116,90 @@ return msg;
 			}
 					
 	 }
+	@Override
+	public List<Pub> getAllPub() {
+		// TODO Auto-generated method stub
+		return pubRepository.findAllByOrderByIdDesc();
+	}
+	@Override
+	public Pub getPub(Long id) {
+		// TODO Auto-generated method stub
+		return pubRepository.findById(id).get();
+	}
+	@Override
+	public void deletePub(Long id) {
+		// TODO Auto-generated method stub
+		pubRepository.deleteById(id);
+	}
+	@Override
+	public Pub upPub(Pub p) {
+		// TODO Auto-generated method stub
+		return pubRepository.save(p);
+	}
+	@Override
+	public void partageFb(String token, Long id) {
+		// TODO Auto-generated method stub
+		Pub p=	pubRepository.findById(id).get();
+		String url="";
+		String namefile="";
+		Set<Filepub> f= p.getFilespub();
+	System.out.println("ffffffffffffffffffff");
+	try {
+	
+		for (Filepub o : f) {
+			 url=o.getFilePath();
+			namefile=o.getFileName();
+			}
+		
+		System.out.println("ttttttttt"+url);
+		try {BufferedInputStream in = new BufferedInputStream(new URL(url).openStream());
+				  FileOutputStream fileOutputStream = new FileOutputStream(namefile) ;
+				    byte dataBuffer[] = new byte[1024];
+				    int bytesRead;
+				    System.out.println("before while");
+				    while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
+				        fileOutputStream.write(dataBuffer, 0, bytesRead);
+				    }
+				    System.out.println("before hello");
+				   // FileInputStream file = new FileInputStream();
+				    System.out.println("hello");
+					FacebookClient fb= new DefaultFacebookClient(token);
+					FacebookType response=fb.publish("me/photos", FacebookType.class,BinaryAttachment.with(namefile, in),Parameter.with("message", p.getTitle()));
+					System.out.println("bye");
+				} catch (IOException e) {
+				    // handle exception
+				}
+		
+		System.out.println("oooooooooooooooo"+namefile);
+
+	
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	}
+	@Override
+	public void AddPub(Long id , MultipartFile file,String token) {
+		//Publicite PubWithImg = AffecterImageVideoPubs(pub, file);
+		//String typefile = TypeFile(file);
+		Pub p=	pubRepository.findById(id).get();
+		
+		
+		
+				InputStream inputfile;
+				try {
+					inputfile = file.getInputStream();
+					FacebookClient fb= new DefaultFacebookClient(token);
+					FacebookType response=fb.publish("me/photos", FacebookType.class,BinaryAttachment.with(file.getName(), inputfile), Parameter.with("message", p.getTitle()));
+					System.out.println(response.getId());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+		
+		
+		//return PubWithImg ;
+
+}
 }

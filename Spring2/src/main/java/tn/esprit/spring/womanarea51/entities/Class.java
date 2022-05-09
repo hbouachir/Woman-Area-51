@@ -1,6 +1,7 @@
 package tn.esprit.spring.womanarea51.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.*;
 
 import javax.persistence.*;
@@ -17,22 +18,23 @@ public class Class {
 
     @ManyToOne
     @JoinColumn(name = "student_id")
-    @JsonIgnore
     @MapsId("studentId")
+    @JsonView(CourseView.Less.class)
     User student;
 
     @ManyToOne
     @JoinColumn(name="course_id")
     @MapsId("courseId")
-    @JsonIgnore
+    @JsonView(CourseView.Less.class)
     Course course;
-
+    @JsonView(CourseView.Less.class)
     String status;
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonView(CourseView.Less.class)
     Date date;
-
+    @JsonView(CourseView.Less.class)
     int rating;
-
+    @JsonView(CourseView.Less.class)
     int score;
 
     @Override

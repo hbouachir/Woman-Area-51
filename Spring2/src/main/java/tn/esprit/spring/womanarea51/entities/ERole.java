@@ -5,7 +5,10 @@ public enum ERole {
     ROLE_INSTRUCTOR,
 
     ROLE_ADMIN,
-    ROLE_SUPER_USER
+    ROLE_SUPER_USER,
+    ROLE_EXPERT_F,
+    ROLE_EXPERT_H
+
 
     
 }
