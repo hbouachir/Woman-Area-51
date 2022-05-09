@@ -31,22 +31,14 @@ public class QuizServiceImpl implements QuizService{
        // if (course != null && (!course.getInstructor().equals(U) || !U.getRoles().contains(ERole.ROLE_ADMIN))) return null;
         if (course != null) {
             if (course.getQuiz() != null) {
-                Quiz old_quiz = course.getQuiz();
-                for (Question q : old_quiz.getQuestions()) {
-                    for (Answer a : q.getAnswers()) {
-                        ar.delete(a);
-                    }
-                    qqr.delete(q);
-                }
-                quiz.setQuizId(old_quiz.getQuizId());
-            }else{
+                Quiz old_quiz = qr.findById(course.getQuiz().getQuizId()).get();
+                course.setQuiz(null);
+                cr.save(course);
+                qr.delete(old_quiz);
+            }
                 quiz = qr.save(quiz);
                 course.setQuiz(quiz);
                 cr.save(course);
-            }
-
-
-
                 for(Question q: quiz.getQuestions()){
                     q.setQuiz(quiz);
                     Question qua = qqr.save(q);

@@ -23,14 +23,14 @@ public class QuizController {
     @Autowired
     UserRepository userRepository;
 
-    @GetMapping("/Course/{courseId}/getQuiz/")
+    @GetMapping("/Course/{courseId}/getQuiz")
     @JsonView(CourseView.Extra.class)
     @PreAuthorize("hasRole('INSTRUCTOR') or hasRole('ADMIN')")
     public Quiz getQuiz(@PathVariable Long courseId){
         return qs.getQuiz(courseId);
     }
 
-    @GetMapping("/Course/{courseId}/viewQuiz/")
+    @GetMapping("/Course/{courseId}/viewQuiz")
     @PreAuthorize("hasRole('USER')")
     @JsonView(CourseView.More.class)
     public Quiz getQuizV(@PathVariable Long courseId){

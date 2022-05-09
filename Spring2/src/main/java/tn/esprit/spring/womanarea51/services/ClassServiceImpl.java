@@ -4,11 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tn.esprit.spring.womanarea51.entities.Class;
 import tn.esprit.spring.womanarea51.entities.ClassKey;
+import tn.esprit.spring.womanarea51.entities.Course;
+import tn.esprit.spring.womanarea51.entities.User;
 import tn.esprit.spring.womanarea51.repositories.ClassRepository;
 import tn.esprit.spring.womanarea51.repositories.CourseRepository;
 import tn.esprit.spring.womanarea51.repositories.UserRepository;
 
 import java.util.Date;
+import java.util.List;
+
 @Service
 public class ClassServiceImpl implements ClassService{
     @Autowired
@@ -67,5 +71,10 @@ public class ClassServiceImpl implements ClassService{
             return -1;
         }
 
+    }
+
+    @Override
+    public List<Class> joinedCourses(User u) {
+        return clr.joinedClasses(u.getId());
     }
 }
