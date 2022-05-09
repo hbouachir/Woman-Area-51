@@ -22,7 +22,7 @@ import tn.esprit.spring.womanarea51.security.services.UserDetailsImpl;
 import java.time.LocalDate;
 import java.util.List;
 
-
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600,allowCredentials = "true")
 @RestController
 
 public class EnrollementController {

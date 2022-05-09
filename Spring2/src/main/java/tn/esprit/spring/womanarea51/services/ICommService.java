@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import tn.esprit.spring.womanarea51.entities.Comment;
+import tn.esprit.spring.womanarea51.entities.User;
 
 
 
@@ -27,5 +28,10 @@ public interface ICommService {
 	public List<Comment> listeSousComment(Long idCom);
 	public int countComByUser(Long idUser);
 	public int countComByPost(Long idPost);
+	//angular 
+	public void addCommentaireAngular(Comment post, Long idPost) ;
+	public void addSousCommentaireAngular(Comment c,Long idComm);
+	public Comment getCommentaire(Long id) ;
+	public User getUserComm(Long id);
 }
 

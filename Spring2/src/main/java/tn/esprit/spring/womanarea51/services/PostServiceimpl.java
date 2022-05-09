@@ -9,6 +9,7 @@ import java.util.Base64;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.Set;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -18,9 +19,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.restfb.DefaultFacebookClient;
+import com.restfb.FacebookClient;
+import com.restfb.Parameter;
+import com.restfb.types.FacebookType;
+
+import tn.esprit.spring.womanarea51.entities.Filepost;
 import tn.esprit.spring.womanarea51.entities.Post;
 import tn.esprit.spring.womanarea51.entities.RatePub;
 import tn.esprit.spring.womanarea51.entities.User;
@@ -57,10 +65,10 @@ public static String uploadDirectory = System.getProperty("user.dir") + "/upload
 	public List<Post> listepost(Long idUser) {
 		User u = userRepository.findById(idUser).orElse(null);
 		return postRepository.findByUserp(u);
-
+//return postRepository.findAllByOrderByUserpDesc(idUser);
 }
 	@Override
-	public void addPost(Post post,Long idUser) {
+	public Post addPost(Post post,Long idUser) {
 		User u = userRepository.findById(idUser).orElse(null);
 		
 		if (post.getId()!=null) 
@@ -74,7 +82,7 @@ public static String uploadDirectory = System.getProperty("user.dir") + "/upload
         post.setCreatedate(currentTimestamp);
 		post.setUserp(u);
 		
-		postRepository.save(post);	
+		return postRepository.save(post);	
 	}
 
 	/*@Override
@@ -309,8 +317,68 @@ public static String uploadDirectory = System.getProperty("user.dir") + "/upload
 		return 	postRepository.affichPublication();
 	}
 
+	@Override
+	public Post upPost(Post post) {
+		// TODO Auto-generated method stub
+		return postRepository.save(post);
+	}
+
+	@Override
+	public User getUser(Long id) {
+	Post p=	getById(id);
+	User u =p.getUserp();
+		return u;
+	}
+
+	@Override
+	public String urlFilePost(Long idPost) {
+		// TODO Auto-generated method stub
+		Post p=	getById(idPost);
+		String url="";
+		Set<Filepost> fp= p.getFilespost();
+	/*	fp.forEach(entity ->{
+		 entity.getFilePath();
+			
+		});*/
+		for (Filepost o : fp) {
+			 url=o.getFilePath();
+			}
+		
+		return url;
+	}
+
+	@Override
+	public Filepost urlFilePostt(Long idPost) {
+		Post p=	getById(idPost);
+	Filepost i=new Filepost();
+		Set<Filepost> fp= p.getFilespost();
+	/*	fp.forEach(entity ->{
+		 entity.getFilePath();
+			
+		});*/
+		for (Filepost o : fp) {
+			i=o;
+			}
+		
+		return i;
+	}
 	
-	
+	@Override
+	public Post getPostt(Long id) {
+		return postRepository.findById(id).get();
+
+	}
+	@Override
+	public void listPubFb( Long id){
+		String token="EAAUZArboqDKYBAFtCfPA1rvWxQBKzaZAvLaekRZALZB474mfMnH8i3MiihmAE7EpuWVRyWdktYTANraDKWljdUvof0nowNiiHbP2X9HuMKtVpS7LPCRn7bjTFPGC2X39YqMMDdARENBLWeNCzQ3OT36DG0NUrvnBZAENtBW2cUnS5xfQ9UCzrKpZA7tAZAUZAwTTTNAzWhyAhQZDZD";
+	Post p=	postRepository.findById(id).get();
+System.out.println("ffffffffffffffffffff");
+		FacebookClient fb= new DefaultFacebookClient(token);
+		//   User u= fb.fetchObject("me/account",User.class);
+		FacebookType response=fb.publish("me/feed", FacebookType.class,  Parameter.with("message", p.getBody()),Parameter.with("link", "www.womanarea51.ml"),Parameter.with("message", p.getTags()));	
+
+		 
+	}
 	}
 	
 

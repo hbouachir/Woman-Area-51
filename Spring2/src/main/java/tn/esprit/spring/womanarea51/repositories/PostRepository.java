@@ -5,11 +5,12 @@ import java.util.List;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import tn.esprit.spring.womanarea51.entities.Post;
 import tn.esprit.spring.womanarea51.entities.User;
 
-
+@Repository
 
 public interface PostRepository extends CrudRepository<Post, Long> {
 
@@ -18,7 +19,9 @@ public interface PostRepository extends CrudRepository<Post, Long> {
 	List<Post> findAllByUserp(User user);
 
 	List<Post> findByUserp(User u);
-	 
+	//List<Post> findAllByOrderByUserpDesc(User u);
+	/* @Query(value = "select * from Post p where p.userp=user  ORDER BY id DESC", nativeQuery = true)
+	 List<Post> findAllByOrderByUserpDesc(@Param("user")Long u);*/
 	 @Query(value = "select p.title from Post p where p.title like :key", nativeQuery = true)
 	 public  List<Post> findByTitleContaining( @Param("key")String key);
 	 

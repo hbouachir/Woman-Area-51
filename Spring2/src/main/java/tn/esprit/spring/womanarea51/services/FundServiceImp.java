@@ -10,8 +10,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import tn.esprit.spring.womanarea51.entities.event;
 import tn.esprit.spring.womanarea51.entities.fund;
 import tn.esprit.spring.womanarea51.entities.fundCategory;
 import tn.esprit.spring.womanarea51.repositories.FundCategoryRepository;
@@ -27,6 +25,7 @@ public class FundServiceImp implements IFundService {
 	
 	@Override
 	public void AddFund(fund f) {
+		
 		FRepository.save(f);
 	}
 	
@@ -109,5 +108,20 @@ public class FundServiceImp implements IFundService {
 		
 		
 		
+	}
+	public List<String>ListFundTags(){
+		List<String>list=new ArrayList<String>();
+		FRepository.findAll().forEach(f->{
+				f.getTags().forEach(t->{
+				if (!list.contains(t)){
+					list.addAll(f.getTags());
+				}
+			});
+			
+		});
+		return list;
+	}
+	public fundCategory GetFundCategory(fund f) {
+		return f.getFCategory();
 	}
 }

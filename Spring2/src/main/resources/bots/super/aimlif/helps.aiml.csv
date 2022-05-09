@@ -1,0 +1,5 @@
+0,SHOW ALL COMPLAINTS,*,*,Your list of complaints:,helps.aiml
+0,SHOW COMMANDS,*,*,a b c d,helps.aiml
+0,DELETE COMPLAINT *,*,*,Deleting <star/> ...,helps.aiml
+0,DELETE COMPLAINT,*,*,To delete a complaint type delete complaint id,helps.aiml
+0,MAKE COMPLAINT,*,*,To make a complaint type go to the help center of our home page or,helps.aiml

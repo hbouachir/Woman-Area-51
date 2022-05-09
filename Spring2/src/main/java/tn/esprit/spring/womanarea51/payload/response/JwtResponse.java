@@ -1,6 +1,9 @@
 package tn.esprit.spring.womanarea51.payload.response;
 
+import java.util.Collection;
 import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
 
 public class JwtResponse {
 	private String token;
@@ -16,6 +19,11 @@ public class JwtResponse {
 		this.username = username;
 		this.email = email;
 		this.roles = roles;
+	}
+
+	public JwtResponse(String jwt, Long id2, String username2, String email2,
+			Collection<? extends GrantedAuthority> authorities, List<String> roles2) {
+		// TODO Auto-generated constructor stub
 	}
 
 	public String getAccessToken() {

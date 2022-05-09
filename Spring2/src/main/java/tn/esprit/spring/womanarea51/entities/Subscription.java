@@ -27,6 +27,8 @@ public class Subscription {
 
     int amount ;
 
+    String details;
+
 
     @JsonIgnore
     @Nullable

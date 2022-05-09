@@ -214,4 +214,78 @@ int count=0;
 		// TODO Auto-generated method stub
 		return listeCommentaire(idPost).size();
 	}
+///Angular
+	@Override
+	public void addCommentaireAngular(Comment c, Long idPost) {
+		int count=0;
+		Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
+		List<String> badwords = new ArrayList<>();
+		badwords.add("bad");
+		badwords.add("badwords");
+		badwords.add("homme");
+		
+		String motcommentaire[] = c.getBody().split(" ");
+		String com = "";
+		String msg="";
+		//User u = ur.findById(idUser).orElse(null);
+		Post p = pr.findById(idPost).orElse(null);
+		//int cou=u.getPointWord();
+		for (String mots : motcommentaire) {
+			// if(motcommentaire.length==1 && motcommentaire.equals("b"))
+
+			if (badwords.contains(mots)) {
+				mots = "(*****)";
+				com = com + " " + mots;
+				
+					//cou++;
+					//u.setPointWord(cou);
+				
+			} else
+				com = com + " " + mots;
+		}
+		
+		int countCom=p.getCountCom();
+		countCom++;
+		//count=0;
+		//c.setUserc(u);
+		c.setCreatedate(currentTimestamp);
+		c.setPostc(p);
+		c.setBody(com);
+		p.setCountCom(countCom);
+		
+		commRepository.save(c);
+		
+	}
+
+	@Override
+	public void addSousCommentaireAngular(Comment c, Long idComm) {
+		// TODO Auto-generated method stub
+		Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
+
+		//User u = ur.findById(idUser).orElse(null);
+		Comment p = commRepository.findById(idComm).orElse(null);
+		c.setCreateR(currentTimestamp);
+		c.setRcomment(p);
+		//c.setUsersc(u);
+		
+
+		commRepository.save(c);
+	}
+
+	@Override
+	public Comment getCommentaire(Long id) {
+Comment c=	commRepository.findById(id).get();
+		return c;
+	}
+
+	@Override
+	public User getUserComm(Long id) {
+		// TODO Auto-generated method stub
+		Comment c= getCommentaire(id);
+		User u=c.getUserc(); 
+		return u;
+	}
+
+	
+	
 }

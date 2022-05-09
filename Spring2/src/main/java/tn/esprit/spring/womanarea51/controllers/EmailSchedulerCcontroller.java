@@ -1,31 +1,14 @@
 package tn.esprit.spring.womanarea51.controllers;
 
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.UUID;
 
-import org.quartz.JobBuilder;
-import org.quartz.JobDataMap;
-import org.quartz.JobDetail;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
-import org.quartz.SimpleScheduleBuilder;
-import org.quartz.Trigger;
-import org.quartz.TriggerBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import tn.esprit.spring.womanarea51.entities.EmailJob;
-import tn.esprit.spring.womanarea51.entities.EmailRequest;
 import tn.esprit.spring.womanarea51.entities.EmailResponse;
 import tn.esprit.spring.womanarea51.entities.User;
 import tn.esprit.spring.womanarea51.entities.event;
@@ -33,7 +16,7 @@ import tn.esprit.spring.womanarea51.repositories.UserRepository;
 import tn.esprit.spring.womanarea51.services.IEmailScheduling;
 import tn.esprit.spring.womanarea51.services.IEventService;
 
-
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class EmailSchedulerCcontroller {
 	
@@ -47,7 +30,7 @@ public class EmailSchedulerCcontroller {
 	IEventService IES;
 	
 	
-	
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("/schedule/email")
 	public ResponseEntity<EmailResponse> scheduleEmail(@RequestBody event e,Authentication authentication){
 		

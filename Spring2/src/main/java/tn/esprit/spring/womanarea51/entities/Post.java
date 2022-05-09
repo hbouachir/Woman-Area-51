@@ -64,5 +64,8 @@ public class Post {
 	 @OneToMany(cascade = CascadeType.ALL)
 		private Set<Comment> comments;
 	
+	 @OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
 	 
+	    Set<Filepost> filespost;
+
 }

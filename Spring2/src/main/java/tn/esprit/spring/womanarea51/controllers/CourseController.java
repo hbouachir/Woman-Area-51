@@ -2,6 +2,7 @@ package tn.esprit.spring.womanarea51.controllers;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,7 +15,9 @@ import tn.esprit.spring.womanarea51.repositories.UserRepository;
 import tn.esprit.spring.womanarea51.services.CourseService;
 
 import java.util.List;
+import java.util.Optional;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api")
 public class CourseController {
@@ -66,7 +69,7 @@ public class CourseController {
         return cs.findInstructorAll_courses(username);
     }
 
-    @GetMapping("/Course/getCoursesByNCat")
+    @PostMapping("/Course/getCoursesByNCat")
     @JsonView(CourseView.Less.class)
     public List<Course> getCoursesByNCat(@RequestBody List<CourseCategory> categories){
         return cs.findByCat_courses(categories);
@@ -76,4 +79,10 @@ public class CourseController {
         return cs.availableCourseCategories();
     }
 
+    @PostMapping("Course/getInstructorsUsername")
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<String> getInstructorUsername(@RequestBody Optional<String> username){
+        System.out.println(username.orElse(""));
+        return userRepository.findInstructorByUsername(username.orElse("" ), PageRequest.of(0,3));
+    }
 }

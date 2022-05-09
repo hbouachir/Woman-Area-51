@@ -1,65 +1,32 @@
 package tn.esprit.spring.womanarea51.controllers;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+
+
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.common.PDRectangle;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
-import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMailMessage;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Chunk;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.FontFactory;
-import com.itextpdf.text.Image;
-import com.itextpdf.text.PageSize;
-import com.itextpdf.text.Rectangle;
-import com.itextpdf.text.pdf.PdfWriter;
-
-
-
 import tn.esprit.spring.womanarea51.entities.User;
 import tn.esprit.spring.womanarea51.entities.event;
 import tn.esprit.spring.womanarea51.entities.feedback;
 import tn.esprit.spring.womanarea51.repositories.UserRepository;
 import tn.esprit.spring.womanarea51.services.IEmailScheduling;
+import tn.esprit.spring.womanarea51.services.IEmailingService;
 import tn.esprit.spring.womanarea51.services.IEventService;
 import tn.esprit.spring.womanarea51.services.IUserService;
 import tn.esprit.spring.womanarea51.services.IfeedbackService;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class feedbackController {
 	
@@ -73,19 +40,23 @@ public class feedbackController {
     IEventService IES;
 	
 	@Autowired
-    private JavaMailSender emailSender;
-	
-	@Autowired
 	UserRepository UR;
 	
 	@Autowired
 	IEmailScheduling IemailS;
 	
+	@Autowired
+	IEmailingService IEmailingS;
+	
+	
+	
+	
 	
 	@PostMapping("/participate/{idevent}")
-	@ResponseBody
-	void Partcipate( Authentication authentication, @PathVariable ("idevent") Long eventId) throws URISyntaxException, IOException, DocumentException, MessagingException {
+	
+	void Partcipate( Authentication authentication, @PathVariable ("idevent") Long eventId) throws Exception{
 		User U=UR.findByUsername(authentication.getName()).orElse(null);
+		System.out.println(U.getId()+"********************");
 		feedback f=new feedback();
 		
 		event e=IES.FindEvent(eventId);
@@ -101,113 +72,41 @@ public class feedbackController {
 		}
 		f.setEvent_feedback(e);
 		IFBS.Participate(f);
-		DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy hh:mm:ss");  
-		 
+		if (e.getType().toString()=="INPERSON"){
+			String Badge = IEmailingS.GenerateBadge(U, e);
+			IEmailingS.ParticipationConfirmation(U, e, Badge);
+			IEmailingS.DeleteBadgeFiles(U, e);
+		} 
+		else
+			IEmailingS.VirtualEvent(U, e);
 		
-	//pdf generation for badge
-		   
-        PDDocument document = new PDDocument();
-        PDPage page = new PDPage(PDRectangle.A6);
-        document.addPage(page);
-        
-        String script="  ParticipantId: ".concat(U.getUsername()).concat("                 EventId :").concat(e.getEventId().toString());
-        Path path = Paths.get(ClassLoader.getSystemResource("static/images/logo.png").toURI());
-        PDPageContentStream contentStream = new PDPageContentStream(document, page);
-        PDImageXObject image 
-          = PDImageXObject.createFromFile(path.toAbsolutePath().toString(), document);
-        
-        float x = (PageSize.A6.getWidth() - image.getWidth()) / 2;
-        float y = (PageSize.A6.getHeight() - image.getHeight()) / 2;
-        contentStream.setFont(PDType1Font.HELVETICA_BOLD, 15);
-        
-        contentStream.beginText();
-       	contentStream.showText(script);
-        contentStream.endText();
-       
-        
-        
-        contentStream.drawImage(image,x-2,y-2);
-        contentStream.close();
-        String pathPDF = e.getEventId()+"ID-"+U.getId()+".pdf";
-        document.save(pathPDF);
-        document.close();
-		System.out.println("created pdf :D");
-		//Pdf created
-	
-       //Mail with Badge attachement
-    	   MimeMessage mm= emailSender.createMimeMessage();
-           MimeMessageHelper mimeMessageHelper=new MimeMessageHelper(mm,true);
-           mimeMessageHelper.setFrom(U.getEmail());
-           mimeMessageHelper.setTo(U.getEmail());
-           mimeMessageHelper.setText("Hello "+ f.getParticipant().getFirstName() +" "+ f.getParticipant().getLastName()+","+"\n \n"
-           		+"Your participation in the following event has been confirmed: \n"
-           		+"Event :"+e.getDescription()
-           		+"\nLocation: "+e.getEventLocation()
-           		+"\nDate and time: "+dateFormat.format(e.getEventDate())
-           		+".\n"
-           		+ "Thank you for your participation. We look forward to hearing your feedback on the event after attending.\n\n"
-           		+ "Regards,\n"
-           		+ "The womenArea51 Team");
-           mimeMessageHelper.setSubject("Participation confirmation");
-           FileSystemResource fileSystemResource=
-                   new FileSystemResource(new File(pathPDF));
-           mimeMessageHelper.addAttachment(fileSystemResource.getFilename(),
-                   fileSystemResource); 
-           
-           
-           emailSender.send(mm);
-    	   
-      
-        
-       
-       
+		
 		IemailS.scheduleEmail(U.getEmail(), U.getUsername(), e);
 		
 		
 	}
 	
-	
+
 	@PutMapping("/Feedback/{event}")
-	feedback InputFeedback(@RequestBody feedback f,@PathVariable("event") Long eventId, Authentication authentication) throws DocumentException, IOException, URISyntaxException, Exception {
+	feedback InputFeedback(@RequestBody feedback f,@PathVariable("event") Long eventId, Authentication authentication) throws Exception  {
 		User U=UR.findByUsername(authentication.getName()).orElse(null);
 		f=IFBS.calculRating(f);
+		Date date=new Date();
+		System.out.println(date);
 		System.out.println(f.getRating().toString());
 		event e=IES.FindEvent(eventId);
 		f.setParticipant(U);
 		f.setEvent_feedback(e);
+		f.setDate(date);
 		System.out.println(e.getEventId());
-		DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy hh:mm:ss");  
-		
 
-        MimeMessage mm= emailSender.createMimeMessage();
-        MimeMessageHelper mimeMessageHelper=new MimeMessageHelper(mm,true);
-        mimeMessageHelper.setFrom(U.getEmail());
-        mimeMessageHelper.setTo(U.getEmail());
-        mimeMessageHelper.setText("Hello "+ U.getFirstName() +" "+ U.getLastName()+","+"\n \n"
-        		+"Your feedback for the following event has been confirmed: \n"
-        		+"Event :"+e.getDescription()
-        		+"\nLocation: "+e.getEventLocation()
-        		+"\nDate and time: "+dateFormat.format(e.getEventDate())
-        		+".\n"
-        		+ "Thank you for your feedback. We look forward to your participation in future events!\n\n"
-        		+ "Regards,\n"
-        		+ "The womenArea51 Team");
-        mimeMessageHelper.setSubject("Feedback confirmation");
-        FileSystemResource res = new FileSystemResource(new File(ClassLoader.getSystemResource("static/images/logo.png").toURI()));
-        mimeMessageHelper.addInline("identifier1234", res);
-        
-        
-        emailSender.send(mm);
-        
- 
-
-   
+		IEmailingS.feedbackConfirmation(f, U);
 		
 	return IFBS.EditFeedback(f);
 				
 	}
 	
-	@PreAuthorize("hasRole('ADMIN')")
+	
 	@PutMapping("/remove-feedback/{feedbackId}")
 	
 	void RemoveFeedback(Authentication authentication,@PathVariable("feedbackId") Long id) {
@@ -224,24 +123,23 @@ public class feedbackController {
 		IFBS.EditFeedback(f);
 	}
 	
-	@PreAuthorize("hasRole('ADMIN')")
-	@DeleteMapping("/remove-participant/{feedbackId}")
-	@ResponseBody
-	void RemoveParticipant(Authentication authentication,@PathVariable("feedbackId") Long id) {
+	@DeleteMapping("/Cancel-participation/{feedbackId}")
+	void RemoveParticipant(Authentication authentication,@PathVariable("feedbackId") Long id) throws Exception {
 		feedback f=IFBS.FindFeedback(id);
 		event e=f.getEvent_feedback();
 		e.setPlaces(e.getPlaces()+1);
 		IES.EditEvent(e);
-		
+		IEmailingS.CancelParticipation(f);
 		IFBS.DeleteFeedback(f);
 	}
 	
-	
+	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/find-feedbacks")
 	List<feedback> FindFeedbacks() {
 		return IFBS.ListFeedbacks();
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/find-feedbacks-byEvent/{event-id}")
 	List<feedback> FindFeedbacksByEvent(@PathVariable("event-id") Long id) {
 		return IFBS.FindFeedbacksByEvent(id);
@@ -252,6 +150,7 @@ public class feedbackController {
 		return IFBS.FindFeedbacksByParticipant(id);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/find-feedbacks/{event-id}/{user-id}")
 	feedback FindFeedbacksByEventAndUSer(@PathVariable("event-id") Long eventId, @PathVariable("user-id") Long userId) {
 		return IFBS.FindFeedbackByUserAndEvent(userId,eventId).get(0);
@@ -261,19 +160,278 @@ public class feedbackController {
 	@GetMapping("/AVG-event-rating/{event-id}")
 	double AvgRatingPerEvent(@PathVariable("event-id") Long eventId) {
 		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
-		return IFBS.AVGEventRating(list);
+		List<feedback> fb= new ArrayList<feedback>();
+		list.forEach(f->{
+			if (f.getRating()!=null)
+				fb.add(f);
+		});
+		return IFBS.AVGEventRating(fb);
 	}
 	
 	@GetMapping("/Min-event-rating/{event-id}")
 	double MinRatingPerEvent(@PathVariable("event-id") Long eventId) {
 		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
-		return IFBS.MinEventRating(list);
+		List<feedback> fb= new ArrayList<feedback>();
+		list.forEach(f->{
+			if (f.getRating()!=null)
+				fb.add(f);
+		});
+		return IFBS.MinEventRating(fb);
 	}
 	
 	@GetMapping("/Max-event-rating/{event-id}")
 	double MaxRatingPerEvent(@PathVariable("event-id") Long eventId) {
 		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
-		return IFBS.MaxEventRating(list);
+		List<feedback> fb= new ArrayList<feedback>();
+		list.forEach(f->{
+			if (f.getRating()!=null)
+				fb.add(f);
+		});
+		return IFBS.MaxEventRating(fb);
+	}
+	
+	@GetMapping("My-upcoming-events")
+	public List<event>Upcomingevents(Authentication authentication){
+		User U=UR.findByUsername(authentication.getName()).orElse(null);
+		return IFBS.Upcomingevents(U);
+	}
+	@PreAuthorize("hasRole('ADMIN')")
+	@GetMapping("Upcoming-events-per-user/{user}")
+	public List<event>UpcomingeventsPerUer(Authentication authentication,@PathVariable("user")Long id){
+		User U=IUS.findOne(id);
+		return IFBS.Upcomingevents(U);
+	}
+	
+	@GetMapping("/AVGEventObjectRating/{event-id}")
+	double AVGEventObjectRating(@PathVariable("event-id") Long eventId) {
+		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
+		List<feedback> fb= new ArrayList<feedback>();
+		list.forEach(f->{
+			if (f.getRating()!=null)
+				fb.add(f);
+		});
+		return IFBS.AVGEventObjectRating(fb);
+	}
+	
+	@GetMapping("/MinEventObjectRating/{event-id}")
+	double MinEventObjectRating(@PathVariable("event-id") Long eventId) {
+		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
+		List<feedback> fb= new ArrayList<feedback>();
+		list.forEach(f->{
+			if (f.getRating()!=null)
+				fb.add(f);
+		});
+		return IFBS.MinEventObjectRating(fb);
+	}
+	
+	@GetMapping("/MaxEventObjectRating/{event-id}")
+	double MaxEventObjectRating(@PathVariable("event-id") Long eventId) {
+		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
+		List<feedback> fb= new ArrayList<feedback>();
+		list.forEach(f->{
+			if (f.getRating()!=null)
+				fb.add(f);
+		});
+		return IFBS.MaxEventObjectRating(fb);
+	}
+
+	@GetMapping("/AVGEventOrganizersRating/{event-id}")
+	double AVGEventOrganizersRating(@PathVariable("event-id") Long eventId) {
+		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
+		List<feedback> fb= new ArrayList<feedback>();
+		list.forEach(f->{
+			if (f.getRating()!=null)
+				fb.add(f);
+		});
+		return IFBS.AVGEventOrganizersRating(fb);
+	}
+	
+	@GetMapping("/MinEventOrganizersRating/{event-id}")
+	double MinEventOrganizersRating(@PathVariable("event-id") Long eventId) {
+		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
+		List<feedback> fb= new ArrayList<feedback>();
+		list.forEach(f->{
+			if (f.getRating()!=null)
+				fb.add(f);
+		});
+		return IFBS.MinEventOrganizersRating(fb);
+	}
+	
+	@GetMapping("/MaxEventOrganizersRating/{event-id}")
+	double MaxEventOrganizersRating(@PathVariable("event-id") Long eventId) {
+		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
+		List<feedback> fb= new ArrayList<feedback>();
+		list.forEach(f->{
+			if (f.getRating()!=null)
+				fb.add(f);
+		});
+		return IFBS.MaxEventOrganizersRating(fb);
+	}
+	
+
+	@GetMapping("/AVGEventLocationRating/{event-id}")
+	double AVGEventLocationRating(@PathVariable("event-id") Long eventId) {
+		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
+		List<feedback> fb= new ArrayList<feedback>();
+		list.forEach(f->{
+			if (f.getRating()!=null)
+				fb.add(f);
+		});
+		return IFBS.AVGEventLocationRating(fb);
+	}
+	
+	@GetMapping("/MinEventLocationRating/{event-id}")
+	double MinEventLocationRating(@PathVariable("event-id") Long eventId) {
+		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
+		List<feedback> fb= new ArrayList<feedback>();
+		list.forEach(f->{
+			if (f.getRating()!=null)
+				fb.add(f);
+		});
+		return IFBS.MinEventLocationRating(fb);
+	}
+	
+	@GetMapping("/MaxEventLocationRating/{event-id}")
+	double MaxEventLocationRating(@PathVariable("event-id") Long eventId) {
+		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
+		List<feedback> fb= new ArrayList<feedback>();
+		list.forEach(f->{
+			if (f.getRating()!=null)
+				fb.add(f);
+		});
+		return IFBS.MaxEventLocationRating(fb);
+	}
+	
+	@GetMapping("/AVGEventAddedValueRating/{event-id}")
+	double AVGEventAddedValueRating(@PathVariable("event-id") Long eventId) {
+		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
+		List<feedback> fb= new ArrayList<feedback>();
+		list.forEach(f->{
+			if (f.getRating()!=null)
+				fb.add(f);
+		});
+		return IFBS.AVGEventAddedValueRating(fb);
+	}
+	
+	@GetMapping("/MinEventAddedValueRating/{event-id}")
+	double MinEventAddedValueRating(@PathVariable("event-id") Long eventId) {
+		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
+		List<feedback> fb= new ArrayList<feedback>();
+		list.forEach(f->{
+			if (f.getRating()!=null)
+				fb.add(f);
+		});
+		return IFBS.MinEventAddedValueRating(fb);
+	}
+	
+	@GetMapping("/MaxEventAddedValueRating/{event-id}")
+	double MaxEventAddedValueRating(@PathVariable("event-id") Long eventId) {
+		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
+		List<feedback> fb= new ArrayList<feedback>();
+		list.forEach(f->{
+			if (f.getRating()!=null)
+				fb.add(f);
+		});
+		return IFBS.MaxEventAddedValueRating(fb);
+	}
+	
+	@GetMapping("/AVGEventRecommendRating/{event-id}")
+	double AVGEventRecommendRating(@PathVariable("event-id") Long eventId) {
+		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
+		List<feedback> fb= new ArrayList<feedback>();
+		list.forEach(f->{
+			if (f.getRating()!=null)
+				fb.add(f);
+		});
+		return IFBS.AVGEventRecommendRating(fb);
+	}
+	
+	@GetMapping("/MinEventRecommendRating/{event-id}")
+	double MinEventRecommendRating(@PathVariable("event-id") Long eventId) {
+		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
+		List<feedback> fb= new ArrayList<feedback>();
+		list.forEach(f->{
+			if (f.getRating()!=null)
+				fb.add(f);
+		});
+		return IFBS.MinEventRecommendRating(fb);
+	}
+	
+	@GetMapping("/MaxEventRecommendRating/{event-id}")
+	double MaxEventRecommendRating(@PathVariable("event-id") Long eventId) {
+		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
+		List<feedback> fb= new ArrayList<feedback>();
+		list.forEach(f->{
+			if (f.getRating()!=null)
+				fb.add(f);
+		});
+		return IFBS.MaxEventRecommendRating(fb);
+	}
+	
+	@GetMapping("/AVGEventServiceRating/{event-id}")
+	double AVGEventServiceRating(@PathVariable("event-id") Long eventId) {
+		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
+		List<feedback> fb= new ArrayList<feedback>();
+		list.forEach(f->{
+			if (f.getRating()!=null)
+				fb.add(f);
+		});
+		return IFBS.AVGEventServiceRating(fb);
+	}
+	
+	@GetMapping("/MinEventServiceRating/{event-id}")
+	double MinEventServiceRating(@PathVariable("event-id") Long eventId) {
+		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
+		List<feedback> fb= new ArrayList<feedback>();
+		list.forEach(f->{
+			if (f.getRating()!=null)
+				fb.add(f);
+		});
+		return IFBS.MinEventServiceRating(fb);
+	}
+	
+	@GetMapping("/MaxEventServiceRating/{event-id}")
+	double MaxEventServiceRating(@PathVariable("event-id") Long eventId) {
+		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
+		List<feedback> fb= new ArrayList<feedback>();
+		list.forEach(f->{
+			if (f.getRating()!=null)
+				fb.add(f);
+		});
+		return IFBS.MaxEventRecommendRating(fb);
+	}
+	
+	@GetMapping("/AVGEventFutureEventsRating/{event-id}")
+	double AVGEventFutureEventsRating(@PathVariable("event-id") Long eventId) {
+		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
+		List<feedback> fb= new ArrayList<feedback>();
+		list.forEach(f->{
+			if (f.getRating()!=null)
+				fb.add(f);
+		});
+		return IFBS.AVGEventFutureEventsRating(fb);
+	}
+	
+	@GetMapping("/MinEventFutureEventsRating/{event-id}")
+	double MinEventFutureEventsRating(@PathVariable("event-id") Long eventId) {
+		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
+		List<feedback> fb= new ArrayList<feedback>();
+		list.forEach(f->{
+			if (f.getRating()!=null)
+				fb.add(f);
+		});
+		return IFBS.MinEventFutureEventsRating(fb);
+	}
+	
+	@GetMapping("/MaxEventFutureEventsRating/{event-id}")
+	double MaxEventFutureEventsRating(@PathVariable("event-id") Long eventId) {
+		List<feedback> list=IFBS.FindFeedbacksByEvent(eventId);
+		List<feedback> fb= new ArrayList<feedback>();
+		list.forEach(f->{
+			if (f.getRating()!=null)
+				fb.add(f);
+		});
+		return IFBS.MaxEventRecommendRating(fb);
 	}
 	
 	

@@ -64,4 +64,10 @@ UserRepository ur;
 		msg.deleteById(idMsg);
 		
 	}
+
+	@Override
+	public List<Mensaje> getAllMessageGroup() {
+		// TODO Auto-generated method stub
+		return msg.findAllMensajes();
+	}
 }

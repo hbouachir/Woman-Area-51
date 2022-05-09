@@ -40,12 +40,13 @@ public class fund implements Serializable {
 	@Id
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	private Long fundId;
+	private String fundName;
 	private float goal;
 	private float raised;
 	private String fundDescription;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date lastDonation;
-	private String benficiaries;
+	private String beneficiaries;
 	@ElementCollection
 	List<String> tags = new ArrayList<>();
 	
@@ -57,6 +58,9 @@ public class fund implements Serializable {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="Fund")
 	@JsonIgnore
 	private Set<donation> donations;
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "f")
+	Set<FundFiles> files;
 	
 	
 	

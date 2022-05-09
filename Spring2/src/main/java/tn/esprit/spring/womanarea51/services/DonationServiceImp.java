@@ -1,15 +1,10 @@
 package tn.esprit.spring.womanarea51.services;
 
-import java.io.File;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.mail.internet.MimeMessage;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import com.stripe.exception.StripeException;
@@ -31,9 +26,6 @@ public class DonationServiceImp implements IDonationService {
     DonationRepository DRepository;
 	
 	@Autowired
-    private JavaMailSender emailSender;
-	
-	@Autowired
 	StripeService stripeService;
 	
 	@Autowired 
@@ -42,7 +34,10 @@ public class DonationServiceImp implements IDonationService {
 	@Autowired
 	UserRepository URepository;
 	
-	 
+	@Autowired
+	EmailingServiceImp ES;
+	
+	//Donation with creditcard 
 	public void AddDonation(donation d) throws StripeException, Exception {
 		DRepository.save(d);
 		User U=URepository.findById(d.getUser().getId()).get();
@@ -59,28 +54,11 @@ public class DonationServiceImp implements IDonationService {
         System.out.println(customerId);
 
         Charge c= stripeService.chargeCustomerCard(customerId,(int)d.getAmount());
-		
-        MimeMessage mm= emailSender.createMimeMessage();
-        MimeMessageHelper mimeMessageHelper=new MimeMessageHelper(mm,true);
-        mimeMessageHelper.setFrom(U.getEmail());
-        mimeMessageHelper.setTo(U.getEmail());
-        mimeMessageHelper.setText("Hello "+d.getUser().getFirstName()+" "+d.getUser().getLastName()+","+"\n \n"
-        		+"Your donation amount of "+String.valueOf(d.getAmount())
-        		+"DT has been confirmed for "+d.getFund().getFundDescription()
-        		+".\n"
-        		+ "Thank you for your contribution.\n\n"
-        		+ "Regards,\n"
-        		+ "The womenArea51 Team");
-        mimeMessageHelper.setSubject("Donation confirmation");
-        FileSystemResource res = new FileSystemResource(new File(ClassLoader.getSystemResource("static/images/logo.png").toURI()));
-        mimeMessageHelper.addInline("identifier1234", res);
+		ES.CreditCardDonation(U, d);
         
-        
-        emailSender.send(mm);
 		
 	}
-	
-	
+
 	
 	
 	public donation EditDonation(donation d) {
@@ -136,7 +114,16 @@ public class DonationServiceImp implements IDonationService {
 		return list;
 	}
 
-
+	
+	public List<donation>ListConfirmedStatus(Boolean s){
+		List<donation> list=new ArrayList<donation>() ;
+		DRepository.findAll().forEach(d->{
+			
+			if (d.getConfirmed()==s)
+			list.add(d);
+		});
+		return list;
+	}
 
 
 

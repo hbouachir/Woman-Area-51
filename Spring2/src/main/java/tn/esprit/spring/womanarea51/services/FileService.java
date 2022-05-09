@@ -2,6 +2,7 @@ package tn.esprit.spring.womanarea51.services;
 
 import org.springframework.web.multipart.MultipartFile;
 import tn.esprit.spring.womanarea51.entities.File;
+import tn.esprit.spring.womanarea51.entities.FileComplaint;
 import tn.esprit.spring.womanarea51.entities.User;
 
 import java.util.List;

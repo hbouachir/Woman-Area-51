@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +18,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.restfb.DefaultFacebookClient;
+import com.restfb.FacebookClient;
+import com.restfb.Parameter;
+import com.restfb.types.FacebookType;
+
+import tn.esprit.spring.womanarea51.entities.Filepost;
 import tn.esprit.spring.womanarea51.entities.Post;
 import tn.esprit.spring.womanarea51.entities.RatePub;
 import tn.esprit.spring.womanarea51.entities.User;
@@ -28,7 +35,7 @@ import tn.esprit.spring.womanarea51.services.UserService;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 public class PostController {
 	@Autowired
@@ -45,15 +52,25 @@ public class PostController {
 	public static String uploadDirectory = System.getProperty("user.dir") + "/uploads";
 ////ok
 	@PostMapping("addpost")
-	public String createNewPost( @RequestBody Post post, Authentication authentication) { 
+	public Post createNewPost( @RequestBody Post post, Authentication authentication) { 
 	String msg="";
 	UserDetailsImpl U1 = (UserDetailsImpl) authentication.getPrincipal();
     User U = userRepository.findByUsername(U1.getUsername())
             .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + U1.getUsername()));
-    postService.addPost(post, U.getId());
+   
 	
-msg="post ajouté de user name: "+U.getFirstName()+"  "+U.getLastName();
-	return msg; 
+	return  postService.addPost(post, U.getId()); 
+	}
+////angularr test
+	@PostMapping("addpostt")
+	public String createNewPost( @RequestBody Post post) { 
+	String msg="";
+	
+    postService.addPostt(post);
+	
+msg="post ajouté de user name: ";
+System.out.println("ajouuutteeeeeeeeerrrrrr");
+return msg; 
 	}
 	///ok
 	 @PostMapping("/upload/{idPost}")
@@ -78,6 +95,12 @@ msg="post ajouté de user name: "+U.getFirstName()+"  "+U.getLastName();
 		            .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + U1.getUsername()));
 		 postService.updatePost(U.getId(), idPost, p);
 	 }
+	 @RequestMapping(value = "/postupp", method = RequestMethod.PUT)
+		
+	 public void updatePostt(@RequestBody Post p) {
+		
+		 postService.upPost(p);
+	 }
 ////ok
 	@GetMapping("/listeposts")
 	@ResponseBody
@@ -87,13 +110,27 @@ msg="post ajouté de user name: "+U.getFirstName()+"  "+U.getLastName();
 	            .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + U1.getUsername()));
 		return postService.listepost(U.getId());
 	}
+	@GetMapping("/listetousposts")
+	@ResponseBody
+	List<Post> listedeTousPosts(){
+	
+		return postService.getAllPosts();
+	}
 	//ok
 	@RequestMapping(value = "/getpost/{id}")
 	public Optional<Post> getPost(@PathVariable Long id) {
 	
 		Optional<Post> p= postService.getPost(id);
 				return p;
+	}
+	//angularrr 
+	@RequestMapping(value = "/getuserpost/{id}")
+	public User getUserPost(@PathVariable Long id) {
+	
+		User p= postService.getUser(id);
+				return p;
 	}	
+	/////
 	
 ///ok
 	@GetMapping("/listepoststags")
@@ -176,4 +213,47 @@ public List<Post> getPostBykey(@RequestParam("key") String key) {
 
 			return g;
 }	
+//////////////
+@GetMapping("/image/{id}")
+
+public String getImage(@PathVariable Long id) {
+	
+	String  g=postService.urlFilePost(id);
+
+
+			return g;
+}
+@GetMapping("/imagee/{id}")
+
+public Filepost getImagee(@PathVariable Long id) {
+	
+	Filepost  g=postService.urlFilePostt(id);
+
+
+			return g;
+}
+
+@GetMapping("/getpostt/{id}")
+
+public Post getPostt(@PathVariable Long id) {
+	
+	Post  g=postService.getPostt(id);
+
+
+			return g;
+}
+@GetMapping("/postfb/{id}")
+public void listPubFb(@PathVariable Long id){
+	postService.listPubFb(id);
+	 
+}
+@GetMapping("/listepostsuser")
+
+public List<Post> getPostByUser(@RequestParam("username") String username) {
+	User u=userRepository.findByUsername(username).get();
+	List<Post>  g=postService.listepost(u.getId());
+
+
+			return g;
+}
 }
