@@ -26,7 +26,6 @@ import tn.esprit.spring.womanarea51.services.IEventService;
 import tn.esprit.spring.womanarea51.services.IUserService;
 import tn.esprit.spring.womanarea51.services.IfeedbackService;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class feedbackController {
 	

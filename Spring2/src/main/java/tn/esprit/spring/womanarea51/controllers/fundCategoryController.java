@@ -18,7 +18,6 @@ import tn.esprit.spring.womanarea51.repositories.UserRepository;
 import tn.esprit.spring.womanarea51.services.IFundCategoryService;
 
 
-@CrossOrigin(origins = "*")
 @RestController
 public class fundCategoryController {
 	

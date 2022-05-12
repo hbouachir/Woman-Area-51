@@ -17,7 +17,6 @@ import tn.esprit.spring.womanarea51.services.CourseService;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/api")
 public class CourseController {

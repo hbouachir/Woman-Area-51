@@ -21,7 +21,6 @@ import tn.esprit.spring.womanarea51.services.ILikeService;
 
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
 public class LikeController {
 	@Autowired
 	ILikeService likeService;

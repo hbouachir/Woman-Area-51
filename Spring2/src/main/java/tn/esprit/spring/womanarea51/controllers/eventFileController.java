@@ -22,7 +22,6 @@ import tn.esprit.spring.womanarea51.repositories.UserRepository;
 import tn.esprit.spring.womanarea51.services.IUserService;
 import tn.esprit.spring.womanarea51.services.IeventFileService;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class eventFileController {
 	

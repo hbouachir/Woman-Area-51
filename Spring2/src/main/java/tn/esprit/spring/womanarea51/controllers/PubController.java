@@ -30,7 +30,6 @@ import tn.esprit.spring.womanarea51.services.IPubService;
 
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
 public class PubController {
 @Autowired
 IPubService pubService;

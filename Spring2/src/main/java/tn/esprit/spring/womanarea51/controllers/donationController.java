@@ -26,7 +26,6 @@ import tn.esprit.spring.womanarea51.services.IEmailingService;
 import tn.esprit.spring.womanarea51.services.IFundService;
 import tn.esprit.spring.womanarea51.services.IUserService;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class donationController {
 	

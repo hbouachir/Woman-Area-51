@@ -22,7 +22,6 @@ import tn.esprit.spring.womanarea51.security.services.UserDetailsImpl;
 import java.time.LocalDate;
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600,allowCredentials = "true")
 @RestController
 @RequestMapping("/api")
 public class EnrollementController {
@@ -97,8 +96,8 @@ public class EnrollementController {
 
     }
 
-    @PutMapping("updateRole")
-    public Enrollement updateRole(@RequestBody Enrollement e)
+    @PutMapping("updateEnrollement")
+    public Enrollement updateEnrollement(@RequestBody Enrollement e)
     {
         return enrollementService.UpdateEnrollement(e);
     }

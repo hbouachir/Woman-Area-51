@@ -19,7 +19,6 @@ import tn.esprit.spring.womanarea51.services.IFundCategoryService;
 import tn.esprit.spring.womanarea51.services.IFundService;
 import tn.esprit.spring.womanarea51.services.IUserService;
 
-@CrossOrigin(origins = "*")
 @RestController
 public class fundController {
 	

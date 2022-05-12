@@ -16,7 +16,6 @@ import tn.esprit.spring.womanarea51.repositories.UserRepository;
 import tn.esprit.spring.womanarea51.services.IEmailScheduling;
 import tn.esprit.spring.womanarea51.services.IEventService;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class EmailSchedulerCcontroller {
 	

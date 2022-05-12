@@ -47,8 +47,6 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
-//@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
-@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600,allowCredentials = "true")
 @RestController
 @RequestMapping("/api")
 public class AuthController {

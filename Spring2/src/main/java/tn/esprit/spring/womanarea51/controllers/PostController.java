@@ -35,7 +35,6 @@ import tn.esprit.spring.womanarea51.services.UserService;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 public class PostController {
 	@Autowired

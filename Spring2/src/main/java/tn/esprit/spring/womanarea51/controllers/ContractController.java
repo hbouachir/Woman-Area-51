@@ -20,7 +20,6 @@ import tn.esprit.spring.womanarea51.repositories.ContractRepository;
 import tn.esprit.spring.womanarea51.services.ContractPDFExporter;
 import tn.esprit.spring.womanarea51.services.EmailSenderService;
 
-@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api")
 public class ContractController {

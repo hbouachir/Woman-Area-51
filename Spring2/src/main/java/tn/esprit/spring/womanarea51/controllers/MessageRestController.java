@@ -21,7 +21,6 @@ import tn.esprit.spring.womanarea51.security.services.UserDetailsImpl;
 import tn.esprit.spring.womanarea51.services.IMessageService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
 public class MessageRestController {
 @Autowired 
 IMessageService messageService;

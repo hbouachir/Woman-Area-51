@@ -28,7 +28,6 @@ import tn.esprit.spring.womanarea51.repositories.UserRepository;
 import tn.esprit.spring.womanarea51.services.ContractServicempl;
 import tn.esprit.spring.womanarea51.services.EmailSenderService;
 import tn.esprit.spring.womanarea51.services.InterviewService;
-@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api")
 public class InterviewController {

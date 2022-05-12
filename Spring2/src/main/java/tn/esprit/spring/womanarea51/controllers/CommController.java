@@ -28,7 +28,6 @@ import tn.esprit.spring.womanarea51.services.ICommService;
 
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
 public class CommController {
 
 	@Autowired

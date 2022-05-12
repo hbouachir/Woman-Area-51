@@ -25,7 +25,6 @@ import tn.esprit.spring.womanarea51.security.services.UserDetailsImpl;
 import tn.esprit.spring.womanarea51.services.IExpertInterviewService;
 import tn.esprit.spring.womanarea51.services.IUserService;
 @RestController
-@CrossOrigin
 public class ExpertInterviewController {
 	@Autowired
 	IExpertInterviewService exp ;

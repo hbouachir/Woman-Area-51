@@ -18,7 +18,6 @@ import tn.esprit.spring.womanarea51.repositories.UserRepository;
 import tn.esprit.spring.womanarea51.services.IFundCatFileService;
 import tn.esprit.spring.womanarea51.services.IUserService;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class fundCategoryFileController {
 	

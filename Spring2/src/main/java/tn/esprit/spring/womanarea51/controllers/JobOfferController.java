@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import tn.esprit.spring.womanarea51.entities.JobOffer;
 import tn.esprit.spring.womanarea51.repositories.UserRepository;
 import tn.esprit.spring.womanarea51.services.JobOfferService;
-@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api")
 public class JobOfferController {

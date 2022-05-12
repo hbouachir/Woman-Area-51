@@ -18,7 +18,6 @@ import tn.esprit.spring.womanarea51.security.services.UserDetailsImpl;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600,allowCredentials = "true")
 @RestController
 @RequestMapping("/api")
 public class SubscriptionController {

@@ -17,7 +17,6 @@ import tn.esprit.spring.womanarea51.entities.User;
 import tn.esprit.spring.womanarea51.repositories.UserRepository;
 import tn.esprit.spring.womanarea51.services.FilepostService;
 @RestController
-@CrossOrigin
 public class FilepostController {
     @Autowired
     FilepostService fs;

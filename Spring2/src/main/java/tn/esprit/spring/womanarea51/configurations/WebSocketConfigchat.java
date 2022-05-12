@@ -15,7 +15,7 @@ public class WebSocketConfigchat implements WebSocketMessageBrokerConfigurer {
 	 /*registry.addEndpoint("/gs-guide-websocket")
 	 .withSockJS();*/
 	 registry.addEndpoint("/chat-websocket")
-	 .setAllowedOrigins("http://localhost:4200")
+	 .setAllowedOrigins("https://womanarea51.ml", "https://www.womanarea51.ml")
 	 .withSockJS();
 	}
 	
