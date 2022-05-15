@@ -237,5 +237,9 @@ public class User implements Serializable {
 	@OneToMany(cascade = CascadeType.ALL)
 	@JsonIgnore
 	private Set<fund> Funds;
+	
+	@OneToMany(cascade=CascadeType.ALL, mappedBy="expert")
+	@JsonIgnore
+	Set<ExpertInterview> expertinterviews;
 
 }

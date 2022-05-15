@@ -71,14 +71,14 @@ public class ComplaintController {
 	
 	@PostMapping("/addComplaint")
 	public Complaint addComplaint(@RequestBody Complaint c,Authentication authentication){
-		
+		System.out.println(c.toString());
 		UserDetailsImpl U1 = (UserDetailsImpl) authentication.getPrincipal();
         User U = urep.findByUsername(U1.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + U1.getUsername()));
 		
         
 		c.setUser(U);
-		if(c.getDescription().contains("fight")||c.getDescription().contains("harrassment")
+		/*if(c.getDescription().contains("fight")||c.getDescription().contains("harrassment")
 				||c.getDescription().contains("pain")){
 			//c.setComplaintType(ComplaintType.Help);
 			//return "You might wanna add a file attachment";
@@ -93,7 +93,33 @@ public class ComplaintController {
 		//c.setComplaintType(ComplaintType.Help);
 					else {
 						//c.setUser(U);
-					comp.addComplaint(c);}
+					comp.addComplaint(c);}*/
+		
+		return comp.addComplaint(c);
+	}
+	
+	@PostMapping("/addComplaintAdmin")
+	public Complaint addComplaintAdm(@RequestBody Complaint c){
+		
+		
+		
+        
+		if(c.getDescription().contains("fight")||c.getDescription().contains("harrassment")
+				||c.getDescription().contains("pain")){
+			//c.setComplaintType(ComplaintType.Help);
+			//return "You might wanna add a file attachment";
+			
+		}
+			else if(c.getDescription().contains("money")){
+					c.setComplaintType(ComplaintType.financialComplaint);
+					
+					return comp.addComplaint(c);
+					}
+		
+		//c.setComplaintType(ComplaintType.Help);
+					else {
+						//c.setUser(U);
+					return comp.addComplaint(c);}
 		
 		return comp.addComplaint(c);
 	}

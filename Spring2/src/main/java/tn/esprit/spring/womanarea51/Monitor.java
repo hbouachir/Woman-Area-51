@@ -85,31 +85,59 @@ public class Monitor {
                 user.setEnabled(true);
                 userRepository.save(user);
             }
+            if (!userRepository.existsByUsername("Thralxl")) {
+                Set<Role> roles = new HashSet<>();
+                Role adminRole = roleRepository.findByName(ERole.ROLE_USER).orElse(null);
+                roles.add(adminRole);
+                //create admin account
+                User user = new User("Thralxl",
+                        "thralxl25@gmail.com",
+                        encoder.encode("changeme"
+                        ), "Thralxl", "Thralxl", "Thralxl", null, "22222222", null);
+                user.setRoles(roles);
+                user.setEnabled(true);
+                userRepository.save(user);
+            }
             if (!userRepository.existsByUsername("expert1")) {
                 Set<Role> roles = new HashSet<>();
-                Role adminRole = roleRepository.findByName(ERole.ROLE_EXPERT_F).orElse(null);
+                Role adminRole = roleRepository.findByName(ERole.ROLE_EXPERT).orElse(null);
                 adminRole.setExpertField("fights");
 
                 roles.add(adminRole);
                 //create admin account
                 User user = new User("expert1",
-                        "chaima1@mail.com",
+                        "expert1@mail.com",
                         encoder.encode("changeme"
                         ), "expert1", "lexpert1", "expert1", null, "7777777", null);
+                adminRole.setExpertField("Harrassment");
                 user.setRoles(roles);
                 user.setEnabled(true);
                 userRepository.save(user);
             }
             if (!userRepository.existsByUsername("expert2")) {
                 Set<Role> roles = new HashSet<>();
-                Role adminRole = roleRepository.findByName(ERole.ROLE_EXPERT_H).orElse(null);
-                adminRole.setExpertField("harrasment");
+                Role adminRole = roleRepository.findByName(ERole.ROLE_EXPERT).orElse(null);
+                adminRole.setExpertField("Divorce");
                 roles.add(adminRole);
                 //create admin account
                 User user = new User("expert2",
-                        "chaima2@mail.com",
+                        "expert2@mail.com",
                         encoder.encode("changeme"
                         ), "expert2", "lexpert2", "expert2", null, "6666666", null);
+                user.setRoles(roles);
+                user.setEnabled(true);
+                userRepository.save(user);
+            }
+            if (!userRepository.existsByUsername("expert3")) {
+                Set<Role> roles = new HashSet<>();
+                Role adminRole = roleRepository.findByName(ERole.ROLE_EXPERT).orElse(null);
+                adminRole.setExpertField("Social");
+                roles.add(adminRole);
+                //create admin account
+                User user = new User("expert3",
+                        "expert3@mail.com",
+                        encoder.encode("changeme"
+                        ), "expert3", "lexpert3", "expert3", null, "0000000", null);
                 user.setRoles(roles);
                 user.setEnabled(true);
                 userRepository.save(user);

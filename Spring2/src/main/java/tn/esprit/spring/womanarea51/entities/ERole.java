@@ -6,8 +6,7 @@ public enum ERole {
 
     ROLE_ADMIN,
     ROLE_SUPER_USER,
-    ROLE_EXPERT_F,
-    ROLE_EXPERT_H
+    ROLE_EXPERT
 
 
     

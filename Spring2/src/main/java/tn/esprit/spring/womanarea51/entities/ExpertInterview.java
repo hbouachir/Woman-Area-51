@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -36,9 +38,12 @@ public class ExpertInterview implements Serializable {
 	private long idExpertInterview;
 	@Temporal (TemporalType.DATE)
 	private Date dateExpertInterview;
-	private String expertField;
+	@Enumerated(EnumType.STRING)
+	private EExpertField expertField;
 	private Boolean interviewType;
 	private int rating;
+	private Boolean done;
+	private String ratingText;
 	
 	/*List<User> searchExperts(List<User> users){
 		//List<User> experts = null;

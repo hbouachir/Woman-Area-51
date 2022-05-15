@@ -41,7 +41,7 @@ public class FileComplaintService implements IFileComplaintService {
             
             fichi.setUploadDate(new Date());
             fichi.setFileName(file.getOriginalFilename());
-            fichi.setFilePath("https://www.womanarea51.ml/Courses/"+idCourse.toString()+"/"+file.getOriginalFilename());
+            fichi.setFilePath("https://www.womanarea51.ml/Complaints/"+idCourse.toString()+"/"+file.getOriginalFilename());
             
             return fr.save(fichi);
         }catch (Exception e){

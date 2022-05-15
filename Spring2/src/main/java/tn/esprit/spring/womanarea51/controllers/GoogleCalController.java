@@ -1,9 +1,11 @@
 package tn.esprit.spring.womanarea51.controllers;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -35,6 +37,7 @@ import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.Calendar.Events;
 import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.calendar.model.Event;
+import com.google.api.services.calendar.model.EventAttendee;
 import com.google.api.services.calendar.model.EventDateTime;
 
 
@@ -140,29 +143,9 @@ public class GoogleCalController {
 			client.events().insert("primary", event).execute();
 		}
 
-	@RequestMapping(value = "/add", method = RequestMethod.GET)
-	public void addevent2() throws IOException{
-		Event event = new Event();
-		event.setDescription("Expert interview");
-		event.setSummary("Oussama API");
-		DateTime startDateTime = new DateTime("2022-04-15T09:00:00+01:00");
-		EventDateTime start = new EventDateTime()
-				.setDateTime(startDateTime)
-				.setTimeZone("Africa/Tunis");
-		event.setStart(start);
-		DateTime endDateTime = new DateTime("2022-04-16T17:00:00+01:00");
-		EventDateTime end = new EventDateTime()
-				.setDateTime(endDateTime)
-				.setTimeZone("Africa/Tunis");
-		event.setEnd(end);
-		//event.setSummary(eventEntity.getSummary());
-		//event.setLocation(location);
-		//event.setDescription(description);
-		client.events().insert("oussama.lahouel@esprit.tn", event).execute();
-	}
 	
 	@GetMapping("/addEvent/{date}")
-	public void addeventtest(@PathVariable String date) throws IOException{
+	public void addeventtest(@PathVariable String date,String email) throws IOException{
 		Event event = new Event();
 		event.setDescription("Expert interview");
 		event.setSummary("Oussama API test");
@@ -179,6 +162,13 @@ public class GoogleCalController {
 		//event.setSummary(eventEntity.getSummary());
 		//event.setLocation(location);
 		//event.setDescription(description);
+		EventAttendee[] attendees = new EventAttendee[] {
+			    new EventAttendee().setEmail(email)
+			    
+			};
+			event.setAttendees(Arrays.asList(attendees));
 		client.events().insert("oussama.lahouel@esprit.tn", event).execute();
+		//client.events().insert("ramzi.kerkeni@esprit.tn", event).execute();
+		
 	}
 }
