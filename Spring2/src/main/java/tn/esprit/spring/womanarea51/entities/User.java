@@ -213,9 +213,11 @@ public class User implements Serializable {
 	public Set<JobOffer> jobOffers ;
 
 	@OneToMany(mappedBy = "student")
+	@JsonIgnore
 	Set<Class> classes;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="instructor")
+	@JsonIgnore
 	private Set<Course> courses;
 
 	@OneToMany(mappedBy="user")
