@@ -17,17 +17,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import tn.esprit.spring.womanarea51.entities.Attachment;
-import tn.esprit.spring.womanarea51.entities.Complaint;
-import tn.esprit.spring.womanarea51.entities.ComplaintType;
-import tn.esprit.spring.womanarea51.entities.FileComplaint;
-import tn.esprit.spring.womanarea51.entities.User;
+import tn.esprit.spring.womanarea51.entities.*;
 import tn.esprit.spring.womanarea51.repositories.ComplaintRepository;
 import tn.esprit.spring.womanarea51.repositories.UserRepository;
 import tn.esprit.spring.womanarea51.security.services.UserDetailsImpl;
 import tn.esprit.spring.womanarea51.services.AttachmentService;
 import tn.esprit.spring.womanarea51.services.FileComplaintService;
 import tn.esprit.spring.womanarea51.services.IComplaintService;
+import tn.esprit.spring.womanarea51.services.PublicComplaintService;
+
 @RestController
 public class ComplaintController {
 	@Autowired
@@ -123,7 +121,13 @@ public class ComplaintController {
 					
 	}
 	
-	
+
+	@Autowired
+	PublicComplaintService pcs;
+	@PostMapping("/publicComplaintAdd")
+	public void publicComplaintAdd(@RequestBody PublicComplaint publicComplaint){
+		pcs.addPublicComplaint(publicComplaint);
+	}
 	
 	
 	
