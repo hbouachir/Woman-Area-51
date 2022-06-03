@@ -19,7 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class FundCatFTPService {
 	static FTPClient ftp = new FTPClient();
-	static String TMP_UPLOAD_FOLDER = "C:/tmp/";
+	static String TMP_UPLOAD_FOLDER = "/tmp/";
 	static String SERVER_DOMAIN = "ftpupload.net";
 	static String SERVER_USERNAME = " ";
 	static String SERVER_PASSWORD = " ";

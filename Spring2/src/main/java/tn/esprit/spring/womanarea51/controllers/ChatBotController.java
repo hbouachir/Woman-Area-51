@@ -85,11 +85,14 @@ public class ChatBotController {
 		//bot.chat("Hi");
 		String rep=ch.sendMessage(m);
 		//ch.sendMessage(m);
-		
-		UserDetailsImpl U1 = (UserDetailsImpl) authentication.getPrincipal();
-        User U = urep.findByUsername(U1.getUsername())
-                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + U1.getUsername()));
-		
+		User U = new User();
+		try {
+			UserDetailsImpl U1 = (UserDetailsImpl) authentication.getPrincipal();
+			U = urep.findByUsername(U1.getUsername())
+					.orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + U1.getUsername()));
+		}catch (Exception e){
+			System.out.println(e);
+		}
 		
 
 		if (m.contains("show all complaints")){

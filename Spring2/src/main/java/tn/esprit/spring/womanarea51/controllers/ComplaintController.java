@@ -154,7 +154,10 @@ public class ComplaintController {
 	public void publicComplaintAdd(@RequestBody PublicComplaint publicComplaint){
 		pcs.addPublicComplaint(publicComplaint);
 	}
-	
+	@GetMapping("/publicComplaints")
+	public List<PublicComplaint> publicComplaints(){
+		return pcs.getPublicComplaint();
+	}
 	
 	
 	
