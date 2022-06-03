@@ -27,6 +27,9 @@ public interface ExpertInterviewRepository extends CrudRepository<ExpertIntervie
 	@Query(value="SELECT expert_field FROM roles WHERE id=?1",nativeQuery = true)
 	public String getRoleField(long l) ;
 	
+	@Query(value="SELECT id_expert_interview FROM expert_interview WHERE user_user_id=?1",nativeQuery = true)
+	public List<Long> getMyExpertInterviews(long l) ;
+	
 	
 
 }

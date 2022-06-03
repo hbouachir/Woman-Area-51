@@ -182,6 +182,25 @@ public class ExpertInterviewController {
 		return exp.showAllExpertInterview();
 	}
 	
+	@GetMapping("/ShowMyExpertInterview")
+	public List<ExpertInterview> showMyExpertInterview(Authentication authentication) {
+		int i=0;
+		UserDetailsImpl U1 = (UserDetailsImpl) authentication.getPrincipal();
+        User U = urep.findByUsername(U1.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + U1.getUsername()));
+        List<Long> list=new ArrayList<Long>();
+        List<ExpertInterview> listint=new ArrayList<ExpertInterview>();
+        list=exrep.getMyExpertInterviews(U.getId());
+        for(i=0;i<=list.size()-1;i++){
+        	listint.add(exp.showExpertInterview(list.get(i)));
+			
+		}
+        
+		
+		
+		return listint;
+	}
+	
 	@GetMapping("/getBestExperts")
 	public List<User> getBestExperts() {
 		int i=0;
